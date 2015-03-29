@@ -1,0 +1,88 @@
+# High level:
+# - Store training set OFFLINE! Make sure people obtain look at the code to find target value
+# - This might allow DOM predictions when values and websites change!
+# - oldDOM & oldTARGET & newDOM can maybe form newTARGET
+# -----------------------------------
+# - Maak onderscheid uit tussen dat bepaalde elementen een fixed aantal, meerdere keren of eenmalig gevonden willen
+#   worden. Eigenlijk willen we dit voorschotelen aan de gebruiker!
+# -----------------------------------
+# - Voeg toe dat je <h1> etc kan matchen (zonder attributes)
+# - Use the recursive upwards matcher
+# - handle case / match substring (maybe using some text analysis knowledge)
+#   - "http://www.bouwmachineweb.com/nieuws/effici%C3%ABnter-en-effectiever-asfalteren-met-soma" TITLE
+
+# characterSeparation - how many characters separation between strings
+# LevensteinDistance - how many edits to be the same string
+
+# identify an attribute by " *.="
+# identify a value by '"*."'
+# identify a tag by "<"
+
+# def nthAttrFit(sought='643', soup=soup):
+#     for e in soup.find_all(text=sought):
+#         attributes = e.findParent().attrs
+#     for nth, y in enumerate(soup.findAll(attrs=attributes)):
+#         if y.text == sought: 
+#             fit = {}
+#             fit['attr'] = attributes
+#             fit['nthMatch'] = nth
+#             return fit
+
+# def nthAttrPredict(fit, soup=soup): 
+#     return soup.findAll(attrs=fit['attr'])[fit['nthMatch']].text
+    
+# def nthAttrConfirm(sought1, sought2, soup1, soup2):
+#     fit = nthAttrFit(sought1, soup1)
+#     pred = nthAttrPredict(fit, soup2)
+#     print pred == sought2
+    
+# nthAttrConfirm('643', '30.4K', soup, soup2)    
+
+# soup2 = soupify("https://twitter.com/mdandersonnews")
+
+# def compareAttrKeysValues(x,y):
+#     total = 0
+#     total_matched = 0
+#     v1 = x.attrs.values()
+#     v2 = y.attrs.values() 
+#     k1 = x.attrs.keys()
+#     k2 = y.attrs.keys()
+#     total_matched, total = matchReciprical(total, total_matched, v1, v2)
+#     total_matched, total = matchReciprical(total, total_matched, k1, k2)        
+#     return total_matched, total    
+    
+# def matchReciprical(total, total_matched, v1, v2):
+#     for a, b in zip(v1, v2):
+#         if isinstance(a, list) and isinstance(b, list):
+#             total_matched, total = matchReciprical(total, total_matched, a, b)
+#             continue
+#         if (a in b) & (b in a):
+#             total_matched += 1
+#         total += 1
+#     return total_matched, total
+
+# def matchUpwards(x, y, nLevel=10):
+#     matches = []
+#     for i in range(nLevel):
+#         res = compareAttrKeysValues(x,y)
+#         x = x.parent
+#         y = y.parent
+#         matches.append(res[0] * 1.0 / res[1])
+#     return matches    
+
+# matchUpwards(x[0], y)
+# matchUpwards(x[1], y)
+# matchUpwards(x[2], y)
+# matchUpwards(x[3], y)
+
+
+
+
+# for e in soup3.find_all(text="13"):
+#     attributes = e.findParent().attrs
+
+# z = soup2.findAll(attrs={'data-is-compact': 'true', 'class': ['ProfileNav-value']})    
+
+# [round(i, 2) for i in matchUpwards(z[0], x[3])]
+# [round(i, 2) for i in matchUpwards(z[1], x[3])]
+# [round(i, 2) for i in matchUpwards(z[2], x[3])]
