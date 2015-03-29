@@ -1,0 +1,219 @@
+<html>
+ <body>
+  <div class="section">
+   <h1>
+    w3lib 1.1
+   </h1>
+   <div id="download-button">
+    <a class="button green" href="https://pypi.python.org/packages/source/w/w3lib/w3lib-1.1.tar.gz" style="float:right;">
+     Download
+     <br/>
+     <span style="font-size: 75%">
+      w3lib-1.1.tar.gz
+     </span>
+    </a>
+   </div>
+   <p style="font-style: italic">
+    Library of web-related functions
+   </p>
+   <p>
+    <strong>
+     Latest Version:
+    </strong>
+    <a href="https://pypi.python.org/pypi/w3lib/1.11.0" title="Latest Version URL">
+     <span>
+      1.11.0
+     </span>
+    </a>
+   </p>
+   <a name="downloads">
+   </a>
+   <table class="list" style="margin-bottom: 10px;">
+    <tbody>
+     <tr>
+      <th>
+       File
+      </th>
+      <th>
+       Type
+      </th>
+      <th>
+       Py Version
+      </th>
+      <th>
+       Uploaded on
+      </th>
+      <th style="text-align: right;">
+       Size
+      </th>
+     </tr>
+     <tr class="odd">
+      <td>
+       <span style="white-space: nowrap;">
+        <a href="https://pypi.python.org/packages/source/w/w3lib/w3lib-1.1.tar.gz#md5=987930aac3914146f438248f8ae5cf99">
+         w3lib-1.1.tar.gz
+        </a>
+        (
+        <a href="/pypi?:action=show_md5&amp;digest=987930aac3914146f438248f8ae5cf99" title="MD5 Digest">
+         md5
+        </a>
+        )
+       </span>
+      </td>
+      <td style="white-space: nowrap;">
+       Source
+      </td>
+      <td>
+      </td>
+      <td>
+       2012-04-18
+      </td>
+      <td style="text-align: right;">
+       8KB
+      </td>
+     </tr>
+     <tr>
+      <td colspan="6" id="last">
+      </td>
+     </tr>
+    </tbody>
+   </table>
+   <ul class="nodot">
+    <li>
+     <strong>
+      Downloads (All Versions):
+     </strong>
+    </li>
+    <li>
+     <span>
+      784
+     </span>
+     downloads in the last day
+    </li>
+    <li>
+     <span>
+      10671
+     </span>
+     downloads in the last week
+    </li>
+    <li>
+     <span>
+      34746
+     </span>
+     downloads in the last month
+    </li>
+   </ul>
+   <ul class="nodot">
+    <li>
+     <strong>
+      Author:
+     </strong>
+     <span>
+      Scrapy project
+     </span>
+    </li>
+    <!-- The <th> elements below are a terrible terrible hack for setuptools -->
+    <li>
+     <strong>
+      Home Page:
+     </strong>
+     <!-- <th>Home Page -->
+     <a href="http://github.com/scrapy/w3lib">
+      http://github.com/scrapy/w3lib
+     </a>
+    </li>
+    <li>
+     <strong>
+      License:
+     </strong>
+     <span>
+      BSD
+     </span>
+    </li>
+    <li>
+     <strong>
+      Platform:
+     </strong>
+     <span>
+      Any
+     </span>
+    </li>
+    <!-- TODO: add link to products in follow dependencies... -->
+    <li>
+     <strong>
+      Categories
+     </strong>
+     <ul class="nodot">
+      <li>
+       <a href="/pypi?:action=browse&amp;c=5">
+        Development Status :: 5 - Production/Stable
+       </a>
+      </li>
+      <li>
+       <a href="/pypi?:action=browse&amp;c=60">
+        License :: OSI Approved :: BSD License
+       </a>
+      </li>
+      <li>
+       <a href="/pypi?:action=browse&amp;c=156">
+        Operating System :: OS Independent
+       </a>
+      </li>
+      <li>
+       <a href="/pypi?:action=browse&amp;c=214">
+        Programming Language :: Python
+       </a>
+      </li>
+      <li>
+       <a href="/pypi?:action=browse&amp;c=530">
+        Programming Language :: Python :: 2.5
+       </a>
+      </li>
+      <li>
+       <a href="/pypi?:action=browse&amp;c=531">
+        Programming Language :: Python :: 2.6
+       </a>
+      </li>
+      <li>
+       <a href="/pypi?:action=browse&amp;c=532">
+        Programming Language :: Python :: 2.7
+       </a>
+      </li>
+      <li>
+       <a href="/pypi?:action=browse&amp;c=326">
+        Topic :: Internet :: WWW/HTTP
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <strong>
+      Package Index Owner:
+     </strong>
+     <span>
+      dangra, pablohoffman, scrapy
+     </span>
+    </li>
+    <li>
+     <strong>
+      Package Index Maintainer:
+     </strong>
+     <span>
+      scrapy
+     </span>
+    </li>
+    <li>
+     <strong>
+      <a href="http://usefulinc.com/doap">
+       DOAP
+      </a>
+      record:
+     </strong>
+     <a href="/pypi?:action=doap&amp;name=w3lib&amp;version=1.1">
+      w3lib-1.1.xml
+     </a>
+    </li>
+   </ul>
+  </div>
+ </body>
+</html>
