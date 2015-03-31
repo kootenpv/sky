@@ -1,77 +1,80 @@
-#BACKEND: http://www.zodb.org/en/latest/documentation/tutorial.html
+from ZODB.FileStorage import FileStorage
+from ZODB.DB import DB
 
-# Initially crawl with both urllib and Phantom
-# 
-# Add contraint suggestions (forbid, allow)
-# Using cmd module for suggestion handling 
+import transaction
+import persistent
+import time
 
-# Need something asynchronous
-# Queue
+from selenium import webdriver
 
-# Handle JSON
-# Handle XML/RSS
-# Handle HTML
-# Handle Images
-# Handle Audio
-# Handle Movie
-# Handle OFFICE
+import requests
 
-# Find Phonenumbers
-# Find Images
-# Find Names
-# Find Dates
-# Find Audio
-# Find Movie
-# Find Address
-# Find Email
 
-# Automatic text summarizer
-
-# SearchEngine
-
-# SendEmail / Alerts
+try: 
+    from queue import Queue
+    from queue import PriorityQueue
+except ImportError: 
+    from Queue import PriorityQueue
 
 
 
+storage = FileStorage('Data.fs')
+db = DB(storage)
+connection = db.open()
+root = connection.root()
 
-# def JSONHandler():
-#     pass
+class RequestsCrawler():
+    def __init__(self, name, backend = None): 
+        self.name = name
+        self.backend = backend
+        
+    def get(self, url):
+        response = requests.get(url)
+        html = response.text
+        return html
+        
 
-# def RSSHandler():
-#     pass
+class SeleniumCrawler():
+    def __init__(self, name, backend):
+        self.name = name
+        self.browser = backend
+        self.active = True
+        self.min_time = 2
 
-# def HTMLHandler():    
-#     pass
+    def start(self):
+        t2 = 0
+        while self.active: 
+            t1 = time.time()
+            if t2 - t1 > self.min_time:
+                self.get()
+                t2 = time.time()
+            
+            
+        
+    def get(self, url):
+        self.browser.get(url)
+        html = self.browser.page_source
+        return html
 
-def getPage(handler):
-    pass
-
-def getPageBackend():
-    pass
-
-def getPageBackendUrllib():
-    pass
-
-def getPageBackendPhantomJS():
-    pass
-    
-def handlePage(page, backends):
-    pass
-
-def handlePageBackend(backends):
-    pass
-
-def handlePageBackendLXML():
-    pass
-
-def handlePageBackendBS():
-    pass
-
-    
+class BeautifulSoupParser():
     
 
-    
-class Crawler():
-    
-    
-    
+class Parser():
+    def __init__(self, backend): 
+        self.backend = backend
+    def parse(self): 
+        
+        return parsedDocument
+
+class CrawlerManager():
+    def __init__(self):
+        self.crawlers = []
+        self.urlQueue = PriorityQueue()
+
+    def registerCrawler(self, crawler):
+        self.crawlers.append(crawler)
+
+    def ask(self):
+        url = self.urlQueue.get()
+        
+        
