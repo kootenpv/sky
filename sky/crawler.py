@@ -3,7 +3,7 @@
 # Initially crawl with both urllib and Phantom
 # 
 # Add contraint suggestions (forbid, allow)
-
+# Using cmd module for suggestion handling 
 
 # Need something asynchronous
 # Queue
