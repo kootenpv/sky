@@ -127,8 +127,52 @@ def testAutoScraperSolutions(autoScraper, training, verbose = False):
             print("Scraper method: ", num, " was ", result)
     return any_succes    
 
-    #testAutoScraperSolutions(buildSolution(tr), tr, False)
+def tryUniqueID(c, sp):
+    return len(sp.findAll(c.name, attrs=c.attrs)) == 1
 
+def buildNewSolution(tr):
+    childs = []
+    num = 0
+    options = []
+    for soup, target in zip(tr.soups, tr.targets):
+        print('num',num)
+        num+=1
+        for c in soup.findChildren():
+            try:
+                if c.name not in ['body', 'html']:
+                    if target in c.text:
+                        childs.append([c,  len(c.text)])
+            except:
+                pass        
+
+        tmp = []            
+        for i,x in enumerate(childs[::-1]): 
+            if tryUniqueID(x[0], soup):
+                attrs = x[0].attrs
+                attrs['name'] = x[0].name
+                attrs = {'attrs' : attrs}
+                if x[0].text == target:
+                    tmp.append((attrs, BeautifulSoup.get_text))
+                elif stripReasonableWhite(x[0].text) == stripReasonableWhite(target):     
+                    tmp.append((attrs, BeautifulSoup.get_text, stripReasonableWhite))
+                elif splitN(x[0].text, target):    
+                    for splitable in splitN(x[0].text, target):
+                        tmp.append((attrs, BeautifulSoup.get_text, splitSolution(splitable)))
+                else: 
+                    print(len([y for y in x[0].children]))
+            else:
+                print('not unique', len([y for y in x[0].children])) 
+        options.append(tmp)
+    good_options = [] 
+    if options: 
+        for x in options[0]:
+            if all(x in y for y in options[1:]): 
+                good_options.append(x)
+    return good_options    
+    
+#testAutoScraperSolutions(buildSolution(tr), tr, False)
+
+    
 
 # tr1 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
 

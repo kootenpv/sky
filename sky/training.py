@@ -116,3 +116,7 @@ class Training():
 # tr6.classify()
 # tr6.save()
 
+# tr = Training('betterdoctor-doctor-referalls', '/Users/pascal/GDrive/sky_package/sky/tests/')
+# tr.addLinks(['https://betterdoctor.com/igor-grosman', 'https://betterdoctor.com/gary-gwertzman'])
+# tr.classify()
+# tr.save()
