@@ -1,0 +1,24 @@
+# - obtain with request and with selenium
+# - lxml try parse without beautifulsoup and then with
+
+
+# The reasoner can on high level:
+# - Make decisions and apply on everything so far, as well as influence the future
+
+# The reasoner can on low level:
+# - Consider whether it should use selenium or not
+# - It uses lxml and finds out whether it should use BeautifulSoup fallback parser
+# - Detect breadcrumbs (either based on individual as well as within domain)
+# - Find out all these extra things like dates, names, places, images and videos
+# - Suggest interesting things based on 'itemprop' / 'data' / 'id' / 'class'
+# - Suggest keywords
+# - Find out interesting pages
+# - Find out perfect scraping path
+# - Find out pagination
+# - Find out when the layout changes of a page
+# - Find out when the content might be updated by probing
+# - Learn how to make a page viewable as close to original as possible
+# - Classify scraping level
+# - show screenshots with issues
+
+# The reasoner will ask questions:

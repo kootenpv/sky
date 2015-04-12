@@ -224,3 +224,58 @@ def buildNewSolution(tr):
 
 
 
+
+tr1 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+
+
+from collections import Counter        
+
+class SoupStats():
+    def __init__(self, soup):
+        self.soup = soup
+        self.counter = Counter()
+        for child in soup.findChildren():
+            for atts in child.attrs.items():
+                k,v = atts
+                self.counter[atts] += 1
+                self.counter[k] += 1
+                self.counter[v] += 1
+
+z = SoupStats(soup)        
+        
+
+    
+
+z.counter
+
+
+counter = Counter()
+for child in soup.findChildren():
+    for atts in child.attrs.items():
+        k,v = atts
+        counter[k] += 1
+        if isinstance(v, list):
+            for l in v:
+                counter[(k, l)] += 1
+                counter[l] += 1
+            counter[(k, " ".join(v))] += 1
+        else:    
+            counter[atts] += 1
+            counter[v] += 1
+
+import lxml.html
+
+lxml.html.tostring()
+
+html = 'html'
+tree = lxml.html.fromstring(html)
+
+tree.findall('.//*')
+
+from lxml.html import HtmlComment # or similar
+
+no_comments=[element for element in tree if not isinstance(element, HtmlComment)]
+
+
+
+
