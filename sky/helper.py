@@ -2,6 +2,16 @@
 import lxml.html
 from selenium import webdriver
 
+def slugify(value):
+    """
+    Normalizes string, converts to lowercase, removes non-alpha characters,
+    and converts spaces to hyphens.
+    """
+    import re
+    value = re.sub('[^\w\s-]', '', value).strip().lower()
+    value = re.sub('[-\s]+', '-', value)
+    return value
+
 def viewString(x, driver):
     with open('/tmp/seleniumStringPage.html', 'w') as f:
         f.write(x)
