@@ -182,9 +182,98 @@ def buildNewSolution(tr):
 
 # tr4 = Training("bouwmaterieel-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
 
-# tr5 = Training('betterdoctor-doctor-referalls', '/Users/pascal/GDrive/sky_package/sky/tests/').load()
+# tr5 = Training("marktplaats-testcase2", "/Users/pascal/GDrive/sky/sky/tests/")
+
+# tr5.addLinks(["http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-samsung/m861980349-hdc-galaxy-s5-nieuw-in-doos.html?c=a2384ef0ece270f44503df9f8598c624&previousPage=lr",
+#               "http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-samsung/m862001039-samsung-galaxy-s3-neo.html?c=a2384ef0ece270f44503df9f8598c624&previousPage=lr", "http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-toebehoren-en-onderdelen/m862001036-iphone-3-4-4s-usb-oplaad-snoer.html?c=a2384ef0ece270f44503df9f8598c624&previousPage=lr"])
+
+# tr5.viewAll()
 
 # tr6 = Training("pypi-author", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
 
 
+# links = ["http://www.forbes.com/sites/rogerkay/2014/11/10/sparkcognition-meets-ibms-watson-starts-conversation/"]
+
+
+# import justext
+
+# url = "http://www.forbes.com/sites/rogerkay/2014/11/10/sparkcognition-meets-ibms-watson-starts-conversation/"
+# html = urllib.urlopen(url).read()
+# paragraphs = justext.justext(html, justext.get_stoplist('English'))
+
+
+# title = "SparkCognition Meets IBM's Watson, Starts Conversation"
+# res = []
+# for x in paragraphs:
+#     if not x.is_boilerplate:
+#         res.append(x.text)
+
+# newres = []
+# for x in res[res.index(title)+1:]:
+#     newres.append(x)
+
+# for x in newres:
+#     print(x.encode("ascii", "ignore"))
+
+# res = findLeaf(tr3)
+
+# x = findSharedKeyValues(tr3, res)
+
+# secondLevelDown(tr3.soups[0], tr3.targets[0], x)
+        
+
+
+
+
+tr1 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+
+
+from collections import Counter        
+
+class SoupStats():
+    def __init__(self, soup):
+        self.soup = soup
+        self.counter = Counter()
+        for child in soup.findChildren():
+            for atts in child.attrs.items():
+                k,v = atts
+                self.counter[atts] += 1
+                self.counter[k] += 1
+                self.counter[v] += 1
+
+z = SoupStats(soup)        
+        
+
+
+
+counter = Counter()
+for child in soup.findChildren():
+    for atts in child.attrs.items():
+        k,v = atts
+        counter[k] += 1
+        if isinstance(v, list):
+            for l in v:
+                counter[(k, l)] += 1
+                counter[l] += 1
+            counter[(k, " ".join(v))] += 1
+        else:    
+            counter[atts] += 1
+            counter[v] += 1
+r
+import lxml.html
+
+lxml.html.tostring()
+
+html = 'html'
+tree = lxml.html.fromstring(html)
+
+tree.findall('.//*')
+
+from lxml.html import HtmlComment # or similar
+
+no_comments=[element for element in tree if not isinstance(element, HtmlComment)]
+
+
+
+tr = Training('betterdoctor-doctor-referalls', '/Users/pascal/GDrive/sky_package/sky/tests/').load()
 

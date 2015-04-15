@@ -1,7 +1,8 @@
-from bs4 import BeautifulSoup
+import lxml.html
 import webbrowser
 import os
 from selenium import webdriver
+from helper import makeTree
 
 class Training():
     def __init__(self, name, path): 
@@ -9,8 +10,14 @@ class Training():
         self.path = path
         self.htmls = []
         self.targets = []
-        self.soups = []
+        self.trees = []
         self.links = []
+
+    def __len__(self):
+        return len(self.links)
+
+    def __repr__(self):
+        return 'Training: {}, targets --> {}'.format(self.name, str(self.targets))
 
     def addLinks(self, links):
         driver = webdriver.PhantomJS()
@@ -25,7 +32,7 @@ class Training():
         for num, html in enumerate(self.htmls): 
             with open(self.path + self.name + str(num) + ".html", "w") as f: 
                 f.write(html)
-        self.soups = [BeautifulSoup(html) for html in self.htmls] 
+        self.trees = [makeTree(html, url) for html, url in zip(self.htmls, self.links)] 
         
     def view(self, num): 
         try: 
@@ -87,7 +94,7 @@ class Training():
             with open(obj.path + obj.name + str(num) + ".html") as f: 
                 obj.htmls.append(f.read())
 
-        obj.soups = [BeautifulSoup(html) for html in obj.htmls]
+        obj.trees = [makeTree(html, url) for html, url in zip(obj.htmls, obj.links)]         
                 
         return obj        
 

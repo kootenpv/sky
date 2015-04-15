@@ -1,6 +1,8 @@
 # HTML(filename='/tmp/seleniumStringPage.html') 
 import lxml.html
 from selenium import webdriver
+from bs4 import UnicodeDammit
+import tldextract
 
 def slugify(value):
     """
@@ -79,4 +81,19 @@ def doesThisElementContain(text = 'pagination', nodeStr = ''):
 # viewNode(tree3, True, 'pagination', save=True)
 
 
+def makeTree(html, url, add_base = False):
 
+    ud = UnicodeDammit(html, is_html=True)
+    tree = lxml.html.fromstring(ud.unicode_markup, base_url = extractDomain(url))
+
+    for el in tree.iter():
+
+        # remove comments
+        if isinstance(el, lxml.html.HtmlComment):
+            el.getparent().remove(el)
+            continue
+
+    if add_base: 
+        addBaseTag(tree, url)
+
+    return tree
