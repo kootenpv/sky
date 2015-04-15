@@ -59,3 +59,4 @@ z=compareRequestsAndSelenium(url)
 
 
 attrs = ' '.join(y.keys())
+
