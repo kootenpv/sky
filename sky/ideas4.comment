@@ -1,0 +1,8 @@
+Define data types such as:
+- DATE
+- sentence, any chars
+- word
+- word, any chars
+- numeric (comma, dot)
+- float
+- integer

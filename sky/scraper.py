@@ -1,9 +1,6 @@
-import sys
-sys.path.append("/Users/pascal/GDrive/sky_package/sky/")
 from utils import *
 from training import *
 from findLeaf import *
-from bs4 import BeautifulSoup
 
 def uniqifyOverTraining(list_of_lists):
     uniques = []    

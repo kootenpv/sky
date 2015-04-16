@@ -1,8 +1,7 @@
-import lxml.html
+from helper import makeTree
 import webbrowser
 import os
 from selenium import webdriver
-from helper import makeTree
 
 class Training():
     def __init__(self, name, path): 
