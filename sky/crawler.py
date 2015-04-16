@@ -53,7 +53,7 @@ class SkyScraper():
                     if self.shouldCrawl(url):
                         queue.append(url) 
         except Exception as e:
-            print e
+            print(e)
             if 'mechanize' in webCrawler.__module__: 
                 print "error", webCrawler.geturl()
             elif 'selenium' in webCrawler.__module__:

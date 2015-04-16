@@ -1,18 +1,12 @@
-# HTML(filename='/tmp/seleniumStringPage.html') 
 import lxml.html
 from selenium import webdriver
 from bs4 import UnicodeDammit
 import tldextract
+import re
+# HTML(filename='/tmp/seleniumStringPage.html') 
 
 def slugify(value):
-    """
-    Normalizes string, converts to lowercase, removes non-alpha characters,
-    and converts spaces to hyphens.
-    """
-    import re
-    value = re.sub('[^\w\s-]', '', value).strip().lower()
-    value = re.sub('[-\s]+', '-', value)
-    return value
+    return re.sub(r'[^\w\s-]', '', re.sub(r'[-\s]+', '-', value)).strip().lower() 
 
 def viewString(x, driver):
     with open('/tmp/seleniumStringPage.html', 'w') as f:

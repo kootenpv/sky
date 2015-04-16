@@ -29,5 +29,4 @@ for child in soup.findChildren():
         else:    
             counter[atts] += 1
             counter[v] += 1
-r
-import lxml.html
+
