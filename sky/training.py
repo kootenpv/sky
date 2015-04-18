@@ -31,13 +31,10 @@ class Training():
         for num, html in enumerate(self.htmls): 
             with open(self.path + self.name + str(num) + ".html", "w") as f: 
                 f.write(html)
-        self.trees = [makeTree(html, url) for html, url in zip(self.htmls, self.links)] 
+        self.trees = [makeTree(" ".join(html.split()), url) for html, url in zip(self.htmls, self.links)] 
         
     def view(self, num): 
-        try: 
-            print(num, ":", self.targets[num])
-        except:
-            pass    
+        print(num, ":", self.targets[num])
         webbrowser.open("file://" + self.path + self.name + str(num) + ".html") 
 
     def viewAll(self):
@@ -85,7 +82,7 @@ class Training():
         # load targets
         with open(obj.path + obj.name + "sky.training.targets") as f: 
             targets = f.read()
-            obj.targets = targets.split("sky\nsky")
+            obj.targets = [" ".join(x.split()) for x in targets.split("sky\nsky")]
         
         # load htmls
         obj.htmls = []
@@ -93,7 +90,7 @@ class Training():
             with open(obj.path + obj.name + str(num) + ".html") as f: 
                 obj.htmls.append(f.read())
 
-        obj.trees = [makeTree(html, url) for html, url in zip(obj.htmls, obj.links)]         
+        obj.trees = [makeTree(" ".join(html.split()), url) for html, url in zip(obj.htmls, obj.links)]         
                 
         return obj        
 
