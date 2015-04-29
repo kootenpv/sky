@@ -127,9 +127,6 @@ def getMatchedTextContentNodes(tree, outcome, container):
 
 for i in range(1000):
     res = getMatchedNodes(tr3)
-
-for i in range(1000):
-    res = getMatchedNodes(tr3)
     for tree, outcome, r in zip(tr3.trees, tr3.targets, res): 
         r['content'] = getMatchedTextContentNodes(tree, outcome, []) 
         
