@@ -37,14 +37,19 @@ old_content = old_tree.text_content()
 
 while True:
     html = requests.get(url).text
-    if html != old_html:
-        tree = lxml.html.fromstring(cleaner.clean_html(html))
-        content = tree.text_content()
-        if content != old_content: 
-            proportion_chars = sum([x == y for x,y in zip(html, old_html)]) / min(len(html), len(old_html))
-            print('Proportion chars {}', proportion_chars) 
-            viewDiffHtml(old_tree, tree)
-            old_html = html 
-            old_html = tree
-            old_content = content 
+    try:
+        if html != old_html:
+            tree = lxml.html.fromstring(cleaner.clean_html(html))
+            content = tree.text_content()
+            if content != old_content: 
+                proportion_chars = sum([x == y for x,y in zip(html, old_html)]) / min(len(html), len(old_html))
+                print('Proportion chars {}', proportion_chars) 
+                viewDiffHtml(old_tree, tree)
+                old_html = html 
+                old_html = tree
+                old_content = content 
+    except requests.exceptions.ConnectionError: 
+        pass
     time.sleep(5)
+
+    
