@@ -49,6 +49,7 @@ while True:
                 old_html = tree
                 old_content = content 
     except requests.exceptions.ConnectionError: 
+        print('ConnectionError')
         pass
     time.sleep(5)
 
