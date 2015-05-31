@@ -3,7 +3,16 @@ from selenium import webdriver
 from bs4 import UnicodeDammit
 import tldextract
 import re
+import requests
 # HTML(filename='/tmp/seleniumStringPage.html') 
+
+from lxml.html.clean import Cleaner
+    
+cleaner = Cleaner()
+cleaner.javascript = True 
+cleaner.style = True   
+#cleaner.kill_tags = ['a', 'h1']
+#cleaner.remove_tags = ['p']
 
 def slugify(value):
     return re.sub(r'[^\w\s-]', '', re.sub(r'[-\s]+', '-', value)).strip().lower() 
@@ -78,6 +87,7 @@ def doesThisElementContain(text = 'pagination', nodeStr = ''):
 def makeTree(html, url, add_base = False):
 
     ud = UnicodeDammit(html, is_html=True)
+    #tree = lxml.html.fromstring(cleaner.clean_html(ud.unicode_markup), base_url = extractDomain(url))
     tree = lxml.html.fromstring(ud.unicode_markup, base_url = extractDomain(url))
 
     for el in tree.iter():
@@ -87,7 +97,17 @@ def makeTree(html, url, add_base = False):
             el.getparent().remove(el)
             continue
 
+        if el.tag == 'script':
+            el.getparent().remove(el)
+            continue
+        
     if add_base: 
         addBaseTag(tree, url)
 
-    return tree
+    return tree.getroottree()
+
+def getQuickTree(url):
+    r = requests.get(url)
+    return makeTree(r.content.decode('utf8'), url)
+
+    
