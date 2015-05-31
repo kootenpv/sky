@@ -4,3 +4,10 @@
 *.log
 *Data.fs*
 *flymake*
+build/
+__pycache__/
+/bin/
+/include/
+/lib/
+/pip-selfcheck.json
+comments/
