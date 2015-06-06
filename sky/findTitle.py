@@ -1,3 +1,5 @@
+import lxml.html
+
 try:
     from .training import Training
     from .helper import *
@@ -59,13 +61,19 @@ def getTitle2(tree, returnBest = True):
             return title, score        
 
 def getTitle(tree, returnBest = True):
-    xpaths = ['//title', '//*[contains(@property, "title")]', '//*[contains(@name, "title")]', '//*[contains(@id, "title")]', '//*[@*="title"]', '//*[contains(@class, "title")]', '//*[@title]', '//h1', '//h2', '//h3', '//h4']
+    xpaths = ['//title', '//*[contains(@name, "title")]', '//h1[contains(@id, "title")]', '//h1[contains(@class, "title")]', '//h1[@*="title"]', '//*[contains(@id, "title")]', '//*[@*="title"]', '//meta[contains(@property, "title")]', '//meta[contains(@property, "title")]/@content', '//*[contains(@class, "title")]', '//*[@title]', '//h1', '//h2', '//h3', '//h4']
+    # xpaths = ['//title', '//meta[contains(@property, "title")]', '//*[contains(@name, "title")]', '//h1[contains(@id, "title")]', '//h1[contains(@class, "title")]', '//h1[@*="title"]', '//*[contains(@id, "title")]', '//*[@*="title"]', '//*[contains(@class, "title")]', '//*[@title]', '//h1', '//h2', '//h3', '//h4']
     titles = []
     for xp in xpaths:
         xres = tree.xpath(xp)
-        if xres and len(xres[0].text_content().strip()) > 2:
-            title = {}
-            title['text'] = xres[0].text_content().strip()
+        title = {}
+        if xres: 
+            if isinstance(xres[0], lxml.html.HtmlElement):
+                title['text'] = xres[0].text_content().strip()
+            else:
+                title['text'] = xres[0]   
+            if len(title['text']) < 3:
+                continue
             title['wordSet'] = set(x for x in title['text'].split() if len(x) > 1)
             title['wordSetLength'] = len(title['wordSet'])
             title['xpath'] = xp
