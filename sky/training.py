@@ -1,4 +1,5 @@
 import webbrowser
+import requests
 from selenium import webdriver
 import os
 
@@ -22,33 +23,37 @@ class Training():
     def __repr__(self):
         return 'Training: {}, targets --> {}'.format(self.name, str(self.targets))
 
-    def addLinks(self, links):
-        driver = webdriver.Firefox()
+    def addLinks(self, links, sel = True, startFrom = 0):
         self.links = links 
-        for url in links:
-            driver.get(url)
-            self.htmls.append(driver.page_source)
-        driver.close()    
+        if sel:
+            driver = webdriver.Firefox() 
+            for url in links:
+                driver.get(url)
+                self.htmls.append(driver.page_source)
+            driver.close()    
         # save htmls
+        else:
+            for url in links:
+                r = requests.get(url)
+                self.htmls.append(r.text)
         if not os.path.exists(self.path + self.name):
             os.makedirs(self.path + self.name)
         for num, html in enumerate(self.htmls): 
-            with open(self.path + self.name + str(num) + ".html", "w") as f: 
+            with open(self.path + self.name + str(num + startFrom) + ".html", "w") as f: 
                 f.write(html)
         self.trees = [makeTree(" ".join(html.split()), url) for html, url in zip(self.htmls, self.links)] 
         
     def view(self, num): 
-        print(num, ":", self.targets[num])
         webbrowser.open("file://" + self.path + self.name + str(num) + ".html") 
 
     def viewAll(self):
         for num, _ in enumerate(self.links):
             self.view(num)
         
-    def classify(self):
+    def classify(self, startFrom = 0):
         self.targets = []
         for num, link in enumerate(self.links):
-            self.view(num)
+            self.view(num + startFrom)
             target_value = input("Now visiting:\n" + link + "\nInsert the target value: ").strip()
             self.targets.append(target_value)    
 
@@ -124,3 +129,6 @@ class Training():
 # tr.addLinks(['https://betterdoctor.com/igor-grosman', 'https://betterdoctor.com/gary-gwertzman'])
 # tr.classify()
 # tr.save()
+
+
+
