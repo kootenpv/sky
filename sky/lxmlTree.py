@@ -24,12 +24,12 @@ def lxml_get_name(x, namedAttrs):
                 my_string += ', ' + key[0] + '=' + value
     return(my_string)        
 
-def lxml_traverser(parent, graph, pruning, namedAttrs):
+def lxml_traverser(parent, graph, simplify, namedAttrs):
     graph = []        
     for x in parent:
         my_string = lxml_get_name(x, namedAttrs)
-        graph.append(Node(my_string, lxml_traverser(x, graph, pruning, namedAttrs)))            
-    if not pruning:
+        graph.append(Node(my_string, lxml_traverser(x, graph, simplify, namedAttrs)))            
+    if not simplify:
         return(graph)
     pruned_graph = []
     watcher = {}
@@ -47,7 +47,7 @@ def lxml_traverser(parent, graph, pruning, namedAttrs):
             pruned_graph.append(Node(x.name + " (" + str(watcher[blood]) + ")", x.children))
     return(pruned_graph)
 
-def lxmlTree(lxmls, returning = False, printing = True, pruning = True, namedAttrs = None):
+def lxmlTree(lxmls, returning = False, printing = True, simplify = True, namedAttrs = None):
     if namedAttrs is None:
         namedAttrs = ['class', 'id']
     outps = []
@@ -55,7 +55,7 @@ def lxmlTree(lxmls, returning = False, printing = True, pruning = True, namedAtt
     if not isinstance(lxmls, list):
         lxmls = [lxmls]
     for num, lxml in enumerate(lxmls):
-        z = lxml_traverser(lxml, [], pruning, namedAttrs)
+        z = lxml_traverser(lxml, [], simplify, namedAttrs)
         #outp = pinpoint(lxmls, num)
         outp = asciitree.draw_tree(Node(lxml_get_name(lxml, namedAttrs), z))
         max_lens = max(max_lens, max([len(x) for x in outp.split('\n')]))
@@ -69,34 +69,12 @@ def lxmlTree(lxmls, returning = False, printing = True, pruning = True, namedAtt
     for i in range(max_lines):
         tmp = ""
         for x in outps:
-            # try: 
-            tmp += '{:<{}}'.format(x[i], max_lens + 10) 
-            # except:
-                # tmp += '{:<{}}'.format('', max_lens + 10)
+            try: 
+                tmp += '{:<{}}'.format(x[i], max_lens + 10) 
+            except IndexError: 
+                tmp += '{:<{}}'.format('', max_lens + 10)
         newoutps.append(tmp)
     if printing:
         print('\n', "\n".join(newoutps))
     if returning:
         return("\n".join(newoutps))
-
-
-
-
-import lxml.html
-
-def add_depth(node, depth = 0, maxd = None):
-    node.depth = depth
-    if maxd is None:
-        maxd = []
-    else:
-        maxd.append((node, node.depth)) 
-    for n in node.iterchildren(): 
-        add_depth(n , depth + 1, maxd)
-    return maxd    
-
-tree = lxml.html.fromstring('<html><body><div><a></a><h1></h1></div></body></html>')
-            
-z = add_depth(tree)
-
-for x in tree.iter():
-    print('wtf', x.depth)
