@@ -118,16 +118,60 @@ def getTKV(tree):
     for c in tree.iter():
         if c.attrib: 
             for k,v in c.attrib.items():    
-                tkv.add((c.tag, k, v))
+                tkv.add((c.tag, k, v, c))
     return tkv        
 
 
     
-t1= getQuickTree('http://www.nieuwsdumper.nl/nieuws/1454/eerste-volvo-fmx-410-8x4-tridem-betonmixer-voor-bck.html'    
+t1= getQuickTree('http://www.nieuwsdumper.nl/nieuws/1454/eerste-volvo-fmx-410-8x4-tridem-betonmixer-voor-bck.html')
 t2 = getQuickTree('http://www.nieuwsdumper.nl/nieuws/1656/terex-en-ihi-voor-f-v-s-loonwerk-incl-video-.html')    
 
 
 tkv1 = getTKV(t1)
 tkv2 = getTKV(t2)
 
+children = {}
+parents = {}
 
+import re
+
+def prune_first(t1, t2):
+    tkvt1 = {}
+    for c in t1.iter():
+        if c.attrib: 
+            txt = normalize(c.text_content())
+            for k,v in c.attrib.items(): 
+                tkvt1[(c.tag, k, v, txt)] = [c.getparent(), c]
+
+    tkvt2 = {}
+    for c in t2.iter():
+        if c.attrib: 
+            txt = normalize(c.text_content())
+            for k,v in c.attrib.items(): 
+                tkvt2[(c.tag, k, v, txt)] = [c.getparent(), c]
+
+
+    for c in t2.iter():
+        if c.attrib: 
+            txt = normalize(c.text_content())
+            for k,v in c.attrib.items(): 
+                if (c.tag, k, v, txt) in tkvt1: 
+                    try:
+                        tkvt1[(c.tag, k, v, txt)][0].remove(tkvt1[(c.tag, k, v, txt)][1])
+                    except:
+                        print((c.tag, k, v, txt))
+
+    return t1
+                        
+viewString(lxml.html.tostring(tt).decode('utf8'), webdriver.Firefox())
+
+                
+
+
+a = """
+
+asdfasdf
+
+asdfasdf
+
+"""
