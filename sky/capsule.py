@@ -1,8 +1,14 @@
 import requests
-from helper import *
 import langdetect
 
-from get_date import get_publish_from_meta
+try:
+    from .get_date import get_publish_from_meta
+    from .helper import * 
+    from .findTitle import getTitle 
+except SystemError:
+    from get_date import get_publish_from_meta
+    from helper import *
+    from findTitle import getTitle 
 
 class Capsule():
     def __init__(self, url):
@@ -12,14 +18,23 @@ class Capsule():
         self.tree = makeTree(self.html, url) 
         self.lang = None
         self.publish_date = None
+        self.title = None
+        self.body = None
+
+        # if development
+        self.magic()
         
     def magic(self):
         # Language
         self.get_language() 
 
+        # Body
+
+        # Title
+        self.title = getTitle(self.tree)
         # Date
         self.publish_date = get_publish_from_meta(self.tree) or None
-        
+
     def get_language(self):
         if 'content-language' in self.response.headers:
             self.lang = self.response.headers['content-language']
@@ -28,8 +43,8 @@ class Capsule():
             self.lang = self.tree.attrib['lang']
 
         if self.lang is None:
-            self.lang = langdetect.detect(self.html)
-            
-            
+            self.lang = langdetect.detect(self.html)                 
 
-r = Capsule('https://pypi.python.org/pypi/capsule')
+c = Capsule('http://mexico.cnn.com/mundo/2014/05/05/por-que-en-eu-celebran-mas-el-5-de-mayo-que-en-mexico-aqui-10-datos')
+
+
