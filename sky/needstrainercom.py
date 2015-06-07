@@ -59,3 +59,75 @@ for i,(x,y,l) in enumerate(zip(tr.trees, tr.targets, tr.links)):
     print(total1)    
 
         
+def add_depth(node, depth = 1):
+    global maxd
+    for n in node.iterchildren(): 
+        if n.text:
+            if len(n.text) > 200:
+                print(n.text)
+        else:
+            print(0)    
+        if depth > maxd[1]:
+            maxd = [n, depth]
+        add_depth(n, depth + 1)
+
+maxd = [None, 0]
+add_depth(tr.trees[0].xpath('/html')[0], 1)
+
+d = {}
+for node in root:
+    key = node.tag
+    if node.getchildren():
+        for child in node:
+            key += '_' + child.tag
+            d.update({key: child.text})
+    else:
+        d.update{key: node.text}
+
+
+for tree in tr.trees:
+    maxl = [None, None, 0]
+    for x in tree.iter():
+        tc = x.text if x.text else ''
+        tl = x.tail if x.tail else '' 
+        if '{' in tc+tl:
+            continue
+        l = len(tc+tl)
+        if l > maxl[2]:
+            maxl = [x, tc+tl, l]
+    print(maxl[1])            
+
+for tree in tr.trees:    
+    d = {}
+    for node in tree.xpath('//body')[0]:
+        if node.getchildren():
+            tcp = node.text_content() 
+            if tcp:
+                ltcp = len(tcp)
+                for child in node: 
+                    tcc = child.text_content()
+                    if tcc: 
+                        d[node] = max(d[node], ltcp / len(tcc)) if (node in d) else ltcp / len(tcc)
+    if d:                    
+        big_change = max(d, key = d.get) 
+        print(big_change.text_content())
+
+
+def getTKV(tree):
+    tkv = set()
+    for c in tree.iter():
+        if c.attrib: 
+            for k,v in c.attrib.items():    
+                tkv.add((c.tag, k, v))
+    return tkv        
+
+
+    
+t1= getQuickTree('http://www.nieuwsdumper.nl/nieuws/1454/eerste-volvo-fmx-410-8x4-tridem-betonmixer-voor-bck.html'    
+t2 = getQuickTree('http://www.nieuwsdumper.nl/nieuws/1656/terex-en-ihi-voor-f-v-s-loonwerk-incl-video-.html')    
+
+
+tkv1 = getTKV(t1)
+tkv2 = getTKV(t2)
+
+
