@@ -104,10 +104,17 @@ def makeTree(html, url, add_base = False):
     if add_base: 
         addBaseTag(tree, url)
 
-    return tree.getroottree()
+    return tree
 
 def getQuickTree(url):
     r = requests.get(url)
-    return makeTree(r.content.decode('utf8'), url)
+    return makeTree(r.text, url)
+
+    
+def normalize(x):
+    x = re.sub('[ \t]*\n+[ \t]*', '\n', x)
+    x = re.sub('[ \t]+', ' ', x)
+    return x.strip()
+
 
     
