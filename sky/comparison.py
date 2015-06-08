@@ -5,10 +5,11 @@ import lxml.html.diff
 import requests
 from selenium.webdriver.common.keys import Keys
 
-def viewString(x, driver):
-    with open('/tmp/seleniumStringPage.html', 'w') as f:
-        f.write(x)
-    driver.get('file:///tmp/seleniumStringPage.html')
+try:
+    from .helper import viewString
+except SystemError:
+    from helper import viewString
+        
 
 def compareRequestsAndSelenium(url): 
     html1 = str(requests.get(url).text)

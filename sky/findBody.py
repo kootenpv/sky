@@ -26,7 +26,7 @@ def getBody(tree, returnBest = True):
                     #body['wordSetLength'] = len(body['wordSet'])
                     body['xpath'] = xp
                     bodies.append(body)
-
+    return bodies[0]['text']
     if not returnBest:
         return bodies
 
@@ -39,9 +39,9 @@ def getBody(tree, returnBest = True):
     return body['text']
 
 
-tr = Training("nieuwsdumper-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
-tr2 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
-tr3 = Training("betterdoctor-doctor-referalls", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
+# tr = Training("nieuwsdumper-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
+# tr2 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
+# tr3 = Training("betterdoctor-doctor-referalls", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
 
     
 # train = [tr, tr2, tr3]            
