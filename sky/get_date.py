@@ -1,12 +1,10 @@
 import re
 import json
 import dateutil.parser
+import datetime
 
 with open('date_translation_table.json') as f:
     date_translation_table = json.load(f)
-
-import datetime
-
 
 class NoDefaultDate(object): 
     """ Credits http://stackoverflow.com/a/18242643/1575066 """
@@ -26,8 +24,8 @@ def patched_dateutil_parse(v):
 def date_translation(txt, lang): 
     txt = txt.lower()
     if lang in date_translation_table:
-        for month in date_translation[lang]:
-            txt = txt.replace(month, date_translation[lang][month])
+        for month in date_translation_table[lang]:
+            txt = txt.replace(month, date_translation_table[lang][month])
     return txt        
 
 def get_publish_from_meta(tree):

@@ -17,7 +17,9 @@ cleaner.style = True
 def slugify(value):
     return re.sub(r'[^\w\s-]', '', re.sub(r'[-\s]+', '-', value)).strip().lower() 
 
-def viewString(x, driver):
+def viewString(x, driver = None):
+    if driver is None:
+        driver = webdriver.Firefox()
     with open('/tmp/seleniumStringPage.html', 'w') as f:
         f.write(x)
     driver.get('file:///tmp/seleniumStringPage.html')
