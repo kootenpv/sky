@@ -17,13 +17,50 @@ cleaner.style = True
 def slugify(value):
     return re.sub(r'[^\w\s-]', '', re.sub(r'[-\s]+', '-', value)).strip().lower() 
 
-def viewString(x, driver = None):
-    if driver is None:
-        driver = webdriver.Firefox()
-    with open('/tmp/seleniumStringPage.html', 'w') as f:
+def view_html(x):
+    import time
+    import webbrowser
+    import tempfile
+    with tempfile.NamedTemporaryFile('r+', suffix = '.html') as f:
         f.write(x)
-    driver.get('file:///tmp/seleniumStringPage.html')
+        f.flush()
+        webbrowser.open('file://' + f.name) 
+        time.sleep(1) 
 
+def view_node(node, attach_head = False, questionContains = None): 
+    newstr = makeParentLine(node, attach_head, questionContains) 
+    view_tree(newstr) 
+    
+def view_tree(node): 
+    view_html(lxml.html.tostring(node).decode('utf8')) 
+
+def view_diff(obj1, obj2, url = '', diffMethod = lxml.html.diff.htmldiff):
+    if isinstance(obj1, str):
+        tree1 = lxml.html.fromstring(obj1)
+        tree2 = lxml.html.fromstring(obj2)
+        html1 = obj1
+        html2 = obj2
+    else:
+        html1 = lxml.html.tostring(obj1).decode('utf8')
+        html2 = lxml.html.tostring(obj2).decode('utf8')
+        tree1 = obj1
+        tree2 = obj2
+    diffHtml = diffMethod(tree1, tree2)
+    diffTree = lxml.html.fromstring(diffHtml)
+    insCounts = diffTree.xpath('count(//ins)')
+    delCounts = diffTree.xpath('count(//del)')
+    pureDiff = '' 
+    for y in [z for z in diffTree.iter() if z.tag in ['ins', 'del']]:
+        if y.text is not None:
+            color = 'lightgreen' if 'ins' in y.tag else 'red'
+            pureDiff += '<div style="background-color:{};">{}</div>'.format(color, y.text) 
+    print('From t1 to t2, {} insertions and {} deleted'.format(insCounts, delCounts)) 
+    diff = '<head><title>diff</title><base href=' + url + ' target="_blank"><style>ins{ background-color:lightgreen; } del{background-color:red;}</style></head>' +  diffHtml
+    view_html(diff) 
+    view_html(html1) 
+    view_html(html2) 
+    view_html('<html><body>{}</body></html>'.format(str(pureDiff)))     
+        
 def makeParentLine(node, attach_head = False, questionContains = None):
     # Add how much text context is given. e.g. 2 would mean 2 parent's text nodes are also displayed
     if questionContains is not None:
@@ -39,18 +76,6 @@ def makeParentLine(node, attach_head = False, questionContains = None):
         newstr = '<{} {}>{}</{}>'.format(tag, attrs, newstr, tag)
         parent = parent.getparent()
     return newstr    
-
-def viewNode(node, attach_head = False, questionContains = None, save = False):
-    try:
-        driver = webdriver.Firefox()
-        newstr = makeParentLine(node, attach_head, questionContains) 
-        viewString(newstr, driver)    
-        if save:
-            driver.save_screenshot('pagination.png')    
-        else:
-            input('Waiting for input to continue... hit RETURN to quit.')    
-    finally:
-        driver.close()
 
 def extractDomain(url): 
     tld = ".".join([x for x in tldextract.extract(url) if x ])
@@ -113,10 +138,12 @@ def getQuickTree(url):
     return makeTree(r.text, url)
 
     
-def normalize(x):
-    x = re.sub('[ \t]*\n+[ \t]*', '\n', x)
-    x = re.sub('[ \t]+', ' ', x)
-    return x.strip()
+def normalize(s): 
+    return re.sub(r'\s+', lambda x: '\n' if '\n' in x.group(0) else ' ', s).strip()
 
-
+def get_text_and_tail(node):
+    text = node.text if node.text else ''
+    tail = node.tail if node.tail else ''
+    return text + ' ' + tail
+    
     

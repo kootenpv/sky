@@ -8,16 +8,13 @@ from lxml.html.clean import Cleaner
 
 url = sys.argv[1]
 
+from helper import *
+
 cleaner = Cleaner()
 cleaner.javascript = True 
 cleaner.style = True   
 #cleaner.kill_tags = ['a', 'h1']
 #cleaner.remove_tags = ['p']
-
-def viewString(x, driver):
-    with open('/tmp/seleniumStringPage.html', 'w') as f:
-        f.write(x)
-    driver.get('file:///tmp/seleniumStringPage.html')
 
 def viewDiffHtml(tree1, tree2, diffMethod = htmldiff):
     diffHtml = diffMethod(tree1, tree2)

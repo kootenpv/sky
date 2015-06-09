@@ -60,7 +60,7 @@ def lxmlTree(lxmls, returning = False, printing = True, simplify = True, namedAt
         outp = asciitree.draw_tree(Node(lxml_get_name(lxml, namedAttrs), z))
         max_lens = max(max_lens, max([len(x) for x in outp.split('\n')]))
         num += 1
-        if num * (max_lens + 10) > 230:
+        if num * (max_lens + 10) > 270:
             print('can only fit', num-1, 'out of', len(lxmls))
             break 
         outps.append(outp.split('\n'))

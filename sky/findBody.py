@@ -25,10 +25,10 @@ def getBody(tree, returnBest = True):
                     #body['wordSet'] = set(x for x in body['text'].split() if len(x) > 1)
                     #body['wordSetLength'] = len(body['wordSet'])
                     body['xpath'] = xp
-                    bodies.append(body)
-    return bodies[0]['text']
+                    bodies.append(body) 
     if not returnBest:
         return bodies
+    return bodies[0]['text']
 
     t = bodies[0]
     for body in bodies[1:]:
