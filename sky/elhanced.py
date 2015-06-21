@@ -7,14 +7,15 @@ from helper import *
 
 class ElhancedTree(): 
     def __init__(self, tree): 
-        super().__init__()
         self.leafs = set()
         self.children = set()
         self.tree = tree
-        self._reference = list(self.tree.iter())
-        self.addDepth(self._reference[0])                        
+        self._reference = list(self.tree.iter()) 
+        self.addDepth(self._reference[0])        
         
     def addDepth(self, node, depth = 0):
+        tc = node.text_content()
+        node.lenchars = len(tc) if tc else 0
         node.depth = depth
         node.isLeaf = False
         for n in node.iterchildren():
@@ -22,6 +23,8 @@ class ElhancedTree():
                 self.addDepth(n, depth + 1)
             else:
                 self.leafs.add(n)    
+                tc = n.text_content()
+                n.lenchars = len(tc) if tc else 0
                 n.isLeaf = True
 
     def view(self, *args):
@@ -50,34 +53,6 @@ e2 = ElhancedTree(getQuickTree('http://www.bbc.com/news/business-28978881'))
 
 lxmlTree([e1.tree, prune_first(e1.tree, e2.tree), e2.tree])
 
-def createNodeDict(t1, t2):
-    tkvt1 = {}
-    for c in t1.iter():
-        if c.attrib: 
-            txt = normalize(c.text_content())
-            for k,v in c.attrib.items(): 
-                tkvt1[(c.tag, k, v, txt)] = c
-    return tkvt1            
-
-def prune_first(t1, t2, makeCopy = True):
-    if makeCopy:
-        from copy import deepcopy
-        t1 = deepcopy(t1) 
-    tkvt1 = createNodeDict(t1, t2)
-    tkvt2 = createNodeDict(t2, t1)
-    for c in t2.iter():
-        if c.attrib: 
-            txt = normalize(c.text_content())
-            for k,v in c.attrib.items(): 
-                if (c.tag, k, v, txt) in tkvt1: 
-                    p = tkvt1[(c.tag, k, v, txt)].getparent()
-                    if p is not None:
-                        p.remove(tkvt1[(c.tag, k, v, txt)])                            
-    return t1
-
-def get_first_body(t1, t2):
-    return normalize('\n'.join([x for x in prune_first(t1, t2).itertext() if x.strip()]))
-
 for i in range(1000):
     #body = prune_first(e1.tree, e2.tree)
     body = get_first_body(e2.tree, e1.tree)
@@ -102,3 +77,6 @@ view_diff(e2.tree, prune_first(e2.tree, e1.tree), url = 'http://www.bbc.com/')
 
     
 view_node(prune_first(e2.tree, e1.tree), url = 'http://www.bbc.com/')
+
+
+

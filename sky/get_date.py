@@ -3,7 +3,9 @@ import json
 import dateutil.parser
 import datetime
 
-with open('date_translation_table.json') as f:
+import os
+
+with open(os.path.join(os.path.dirname(__file__), 'date_translation_table.json')) as f:
     date_translation_table = json.load(f)
 
 class NoDefaultDate(object): 

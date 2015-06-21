@@ -1,3 +1,4 @@
+import lxml.html.diff
 import lxml.html
 from selenium import webdriver
 from bs4 import UnicodeDammit
@@ -147,3 +148,29 @@ def get_text_and_tail(node):
     return text + ' ' + tail
     
     
+
+def fscore(x,y):
+    try:
+        z = sum([w in y for w in x]) / len(x)
+        z2 = sum([w in x for w in y]) / len(y)
+        return (2 * z * z2) / (z + z2)
+    except:
+        return 0
+
+def get_pagination(tree):
+    links = [(x, x.attrib['href']) for x in tree.xpath('//a') if 'href' in x.attrib]
+    res = [re.findall('[0-9]+', x[1]) for x in links]
+    for num, (link, x, y, z) in enumerate(zip(links[:-2], res[:-2], res[1:-1], res[2:])):
+        if x and y and z:
+            if len(x) == len(y) == len(z):
+                for i,j,k in zip(x,y,z):
+                    if int(i) + 1 == int(j) and int(i) + 2 == int(k):
+                        return (link[0], find_common_ancestor(links[num][0], links[num+1][0]))
+
+def find_common_ancestor(n1, n2):
+    if n1 is n2:
+        return n1.getparent()
+    n1_ancestors = set(n1.iterancestors())
+    for parent in n2.iterancestors():
+        if parent in n1_ancestors:
+            return parent

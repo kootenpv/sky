@@ -36,12 +36,10 @@ ps = ["/news", "/shop", "/social", "/read", "/music", "/travel", "/video", "/spo
 # with open('theneeds.tsv', 'w') as f:
 #     f.write('\n'.join(['{}\t{}'.format(l, t.replace('\n', ' ')) for l, t in zip(links,titles)]))
 
-with open('theneeds.tsv') as f: 
-    links = [x.split('\t')[0] for x in f.read().split('\n')]
+    
 
 # tr = Training('titles', '/Users/pascal/GDrive/virtual-python/sky/sky/theneeds-test/').load()
 # tr.addLinks(links[20:], False, len(tr.targets))
 # tr.classify()
 # tr.save()
-
 

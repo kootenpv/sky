@@ -28,7 +28,10 @@ def getBody(tree, returnBest = True):
                     bodies.append(body) 
     if not returnBest:
         return bodies
-    return bodies[0]['text']
+    try:
+        return bodies[0]['text']
+    except:
+        return ''
 
     t = bodies[0]
     for body in bodies[1:]:
@@ -55,3 +58,4 @@ def getBody(tree, returnBest = True):
 
 
             
+
