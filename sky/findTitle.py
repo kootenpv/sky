@@ -61,17 +61,21 @@ def getTitle2(tree, returnBest = True):
             return title, score        
 
 def getTitle(tree, returnBest = True):
-    xpaths = ['//title', '//*[contains(@name, "title")]', '//h1[contains(@id, "title")]', '//h1[contains(@class, "title")]', '//h1[@*="title"]', '//*[contains(@id, "title")]', '//*[@*="title"]', '//meta[contains(@property, "title")]', '//meta[contains(@property, "title")]/@content', '//*[contains(@class, "title")]', '//*[@title]', '//h1', '//h2', '//h3', '//h4', '//strong']
+    # maybe lowercase wordsets, look at cases 37,38 and 53
+    # we are now in overfitting terrain
+    # consider regex on Title and title or just double
+    # lets not ignore dash in class contains
+    xpaths = ['//title', '//*[contains(@name, "title")]', '//h1[contains(@id, "title")]', '//h1[contains(@class, "title")]', '//h1[@*="title"]', '//*[contains(@id, "title")]',  '//meta[contains(@property, "title")]', '//meta[contains(@property, "title")]/@content', '//h1', '//h2', '//*[contains(@class, "title")]', '//*[@title]', '//h3', '//h4', '//strong', '//*[contains(@*, "headline")]', '//*[contains(@*, "Headline")]']
     # xpaths = ['//title', '//meta[contains(@property, "title")]', '//*[contains(@name, "title")]', '//h1[contains(@id, "title")]', '//h1[contains(@class, "title")]', '//h1[@*="title"]', '//*[contains(@id, "title")]', '//*[@*="title"]', '//*[contains(@class, "title")]', '//*[@title]', '//h1', '//h2', '//h3', '//h4']
     titles = []
     for xp in xpaths:
-        xres = tree.xpath(xp)
+        xresults = tree.xpath(xp)
         title = {}
-        if xres: 
-            if isinstance(xres[0], lxml.html.HtmlElement):
-                title['text'] = xres[0].text_content().strip()
+        for xresult in xresults:
+            if isinstance(xresult, lxml.html.HtmlElement):
+                title['text'] = xresult.text_content().strip()
             else:
-                title['text'] = xres[0]   
+                title['text'] = xresult   
             if len(title['text']) < 3:
                 continue
             title['wordSet'] = set(x for x in title['text'].split() if len(x) > 1)
@@ -100,3 +104,6 @@ def getTitle(tree, returnBest = True):
 # for t in train:
 #     for tree in t.trees:
 #         print(getTitle(tree))
+
+
+

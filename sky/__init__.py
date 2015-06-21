@@ -1,4 +1,10 @@
 from pkg_resources import get_distribution
 
 __project__ = 'sky'
-__version__ = get_distribution(__project__).version
+try:
+    __version__ = get_distribution(__project__).version
+except:
+    __version__ = "0.0.0"
+
+from .capsule import Capsule    
+from .dbpedia import get_dbpedia_from_words
