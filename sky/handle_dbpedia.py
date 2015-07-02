@@ -48,15 +48,14 @@ from ZODB.FileStorage import FileStorage
 from ZODB.DB import DB
 
 import transaction
-#from persistent.list import PersistentList
-from persistent.mapping import PersistentMapping
+from BTrees.OOBTree import OOBTree
         
 storage = FileStorage('/Users/pascal/GDrive/appear/Data.fs')
 db = DB(storage)
 connection = db.open()
 root = connection.root()
 
-root['dbpedia'] = PersistentMapping(stripped_resources)
+root['dbpedia'] = OOBTree(stripped_resources)
 transaction.commit()
 
     

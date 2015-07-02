@@ -5,7 +5,6 @@ from bs4 import UnicodeDammit
 import tldextract
 import re
 import requests
-# HTML(filename='/tmp/seleniumStringPage.html') 
 
 from lxml.html.clean import Cleaner
     
@@ -21,12 +20,11 @@ def slugify(value):
 def view_html(x):
     import time
     import webbrowser
-    import tempfile
-    with tempfile.NamedTemporaryFile('r+', suffix = '.html') as f:
+    fname = '/tmp/' + str(hash(x)) + '.html'
+    with open(fname, 'w') as f:
         f.write(x)
-        f.flush()
-        webbrowser.open('file://' + f.name) 
-        time.sleep(1) 
+    webbrowser.open('file://' + fname) 
+    time.sleep(1) 
 
 def view_node(node, attach_head = False, questionContains = None): 
     newstr = makeParentLine(node, attach_head, questionContains) 
@@ -87,37 +85,19 @@ def extractDomain(url):
         protocol += '//'
     return protocol + tld    
 
-def addBaseTag(node, url): 
-    root = node.getroottree()
-    if not root.find('.//base'):
-        head = root.find('.//head')
-        base = lxml.html.Element('base', attrib = {'href' : extractDomain(url)})
-        head.insert(0, base)     
-
 def doesThisElementContain(text = 'pagination', nodeStr = ''):
     templ = '<div style="border:2px solid lightgreen"><div style="background-color:lightgreen">Does this element contain <b>{}</b>?</div>{}</div>'
     return templ.format(text, nodeStr)
 
-
-# url = 'https://www.kaggle.com/c/otto-group-product-classification-challenge/forums'
-# driver = webdriver.Firefox()
-# driver.get(url)
-# html = driver.page_source
-# driver.close()
-
-# tree3 = lxml.html.fromstring(html)
-# addBaseTag(tree3, url)
-# lxml.html.tostring(head)
-
-# viewNode(tree3, True, 'pagination', save=True)
-
-
-def makeTree(html, url, add_base = False):
+def makeTree(html, domain = None):
 
     ud = UnicodeDammit(html, is_html=True)
     #tree = lxml.html.fromstring(cleaner.clean_html(ud.unicode_markup), base_url = extractDomain(url))
-    tree = lxml.html.fromstring(ud.unicode_markup, base_url = extractDomain(url))
+    tree = lxml.html.fromstring(ud.unicode_markup)
 
+    if domain is not None:
+        tree.make_links_absolute(domain)
+        
     for el in tree.iter():
 
         # remove comments
@@ -129,15 +109,18 @@ def makeTree(html, url, add_base = False):
             el.getparent().remove(el)
             continue
         
-    if add_base: 
-        addBaseTag(tree, url)
-
     return tree
 
-def getQuickTree(url):
+def getQuickTree(url, domain = None):
     r = requests.get(url)
-    return makeTree(r.text, url)
+    if domain is None:
+        domain = extractDomain(url)
+    return makeTree(r.text, domain)
 
+def getLocalTree(url):
+    with open(url) as f:
+        html = f.read()
+    return makeTree(html, '')
     
 def normalize(s): 
     return re.sub(r'\s+', lambda x: '\n' if '\n' in x.group(0) else ' ', s).strip()
@@ -146,9 +129,7 @@ def get_text_and_tail(node):
     text = node.text if node.text else ''
     tail = node.tail if node.tail else ''
     return text + ' ' + tail
-    
-    
-
+        
 def fscore(x,y):
     try:
         z = sum([w in y for w in x]) / len(x)
@@ -174,3 +155,26 @@ def find_common_ancestor(n1, n2):
     for parent in n2.iterancestors():
         if parent in n1_ancestors:
             return parent
+
+def urlmatcher(url1, url2):
+    # can be upgraded to match last part
+    tokens1 = url1.split('/')
+    tokens2 = url2.split('/')
+    l1 = len(tokens1)
+    l2 = len(tokens2)
+    maxl = max(l1, l2) 
+    return l1 == l2, sum([t1 == t2 for t1, t2 in zip(tokens1, tokens2)]) / maxl
+
+def get_sorted_similar_urls(tree, url):
+    return sorted(tree.xpath('//a/@href'), key = lambda x: (url != x, urlmatcher(url, x)), reverse = True)
+
+def get_images(tree):
+    wrong_imgs = ['icon', 'logo', 'advert', 'toolbar', 'footer', 'layout', 'banner'] 
+    img_links = list(set([x for x in tree.xpath('//meta[contains(@property, "image")]/@content') 
+                          if not any([w in x for w in wrong_imgs])])) 
+    img_links += list(set([x for x in tree.xpath('//img/@src') if not any([w in x for w in wrong_imgs])])) 
+    img_links = [x for x in img_links if x.startswith('http')]
+    return img_links
+    
+
+    
