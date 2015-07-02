@@ -45,11 +45,11 @@ class ElhancedTree():
 
 
         
-e1 = ElhancedTree(getQuickTree('http://www.nieuwsdumper.nl/nieuws/1454/eerste-volvo-fmx-410-8x4-tridem-betonmixer-voor-bck.html'))
-e2 = ElhancedTree(getQuickTree('http://www.nieuwsdumper.nl/nieuws/1666/ihi-38n-voor-van-zuijlen.html'))
+# e1 = ElhancedTree(getQuickTree('http://www.nieuwsdumper.nl/nieuws/1454/eerste-volvo-fmx-410-8x4-tridem-betonmixer-voor-bck.html'))
+# e2 = ElhancedTree(getQuickTree('http://www.nieuwsdumper.nl/nieuws/1666/ihi-38n-voor-van-zuijlen.html'))
 
-e1 = ElhancedTree(getQuickTree('http://www.bbc.com/news/world-africa-33049312'))
-e2 = ElhancedTree(getQuickTree('http://www.bbc.com/news/business-28978881'))
+# e1 = ElhancedTree(getQuickTree('http://www.bbc.com/news/world-africa-33049312'))
+# e2 = ElhancedTree(getQuickTree('http://www.bbc.com/news/business-28978881'))
 
 lxmlTree([e1.tree, prune_first(e1.tree, e2.tree), e2.tree])
 
