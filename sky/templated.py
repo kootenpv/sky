@@ -1,53 +1,49 @@
 try: 
-    from .helper import * 
-    from .findTitle import getTitle
+    from .helper import normalize
+    from .helper import get_text_and_tail
 except SystemError: 
-    from helper import *
-    from findTitle import getTitle
+    from helper import normalize
+    from helper import get_text_and_tail
 
 class DomainNodesDict(dict):
-    def __init__(self, domain, min_templates = 2, max_templates = 24):
+    def __init__(self, domain, min_templates = 2, max_templates = 24, template_proportion = 0.7):
         super(DomainNodesDict, self).__init__()
         self.num_urls = 0 
         self.domain = domain
         self.min_templates = min_templates
         self.max_templates = max_templates
+        self.template_proportion = template_proportion
         self.untemplated = []
 
     def get_fingerprints(self, node):
         res = []
-        text = get_text_and_tail(node).strip() 
+        text = normalize(get_text_and_tail(node)).strip() 
         if text: 
             res = [(node.tag, a, node.attrib[a], text) for a in node.attrib] 
+            if node.tag == 'a':
+                res += [(node.tag, '', '', text)]
             if not res:
                 res = [(node.tag, '', '', text)]
         return res
-        
+
+    def add_fp(self, fp, seen):
+        if fp not in seen:    
+            if fp not in self:
+                self[fp] = 0 
+            self[fp] += 1
+            seen.add(fp)
+            
     def add_template_elements(self, tree):
         if self.num_urls < self.max_templates:
             seen = set()
             for node in tree.iter():
                 if node.tag == 'meta' and 'property' in node.attrib and 'image' in node.attrib['property'] and 'content' in node.attrib:
-                    fp = (node.attrib['property'], node.attrib['content'])
-                    if fp not in self:
-                        self[fp] = 0
-                    if fp not in seen:    
-                        self[fp] += 1
-                        seen.add(fp)
-                elif node.tag == 'img' and 'src' in node.attrib:
-                    fp = node.attrib['src']
-                    if fp not in self:
-                        self[fp] = 0
-                    if fp not in seen:    
-                        self[fp] += 1
-                        seen.add(fp) 
+                    self.add_fp((node.attrib['property'], node.attrib['content']), seen) 
+                elif node.tag in ['img', 'iframe'] and 'src' in node.attrib:
+                    self.add_fp((node.tag, node.attrib['src']), seen)
                 else:                        
                     for fp in self.get_fingerprints(node):
-                        if fp not in self:
-                            self[fp] = 0
-                        if fp not in seen:    
-                            self[fp] += 1
-                            seen.add(fp)
+                        self.add_fp(fp, seen)
             self.num_urls += 1
 
     def remove_template(self, tree):
@@ -55,64 +51,18 @@ class DomainNodesDict(dict):
             return False
         for node in tree.iter():
             if node.tag == 'meta': 
-                node.set('content', '')
-                print('removed meta')
-            elif node.tag == 'img':
-                node.set('src', '')
-                print('removed img')
+                if 'property' in node.attrib and 'content' in node.attrib: 
+                    fp = (node.attrib['property'], node.attrib['content'])
+                    if fp in self and self[fp] / self.num_urls > self.template_proportion: 
+                        node.set('content', '') 
+            elif node.tag in ['img', 'iframe'] and 'src' in node.attrib:
+                fp = (node.tag, node.attrib['src'])
+                if fp in self and self[fp] / self.num_urls > self.template_proportion: 
+                    node.set('src', '')
+                    node.set('alt', '')
             else:    
                 for fp in self.get_fingerprints(node):
-                    if fp in self and self[fp] / self.num_urls > 0.9: 
-                            print('removed text')
-                            node.text = ''
-                            node.tail = ''
-        return True
-
-u1 = 'http://www.bbc.com/news/world-africa-33049312'
-u2 = 'http://www.bbc.com/news/world-europe-33378778'
-                        
-tu1 = getQuickTree(u1)
-tu2 = getQuickTree(u2)
-
-a = DomainNodesDict('http://www.nieuwsdumper.nl/')
-a.add_template_elements(tu1)
-a.add_template_elements(tu2)
-
-bla = tu2.text_content()
-
-a.remove_template(tu2)
-
-bla2 = tu2.text_content()
-
-tit = getTitle(tu2)
-
-for i in tu2.iter():
-    if i.tag == 'img' and 'src' in i.attrib and i.attrib['src']:
-        print(i.tag)
-    if i.text == tit:
-        print('titty')    
-    print(get_text_and_tail(i))
-
-
-    
-# - similar pages templated removal
-# - content nearness (img, publish)
-# - known tags (img, title, publish)
-# - difference over-time templated removal
-# - not only remove duplicated     
-
-
-
-
-- domain
-- remove bad img tags
-- add template tags
-- check if page relevant when comparing template model
-- get meta title things
-- remove templates
-- body
-- title, based on text and meta
-- publish
-- images
-- lang
-- entities
+                    if fp in self and self[fp] / self.num_urls > self.template_proportion: 
+                        node.text = ''
+                        node.tail = ''
+        return True 
