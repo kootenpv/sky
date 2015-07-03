@@ -256,8 +256,8 @@ if False:
 #     maxs = 0
 #     ele = ''
 #     for x in texts:
-#         for y in metas:
-#             xs = x.lower().split()
+#         xs = x.lower().split()
+#         for y in metas:            
 #             ys = y.lower().split()
 #             newm = fscore(xs, ys)
 #             if newm > maxs:
@@ -331,10 +331,6 @@ if False:
 #     if not any(y in x and x != y for y in ts):
 #         bla.add(x)
 
-
-def update_template(tree, domain, db):
-    db['domain'][domain].update(get_template_elements(tree))
-    transaction.commit()
 
 
 
