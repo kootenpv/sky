@@ -117,10 +117,12 @@ def getQuickTree(url, domain = None):
         domain = extractDomain(url)
     return makeTree(r.text, domain)
 
-def getLocalTree(url):
+def getLocalTree(url, domain = None): 
+    if domain is None:
+        domain = extractDomain(url)
     with open(url) as f:
         html = f.read()
-    return makeTree(html, '')
+    return makeTree(html, domain)
     
 def normalize(s): 
     return re.sub(r'\s+', lambda x: '\n' if '\n' in x.group(0) else ' ', s).strip()
@@ -168,13 +170,21 @@ def urlmatcher(url1, url2):
 def get_sorted_similar_urls(tree, url):
     return sorted(tree.xpath('//a/@href'), key = lambda x: (url != x, urlmatcher(url, x)), reverse = True)
 
-def get_images(tree):
-    wrong_imgs = ['icon', 'logo', 'advert', 'toolbar', 'footer', 'layout', 'banner'] 
-    img_links = list(set([x for x in tree.xpath('//meta[contains(@property, "image")]/@content') 
-                          if not any([w in x for w in wrong_imgs])])) 
-    img_links += list(set([x for x in tree.xpath('//img/@src') if not any([w in x for w in wrong_imgs])])) 
-    img_links = [x for x in img_links if x.startswith('http')]
-    return img_links
-    
+def get_images(tree, wrong_imgs = None): 
+    if wrong_imgs is None:
+        wrong_imgs = ['adsense', 'icon', 'logo', 'advert', 'toolbar', 'footer', 'layout', 'banner'] 
+    img_candidates = tree.xpath('//img[string-length(@src) > 3]')
+    img_candidates += tree.xpath('//meta[contains(@property, "image")]/@content')
+    leftover = []
+    for img_candidate in img_candidates: 
+        if any([any([w in img_candidate.attrib[a] for w in wrong_imgs]) for a in img_candidate.attrib]):
+            continue
+        if img_candidate.tag == 'img':
+            if 'height' in img_candidate.attrib and int(img_candidate.attrib['height']) < 25:
+                continue 
+            if 'width' in img_candidate.attrib and int(img_candidate.attrib['width']) < 25:
+                continue 
+        leftover.append(img_candidate)
+    return leftover    
 
     
