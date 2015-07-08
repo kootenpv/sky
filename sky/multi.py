@@ -5,16 +5,14 @@ from collections import Counter
 try: 
     from .helper import * 
     from .findTitle import getTitle 
-    from .get_date import get_publish_from_meta
     from .findBody import getBody 
-    from .get_date import get_date_from_content
+    from .get_date import get_dates
     from .entities import extract_entities
 except SystemError: 
     from helper import *
     from findTitle import getTitle 
     from findBody import getBody 
-    from get_date import get_publish_from_meta
-    from get_date import get_date_from_content
+    from get_date import get_dates
     from entities import extract_entities
     from lxmlTree import lxmlTree
     from capsule import Capsule

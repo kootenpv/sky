@@ -13,9 +13,8 @@ try:
     from .helper import * 
     from .findTitle import getTitle 
     from .justy import *
-    from .get_date import get_publish_from_meta
+    from .get_date import get_dates
     from .findBody import getBody 
-    from .get_date import get_date_from_content
     from .entities import extract_entities
     from .multi import *
 except SystemError: 
@@ -23,8 +22,7 @@ except SystemError:
     from justy import *
     from findTitle import getTitle 
     from findBody import getBody 
-    from get_date import get_publish_from_meta
-    from get_date import get_date_from_content
+    from get_date import get_dates
     from entities import extract_entities
     from lxmlTree import lxmlTree
     from multi import *
@@ -77,7 +75,11 @@ class Capsule():
                                    if not any([w in x for w in wrong_imgs])])) 
         self.body_blob = TextBlob(self.body)
 
-        self.publish_date = get_publish_from_meta(tree) or ''
+        
+        self.publish_date = ''
+        for date_group in get_dates(tree, self.lang):
+            if date_group:
+                self.publish_date = str(date_group[0])
 
         self.entities = extract_entities(self.body_blob)
 
