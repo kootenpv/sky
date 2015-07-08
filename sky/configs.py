@@ -10,31 +10,36 @@ DEFAULT_CRAWL_CONFIG = {
 
     # Optional
     
-    'crawlFilterStrings' : [
+    'crawl_filter_strings' : [
                         
     ],
 
-    'crawlRequiredStrings' : [
+    'crawl_required_strings' : [
     ],        
             
-    'indexFilterStrings' : [
+    'index_filter_strings' : [
         
     ],
     
-    'indexRequiredStrings' : [
+    'index_required_strings' : [
                           
     ], 
+
+    'exclude' : None, 
+    'strict' : True, 
+    'max_redirects_per_url' : 10, 
+    'max_tries_per_url' : 1, 
+    'max_workers' : 100,
     
     'wait_between_url_visits_in_seconds' : 1,
     
-    'maximum_number_of_documents' : 10,
+    'max_saved_responses' : 100,
     
     'usernameField' : '',
     'usernameValue' : '',
     'passwordField' : '', 
     'passwordValue' : '',
  
-    'max_workers' : 5, 
     'max_hops' : 100,
     'browser': 'U'
 }

@@ -6,18 +6,20 @@ except SystemError:
     from helper import get_text_and_tail
 
 class DomainNodesDict(dict):
-    def __init__(self, domain, min_templates = 2, max_templates = 24, template_proportion = 0.7):
-        super(DomainNodesDict, self).__init__()
+    def __init__(self, domain, min_templates = None, max_templates = None, template_proportion = None):
+        super(DomainNodesDict, self).__init__() 
         self.num_urls = 0 
         self.domain = domain
-        self.min_templates = min_templates
-        self.max_templates = max_templates
-        self.template_proportion = template_proportion
+        self.min_templates = min_templates or 2
+        self.max_templates = max_templates or 24
+        self.template_proportion = template_proportion or 0.7
         self.untemplated = []
 
     def get_fingerprints(self, node):
         res = []
         text = normalize(get_text_and_tail(node)).strip() 
+        if node.tag == 'a':
+            res += [(node.tag, '', '', node.text_content())]
         if text: 
             res = [(node.tag, a, node.attrib[a], text) for a in node.attrib] 
             if node.tag == 'a':
@@ -65,4 +67,9 @@ class DomainNodesDict(dict):
                     if fp in self and self[fp] / self.num_urls > self.template_proportion: 
                         node.text = ''
                         node.tail = ''
+                        if node.tag == 'a':
+                            for child in node.iter():
+                                child.text = ''
+                                child.tail = ''
+                            
         return True 

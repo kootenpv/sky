@@ -2,11 +2,19 @@ import re
 import json
 import dateutil.parser
 import datetime
-
 import os
 
-with open(os.path.join(os.path.dirname(__file__), 'date_translation_table.json')) as f:
+try:
+    from .helper import *
+except:
+    from helper import *
+
+
+with open(os.path.join('/Users/pascal/GDrive/sky/sky/date_translation_table.json')) as f:
     date_translation_table = json.load(f)
+    uppered = {x.title() : date_translation_table[x] for x in date_translation_table}
+    date_translation_table.update(uppered)
+        
 
 class NoDefaultDate(object): 
     """ Credits http://stackoverflow.com/a/18242643/1575066 """
@@ -15,8 +23,8 @@ class NoDefaultDate(object):
             return None
         return datetime.datetime(2000, 1, 1).replace(**fields)
         
-def patched_dateutil_parse(v):
-    _actual = dateutil.parser.parse(v, default=NoDefaultDate())
+def patched_dateutil_parse(v, fuzzy):
+    _actual = dateutil.parser.parse(v, default=NoDefaultDate(), fuzzy = fuzzy)
     if _actual is not None:
         # pylint: disable=E1101
         return _actual.date()
@@ -24,43 +32,82 @@ def patched_dateutil_parse(v):
         return False
     
 def date_translation(txt, lang): 
-    txt = txt.lower()
     if lang in date_translation_table:
         for month in date_translation_table[lang]:
             txt = txt.replace(month, date_translation_table[lang][month])
     return txt        
 
-def get_publish_from_meta(tree):
-    dates = [] 
+def get_text_date(v, fuzzy = False): 
+    try:
+        d = patched_dateutil_parse(v, fuzzy)
+        return d
+    except (ValueError, OverflowError, TypeError):
+        return False
+
+def within_years(d):
+    return re.search(r'\b(19[89][0-9]|20[0-4][0-9])\b', d)
+
+def get_dates(tree, lang = 'en'): 
+    # make this faster, its friggin slow (stupid fuzzy matching) 
+    hard_dates = [] 
+    soft_dates = [] 
+    fuzzy_hard_dates = []
+    fuzzy_soft_dates = [] 
     meta_nodes = tree.xpath('//head/meta')
 
-    for option in ['ublish', 'ublicat', 'date']: 
-        
+    goods = ['ublish', 'ublicat', 'date', 'time']
+
+    for option in goods: 
+
         for meta in meta_nodes:
             if not any([option in a for a in meta.values()]):
                 continue
 
             for attr in meta.attrib:
-                try:
-                    d = patched_dateutil_parse(meta.attrib[attr])
-                    dates.append(d)
-                except (ValueError, OverflowError):
-                    pass
+                soft_dates.append(get_text_date(date_translation(meta.attrib[attr], lang)))
+
+    for num, node in enumerate(tree.iter()):
+        candi_dates = [v for k,v in node.items() if v and any([x in k for x in goods])] 
+        for v in candi_dates: 
+            if within_years(v):
+                if lang != 'en':
+                    v = date_translation(v, lang)
+                d = get_text_date(v)
+                if d:
+                    soft_dates.append(d)
+                else: 
+                    fuzzy_soft_dates.append(get_text_date(v, fuzzy = True)) 
+
+        # hard date    
+        tailtext = get_text_and_tail(node).strip() 
+        if tailtext and within_years(tailtext):
+            if lang != 'en':
+                tailtext = date_translation(tailtext, lang)
+            hard_date = get_text_date(tailtext)
+            if hard_date: 
+                hard_dates.append((num, hard_date))
+            else:
+                fuzzy_hard_dates.append((num, get_text_date(tailtext, fuzzy = True)))
+
+    soft_dates = set(soft_dates)
+    fuzzy_soft_dates = set(x for x in fuzzy_soft_dates if x)
+    fuzzy_hard_dates = [x for x in fuzzy_hard_dates if x] 
+
+    # Note that num and hd get switched here
+    hardest_dates = []
+    not_hardest_dates = []
+    for num, hd in hard_dates:
+        if hd in soft_dates:
+            hardest_dates.append((hd, num))
+        else:
+            not_hardest_dates.append((hd, num))                
+
+    fuzzy_hardest_dates = []
+    for num, hd in fuzzy_hard_dates:
+        if hd in fuzzy_soft_dates:
+            fuzzy_hardest_dates.append((hd, num))        
+        else:
+            not_hardest_dates.append((hd, num))
             
-    return dates 
+    return hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates
 
-def get_date_from_content(html, lang):
-    date_txt = date_translation(html, lang)
-    options = [date_txt[m.start() - 20 : m.end() + 20] for m in re.finditer('20[0-9]{2}', date_txt)]
-    for option in options: 
-        try:
-            d = patched_dateutil_parse(option)
-            print(d)
-        except (ValueError, OverflowError):
-            pass    
-    return options
-
-
-
-
-    
