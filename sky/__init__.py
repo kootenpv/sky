@@ -9,3 +9,4 @@ except:
 from .capsule import Capsule    
 from .dbpedia import get_dbpedia_from_words
 from .multi import *
+from .helper import *

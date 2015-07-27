@@ -41,7 +41,7 @@ def get_text_date(v, fuzzy = False):
     try:
         d = patched_dateutil_parse(v, fuzzy)
         return d
-    except (ValueError, OverflowError, TypeError):
+    except (ValueError, OverflowError, TypeError, AttributeError):
         return False
 
 def within_years(d):
@@ -108,6 +108,20 @@ def get_dates(tree, lang = 'en'):
             fuzzy_hardest_dates.append((hd, num))        
         else:
             not_hardest_dates.append((hd, num))
+
+    # if nothing, then try simply fuzzy on each node, and otherwise non fuzzy        
+    non_fuzzy_any = []        
+    fuzzy_any = [] 
+    if not any([hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates]): 
+        # no leads, try to parse everything non fuzzy 
+        for num, node in enumerate(tree.iter()):
+            non_fuzzy_text = get_text_date(node, fuzzy = False)
+            if non_fuzzy_text:
+                non_fuzzy_any.append((non_fuzzy_text, num))
+            else:
+                fuzzy_text = get_text_date(node, fuzzy = True)
+                if fuzzy_text:
+                    fuzzy_any.append((fuzzy_text, num)) 
             
-    return hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates
+    return hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates, non_fuzzy_any, fuzzy_any
 
