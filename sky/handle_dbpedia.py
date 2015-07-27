@@ -38,25 +38,27 @@ for x in resources:
             continue
     pos = x.find('(') 
     if pos > -1:
-        stripped_resources[x[:pos].strip()] = resources[x]
+        stripped_resources[x[:pos].strip()] = list(resources[x])
     else:    
-        stripped_resources[x.strip()] = resources[x]
+        stripped_resources[x.strip()] = list(resources[x])
 
 #######################################################################################################################        
 
-from ZODB.FileStorage import FileStorage
-from ZODB.DB import DB
+with open('/Users/pascal/GDrive/sky/sky/dbpedia.json', 'w') as f: json.dump(stripped_resources, f)
 
-import transaction
-from BTrees.OOBTree import OOBTree
+# from ZODB.FileStorage import FileStorage
+# from ZODB.DB import DB
+
+# import transaction
+# from BTrees.OOBTree import OOBTree
         
-storage = FileStorage('/Users/pascal/GDrive/appear/Data.fs')
-db = DB(storage)
-connection = db.open()
-root = connection.root()
+# storage = FileStorage('/Users/pascal/GDrive/appear/Data.fs')
+# db = DB(storage)
+# connection = db.open()
+# root = connection.root()
 
-root['dbpedia'] = OOBTree(stripped_resources)
-transaction.commit()
+# root['dbpedia'] = OOBTree(stripped_resources)
+# transaction.commit()
 
     
 

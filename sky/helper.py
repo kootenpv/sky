@@ -112,7 +112,7 @@ def makeTree(html, domain = None):
     return tree
 
 def getQuickTree(url, domain = None):
-    r = requests.get(url)
+    r = requests.get(url, headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 7.0; Win64; x64; rv:3.0b2pre) Gecko/20110203 Firefox/4.0b12pre'})
     if domain is None:
         domain = extractDomain(url)
     return makeTree(r.text, domain)
@@ -146,10 +146,10 @@ def get_pagination(tree):
     for num, (link, x, y, z) in enumerate(zip(links[:-2], res[:-2], res[1:-1], res[2:])):
         if x and y and z:
             if len(x) == len(y) == len(z):
-                for i,j,k in zip(x,y,z):
-                    if int(i) + 1 == int(j) and int(i) + 2 == int(k):
-                        return (link[0], find_common_ancestor(links[num][0], links[num+1][0]))
-
+                for i,j,k in zip(x, y, z):
+                    if int(i) + 1 == int(j) and int(i) < int(k) and int(j) < int(k): 
+                        return (link[0], find_common_ancestor(links[num][0], links[num+1][0]), link[1].replace(i, '{}'))
+                    
 def find_common_ancestor(n1, n2):
     if n1 is n2:
         return n1.getparent()
@@ -187,7 +187,22 @@ def get_images(tree, wrong_imgs = None):
                     continue 
             except ValueError: 
                 pass
-        leftover.append(img_candidate)
-    return leftover    
+        leftover.append(img_candidate) 
+    return leftover
+
+def get_last_text_non_a_node(tree):
+    for node in reversed(list(tree.iter())):
+        if node.tag == 'a':
+            continue
+        txt = get_text_and_tail(node) 
+        if txt.strip(): 
+            for p in node.iterancestors():
+                if p.tag == 'a':
+                    break
+            else:
+                for num, n in enumerate(tree.iter()):
+                    if n == node:
+                        return num
+    return False
 
     
