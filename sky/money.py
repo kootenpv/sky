@@ -2,9 +2,9 @@ import re
 
 locale_US = {'symbol' : r'\$',
              'currency' : r'dollar[s]*',
-             'units' : [('million', 10**6),  ('m', 10**6), ('mil', 10**6), 
+             'units' : [('million', 10**6),  ('m', 10**6), ('mn', 10**6), ('mil', 10**6),  
                         ('thousand', 10**3), ('k', 10**3), 
-                        ('billion', 10**9), ('b', 10**9), 
+                        ('billion', 10**9), ('b', 10**9), ('b', 10**9), 
                         ('cent', 0.01), 
                         ('\\b', 1), ('', 1)]}
 
@@ -17,7 +17,7 @@ class MoneyMatcher():
             self.unit_dict[k[0]] = k[1]
             self.unit_dict[k[0].title()] = k[1]
             self.unit_dict[k[0].upper()] = k[1]
-        units = '({})'.format('|'.join([x[0] for x in locale['units']]))
+        units = '({})'.format('|'.join([x[0] for x in locale['units']])) + '\\b'
         number_regex = '([0-9]*[,.]*[0-9]+[,.]*)'
         optional_space = '[ ]*'
         self.symbol = re.compile(locale['symbol'] + optional_space + number_regex + optional_space + units, re.IGNORECASE)
@@ -47,9 +47,10 @@ class MoneyMatcher():
         
     def convertMatchToValue(self, match):
         value = match[0].replace(',', '.').strip('.')
-        value = float(value)
+        modifier = 1000 ** (len(re.findall(r'\.\d{3}[^0-9]', value)) + bool(re.search(r'\.\d{3}$', value))) 
+        value = float(value) 
         unit_modifier = self.unit_dict[match[1]]
-        return value * unit_modifier
+        return value * modifier * unit_modifier
 
 def investment_annotation(title, body, money, entities, indicators = None, max_character_distance = 100): 
     # Create annotation of (company, money) if they are within max_characters_distance in title or body
