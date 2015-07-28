@@ -20,10 +20,10 @@ class DomainNodesDict(dict):
     def get_fingerprints(self, node):
         res = []
         text = normalize(get_text_and_tail(node)).strip() 
-        if node.tag == 'a':
-            res += [(node.tag, '', '', node.text_content())]
+        if node.tag == 'a' and 'href' in node.attrib:
+            res = [(node.tag, node.attrib['href'], '', '')]
         if text: 
-            res = [(node.tag, a, node.attrib[a], text) for a in node.attrib] 
+            res += [(node.tag, a, node.attrib[a], text) for a in node.attrib] 
             if node.tag == 'a':
                 res += [(node.tag, '', '', text)]
             if not res:

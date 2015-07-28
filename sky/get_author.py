@@ -95,6 +95,4 @@ def get_author(tree, lang = 'en'):
 
     meta_authors = set(meta_authors)
 
-    
-    
     return hardest_authors, not_hardest_authors, text_hard_authors, text_soft_authors, meta_authors

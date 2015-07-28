@@ -53,7 +53,7 @@ def get_language(tree, headers, domain = None):
     if lang is None:
         lang = langdetect.detect(lxml.html.tostring(tree).decode('utf8'))
 
-    return lang or 'en'
+    return lang[:2] or 'en'
         
 class Index():
     # todo is finextr date
@@ -241,8 +241,11 @@ class Index():
                 
         post_text_content = '\n'.join(body_content)
 
-        links = [x.attrib['href'] for x in tree.xpath('//a') if 'href' in x.attrib]
-        
+        links = [x.attrib['href'] for x in tree.xpath('//a') if 'href' in x.attrib and 
+                 x.attrib['href'].startswith(self.domain)]
+
+        money_amounts = money.find(post_text_content, 1000)
+
         return {'title' : title, 
                 'body' : post_text_content, 
                 'images' : images, 
@@ -251,6 +254,7 @@ class Index():
                 'cleaned' : cleaned_html, 
                 'url' : url, 
                 'domain' : self.domain,
+                'money': money_amounts,
                 'related' : get_sorted_links(links, url)[:5] }
 
     def process_all(self, remove_visuals = False, maxn = 100000000):
@@ -268,22 +272,22 @@ class Index():
                         if not x.is_boilerplate and not x.is_heading]
         return body_content
 
-from configs import DEFAULT_CRAWL_CONFIG
-from helper import *
+# from configs import DEFAULT_CRAWL_CONFIG
+# from helper import *
 
-INDEX_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
+# INDEX_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
 
-INDEX_CONFIG.update({ 
-    'collections_path' : '/Users/pascal/GDrive/siteview/collections/',
-    'seed_urls' : ['http://www.nu.nl'],
-    'collection_name' : 'nu.nl',
-    'template_proportion' : 0.09,
-    'max_templates' : 1000
-})
+# INDEX_CONFIG.update({ 
+#     'collections_path' : '/Users/pascal/GDrive/siteview/collections/',
+#     'seed_urls' : ['http://www.nu.nl'],
+#     'collection_name' : 'nu.nl',
+#     'template_proportion' : 0.09,
+#     'max_templates' : 1000
+# })
 
-ind = Index(INDEX_CONFIG)
+# ind = Index(INDEX_CONFIG)
 
-r = ind.process_all()
+# r = ind.process_all()
 
 # get_author(lxml.html.fromstring([r[x]['cleaned'] for x in r][1]))
 
