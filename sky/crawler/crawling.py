@@ -70,8 +70,6 @@ class Crawler:
         self.seed_urls = None
         self.collections_path = None
         self.collection_name = None
-        self.exclude = None
-        self.strict = None
         self.max_redirects_per_url = None
         self.max_saved_responses = 10000000
         self.max_tries_per_url = None
@@ -82,7 +80,10 @@ class Crawler:
         self.index_filter_strings = [] 
         for k,v in config.items():
             setattr(self, k, v)
-        self.max_workers = min(self.max_workers, self.max_saved_responses)    
+        self.max_saved_responses = int(self.max_saved_responses)
+        self.max_workers = min(int(self.max_workers), self.max_saved_responses)    
+        self.max_tries_per_url = int(self.max_tries_per_url)
+        self.max_hops = int(self.max_hops)
         self.q = JoinablePriorityQueue(loop = self.loop)
         self.seen_urls = set()
         self.done = []
@@ -90,7 +91,7 @@ class Crawler:
         self.root_domains = self.handle_root_of_seeds()
         self.t0 = time.time()
         self.t1 = None 
-        self.num_saved_responses = 0
+        self.num_saved_responses = 0 
         self.domain = extractDomain(self.seed_urls[0])
         self.file_storage_place = os.path.join(self.collections_path, self.collection_name)    
         os.makedirs(self.file_storage_place)
@@ -105,10 +106,7 @@ class Crawler:
                     root_domains.add(host)
                 else:
                     host = host.lower()
-                    if self.strict:
-                        root_domains.add(host)
-                    else:
-                        root_domains.add(lenient_host(host))
+                    root_domains.add(lenient_host(host))
                 self.add_url(0, root) 
         if len(root_domains) > 1:
             raise Exception('Multiple Domains')
@@ -120,28 +118,13 @@ class Crawler:
 
     def host_okay(self, host):
         """Check if a host should be crawled.
-
-        A literal match (after lowercasing) is always good.  For hosts
-        that don't look like IP addresses, some approximate matches
-        are okay depending on the strict flag.
         """
         host = host.lower()
         if host in self.root_domains:
             return True
         if re.match(r'\A[\d\.]*\Z', host):
             return False
-        if self.strict:
-            return self._host_okay_strictish(host)
-        else:
-            return self._host_okay_lenient(host)
-
-    def _host_okay_strictish(self, host):
-        """Check if a host should be crawled, strict-ish version.
-
-        This checks for equality modulo an initial 'www.' component.
-        """
-        host = host[4:] if host.startswith('www.') else 'www.' + host
-        return host in self.root_domains
+        return self._host_okay_lenient(host)
 
     def _host_okay_lenient(self, host):
         """Check if a host should be crawled, lenient version.
@@ -160,14 +143,14 @@ class Crawler:
 
 
     def should_crawl(self, url):
-        if all([x not in url for x in self.crawl_filter_strings]): 
-            if not self.crawl_required_strings or any([x in url for x in self.crawl_required_strings]):
+        if all([not re.search(x, url) for x in self.crawl_filter_strings]): 
+            if not self.crawl_required_strings or any([re.search(x, url) for x in self.crawl_required_strings]):
                 return True
         return False    
 
     def should_save(self, url):
-        if not self.index_required_strings or any([condition in url for condition in self.index_required_strings]):
-            if all([x not in url for x in self.index_filter_strings]): 
+        if not self.index_required_strings or any([re.search(condition, url) for condition in self.index_required_strings]):
+            if all([not re.search(x, url) for x in self.index_filter_strings]): 
                 return True
         return False           
             
@@ -304,8 +287,6 @@ class Crawler:
 
     def url_allowed(self, url): 
         if url.endswith('.jpg') or url.endswith('.png'):
-            return False
-        if self.exclude and re.search(self.exclude, url):
             return False
         parts = urllib.parse.urlparse(url)
         if parts.scheme not in ('http', 'https'):

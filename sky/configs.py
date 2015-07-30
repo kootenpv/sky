@@ -25,22 +25,17 @@ DEFAULT_CRAWL_CONFIG = {
                           
     ], 
 
-    'exclude' : None, 
-    'strict' : True, 
     'max_redirects_per_url' : 10, 
+    
     'max_tries_per_url' : 1, 
-    'max_workers' : 100,
     
-    'wait_between_url_visits_in_seconds' : 1,
+    'max_workers' : 100, 
     
-    'max_saved_responses' : 100,
-    
-    'usernameField' : '',
-    'usernameValue' : '',
-    'passwordField' : '', 
-    'passwordValue' : '',
- 
-    'max_hops' : 100,
-    'browser': 'U'
+    'max_saved_responses' : 100, 
+
+    # Unimplemented 
+    'max_hops' : 100, 
+    'login_url' : '',
+    'login_data' : {}
 }
 

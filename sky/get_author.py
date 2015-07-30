@@ -23,7 +23,7 @@ def get_text_author(txt):
     if res:
         for r in res:
             rsplit = r.split()
-            if len(rsplit) < 5 and len(rsplit) > 1:
+            if len(rsplit) < 6 and len(rsplit) > 1:
                 return r.strip()
     return False
     
@@ -46,20 +46,23 @@ def get_author(tree, lang = 'en'):
             if not any([option in a for a in meta.values()]):
                 continue
 
+            # dit gaat nog best helemaal fout! (ik moet atts nog chcken op goods)
             for attr in meta.attrib:
-                meta_authors.append(get_text_author(author_translation(meta.attrib[attr], lang)))
+                author = get_text_author(author_translation(meta.attrib[attr], lang))
+                if author:
+                    meta_authors.append(author)
                 
     for num, node in enumerate(tree.iter()): 
         # hard author    
-        for parent in node.iterancestors():
-            attr_values = parent.attrib.values()
-            if any([g in a for a in attr_values for g in goods]): 
-                break
-        else:
-            # if no goods match, ignore node
-            continue        
+        if not any([g in a for a in node.attrib.values() for g in goods]): 
+            for parent in node.iterancestors():
+                attr_values = parent.attrib.values()
+                if any([g in a for a in attr_values for g in goods]): 
+                    break
+            else: 
+                continue
         tailtext = get_text_and_tail(node).strip() 
-        if tailtext:
+        if tailtext and len(tailtext) < 200:
             if lang != 'en':
                 tailtext = author_translation(tailtext, lang)
             hard_author = get_text_author(tailtext)
