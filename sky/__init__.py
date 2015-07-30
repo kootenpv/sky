@@ -6,7 +6,5 @@ try:
 except:
     __version__ = "0.0.0"
 
-from .capsule import Capsule    
 from .dbpedia import get_dbpedia_from_words
-from .multi import *
 from .helper import *

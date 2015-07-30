@@ -3,6 +3,7 @@
 # author! :)
 # date removal
 
+import re
 import os
 import json
 import lxml.html
@@ -26,13 +27,13 @@ money = MoneyMatcher()
 try: 
     from .helper import *
     from .templated import DomainNodesDict
-    from .findTitle import getRuleTitle, getTitle
+    from .findTitle import getRuleTitle
     from .get_date import get_dates
     from .get_author import get_author
     from .links import get_sorted_links
 except SystemError: 
-    from helper import *
-    from findTitle import getRuleTitle, getTitle
+    from helper import * 
+    from findTitle import getRuleTitle
     from templated import DomainNodesDict
     from get_date import get_dates
     from get_author import get_author
@@ -47,11 +48,17 @@ def get_language(tree, headers, domain = None):
     if lang is None and 'lang' in tree.attrib:
         lang = tree.attrib['lang']
 
-    if lang is None and domain is not None:
-        lang = domain.split('.')[-1]
-        
     if lang is None:
-        lang = langdetect.detect(lxml.html.tostring(tree).decode('utf8'))
+        page_txt = ' '.join(tree.xpath('//p/text()')) + ' '.join(tree.xpath('//div/text()'))
+        if not page_txt:
+            page_txt = tree.text_content()
+        lang = langdetect.detect(page_txt)
+
+    # Note that this won't work with weird domain names. A mapping is needed from domain names to languages.
+    if lang is None and domain is not None:
+        lang = domain.split('.')[-1]    
+        if lang == 'com':
+            return 'en' 
 
     return lang[:2] or 'en'
         
@@ -59,6 +66,8 @@ class Index():
     # todo is finextr date
     def __init__(self, config): 
         self.config = config
+        self.index_required_strings = []
+        self.index_filter_strings = []
         self.detected_language = None
         self.seed_urls = None 
         self.domain = None
@@ -73,13 +82,20 @@ class Index():
         self.url_to_headers_mapping = {}
         self.load_pages() 
         self.domain_nodes_dict = DomainNodesDict(self.domain, self.min_templates, self.max_templates, self.template_proportion)
-        self.add_template_elements()
+        self.add_template_elements() 
 
+    def should_save(self, url):
+        if not self.index_required_strings or any([re.search(condition, url) for condition in self.index_required_strings]):
+            if all([not re.search(x, url) for x in self.index_filter_strings]): 
+                return True
+        return False       
+        
     def applyConfigFile(self):
         for config_key, config_value in self.config.items():
             setattr(self, config_key, config_value)
         self.domain = extractDomain(self.seed_urls[0])
-        
+
+    # This will have to be changed into the database variant    
     def load_pages(self): 
         saved_html_dir = os.path.join(self.collections_path, self.collection_name)
         for root, _, files in os.walk(saved_html_dir):
@@ -100,7 +116,7 @@ class Index():
         for url in self.url_to_tree_mapping:
             self.domain_nodes_dict.add_template_elements(self.url_to_tree_mapping[url])
 
-    def process(self, url, remove_visuals): 
+    def process(self, url, remove_visuals, exclude_data): 
         tree = self.url_to_tree_mapping[url]
         if self.detected_language is None:
             self.detected_language = get_language(tree, self.url_to_headers_mapping[url], self.domain)
@@ -157,10 +173,8 @@ class Index():
                     
         if titleind:
             sortedimgs = sorted(imginds, key = lambda x: abs(x[1] - titleind[1]))
-            sortedlinks = sorted(linkinds, key = lambda x: abs(x[1] - titleind[1])) 
         else: 
             sortedimgs = []
-            sortedlinks = []
         hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates, non_fuzzy_anys, fuzzy_anys = get_dates(tree, self.detected_language)
         images = []
         for x in sortedimgs:
@@ -196,7 +210,7 @@ class Index():
                 if num == date_node_index:
                     break 
             # It goes wrong when some year is mentioned in the title, then it removes title    
-            print('removing date content', node.text)
+            # print('removing date content', node.text)
             node.text = ''
             node.tail = ''
 
@@ -205,48 +219,48 @@ class Index():
                 if num == author_node_index:
                     break 
             # It goes wrong when some year is mentioned in the title, then it removes title    
-            print('removing author content', node.text)
+            # print('removing author content', node.text)
             node.text = ''
             node.tail = ''
-
-        # body_content = []
-        # title_len = len(title)
-        # title_tokens = set(title.split()) 
-        # len_title_tokens = len(title_tokens)
-        # last_text_node_num = get_last_text_non_a_node(tree) 
-        # for num, x in enumerate(tree.iter()):
-        #     txt = normalize(get_text_and_tail(x))
-        #     if txt:
-        #         if num < titleind[1]:
-        #             # print('removed pre-title', txt)
-        #             x.text = ''
-        #             x.tail = ''
-        #             continue
-        #         if last_text_node_num > 0 and num > last_text_node_num:
-        #             # print('removed post-content', txt)
-        #             x.text = ''
-        #             continue
-        #         n = len(txt)
-        #         # remove title
-        #         txt_tokens = set(txt.split()) 
-        #         n_matching = len(txt_tokens & title_tokens)
-        #         if n < title_len * 3 and n_matching / len(txt_tokens) > 0.3 and n_matching / len_title_tokens > 0.3:
-        #             # print('removed!', txt)
-        #             continue
-        #         body_content.append(txt)
 
         cleaned_html = lxml.html.tostring(tree).decode('utf8')
         
         body_content = self.get_content(cleaned_html)        
+
+        if not body_content:
+            body_content = []
+            title_len = len(title)
+            title_tokens = set(title.split()) 
+            len_title_tokens = len(title_tokens)
+            last_text_node_num = get_last_text_non_a_node(tree) 
+            for num, x in enumerate(tree.iter()):
+                txt = normalize(get_text_and_tail(x))
+                if txt:
+                    if num < titleind[1]:
+                        # print('removed pre-title', txt)
+                        x.text = ''
+                        x.tail = ''
+                        continue
+                    if last_text_node_num > 0 and num > last_text_node_num:
+                        # print('removed post-content', txt)
+                        x.text = ''
+                        continue
+                    n = len(txt)
+                    # remove title
+                    txt_tokens = set(txt.split()) 
+                    n_matching = len(txt_tokens & title_tokens)
+                    if n < title_len * 3 and n_matching / len(txt_tokens) > 0.3 and n_matching / len_title_tokens > 0.3:
+                        # print('removed!', txt)
+                        continue
+                    body_content.append(txt)
                 
         post_text_content = '\n'.join(body_content)
 
-        links = [x.attrib['href'] for x in tree.xpath('//a') if 'href' in x.attrib and 
-                 x.attrib['href'].startswith(self.domain)]
+        links = [x.attrib['href'] for x in tree.xpath('//a') if 'href' in x.attrib and x.attrib['href'].startswith(self.domain) and self.should_save(x.attrib['href'])]
 
         money_amounts = money.find(post_text_content, 1000)
 
-        return {'title' : title, 
+        data = {'title' : title, 
                 'body' : post_text_content, 
                 'images' : images, 
                 'publish_date' : date, 
@@ -257,12 +271,18 @@ class Index():
                 'money': money_amounts,
                 'related' : get_sorted_links(links, url)[:5] }
 
-    def process_all(self, remove_visuals = False, maxn = 100000000):
+        filtered_data = {k : v for k, v in data.items() if k not in exclude_data}
+        
+        return filtered_data
+
+    def process_all(self, remove_visuals = False, exclude_data = None, maxn = 100000000):
+        if exclude_data is None:
+            exclude_data = []
         results = {} 
         for num, url in enumerate(self.url_to_tree_mapping):
             if num > maxn:
                 break
-            results[url] = self.process(url, remove_visuals)
+            results[url] = self.process(url, remove_visuals, exclude_data)
         return results    
         
     def get_content(self, html):
@@ -288,22 +308,3 @@ class Index():
 # ind = Index(INDEX_CONFIG)
 
 # r = ind.process_all()
-
-# get_author(lxml.html.fromstring([r[x]['cleaned'] for x in r][1]))
-
-
-
-# for k in r:
-#     break
-
-# # tree = ind.url_to_tree_mapping[k]
-
-# [get_dbpedia_from_words(TextBlob(r[k]['body']).pos_tags, dbpedia) for k in r]
-
-
-# [money.find(r[k]['body'], 1000) for k in r]
-
-
-
-
-# # 'http://www.mobilemarketer.com/cms/news/banking-payments.html'
