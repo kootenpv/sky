@@ -7,18 +7,18 @@ import re
 import os
 import json
 import lxml.html
-import langdetect
-from textblob import TextBlob
 import justext
 
 try:
     from .money import MoneyMatcher
     from .dbpedia import load_dbpedia
     from .dbpedia import get_dbpedia_from_words
+    from .language import get_language
 except SystemError:
     from money import MoneyMatcher
     from dbpedia import load_dbpedia
     from dbpedia import get_dbpedia_from_words
+    from language import get_language
     
 # dbpedia = load_dbpedia()
 
@@ -39,30 +39,7 @@ except SystemError:
     from get_author import get_author
     from links import get_sorted_links
 
-def get_language(tree, headers, domain = None):
-    lang = None
-    
-    if headers and 'content-language' in headers:
-        lang = headers['content-language']
-
-    if lang is None and 'lang' in tree.attrib:
-        lang = tree.attrib['lang']
-
-    if lang is None:
-        page_txt = ' '.join(tree.xpath('//p/text()')) + ' '.join(tree.xpath('//div/text()'))
-        if not page_txt:
-            page_txt = tree.text_content()
-        lang = langdetect.detect(page_txt)
-
-    # Note that this won't work with weird domain names. A mapping is needed from domain names to languages.
-    if lang is None and domain is not None:
-        lang = domain.split('.')[-1]    
-        if lang == 'com':
-            return 'en' 
-
-    return lang[:2] or 'en'
-        
-class Index():
+class Scrape():
     # todo is finextr date
     def __init__(self, config): 
         self.config = config
@@ -120,7 +97,7 @@ class Index():
         tree = self.url_to_tree_mapping[url]
         if self.detected_language is None:
             self.detected_language = get_language(tree, self.url_to_headers_mapping[url], self.domain)
-        print('language: {}'.format(self.detected_language))    
+        # print('language: {}'.format(self.detected_language))    
         # pre_text_content = normalize('\n'.join([get_text_and_tail(x) for x in tree.iter()]))
 
         # author has to be attempted before duplicate removal, since an author is likely to occur more often 
@@ -178,8 +155,9 @@ class Index():
         hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates, non_fuzzy_anys, fuzzy_anys = get_dates(tree, self.detected_language)
         images = []
         for x in sortedimgs:
-            if x not in images:
-                images.append(x)
+            src = x[0].attrib['src']
+            if src not in images:
+                images.append(src)
         
         date = ''
         date_node_index = None
@@ -252,18 +230,16 @@ class Index():
                     if n < title_len * 3 and n_matching / len(txt_tokens) > 0.3 and n_matching / len_title_tokens > 0.3:
                         # print('removed!', txt)
                         continue
-                    body_content.append(txt)
-                
-        post_text_content = '\n'.join(body_content)
+                    body_content.append(txt) 
 
         links = [x.attrib['href'] for x in tree.xpath('//a') if 'href' in x.attrib and x.attrib['href'].startswith(self.domain) and self.should_save(x.attrib['href'])]
 
-        money_amounts = money.find(post_text_content, 1000)
+        money_amounts = money.find('\n'.join(body_content), 1000) + money.find(title, 1000)
 
         data = {'title' : title, 
-                'body' : post_text_content, 
+                'body' : body_content, 
                 'images' : images, 
-                'publish_date' : date, 
+                'publish_date' : str(date), 
                 'author' : author,
                 'cleaned' : cleaned_html, 
                 'url' : url, 
@@ -283,10 +259,12 @@ class Index():
             if num > maxn:
                 break
             results[url] = self.process(url, remove_visuals, exclude_data)
-        return results    
-        
+        return results
+
     def get_content(self, html):
         lang_mapping = {'nl' : 'Dutch', 'en' : 'English', 'com' : 'English'}
+        if self.detected_language not in lang_mapping:
+            return ''
         lang = lang_mapping[self.detected_language]
         body_content = [x.text for x in justext.justext(html, justext.get_stoplist(lang)) 
                         if not x.is_boilerplate and not x.is_heading]
@@ -295,9 +273,9 @@ class Index():
 # from configs import DEFAULT_CRAWL_CONFIG
 # from helper import *
 
-# INDEX_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
+# SCRAPE_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
 
-# INDEX_CONFIG.update({ 
+# SCRAPE_CONFIG.update({ 
 #     'collections_path' : '/Users/pascal/GDrive/siteview/collections/',
 #     'seed_urls' : ['http://www.nu.nl'],
 #     'collection_name' : 'nu.nl',
@@ -305,6 +283,6 @@ class Index():
 #     'max_templates' : 1000
 # })
 
-# ind = Index(INDEX_CONFIG)
+# ind = Scrape(SCRAPE_CONFIG)
 
 # r = ind.process_all()

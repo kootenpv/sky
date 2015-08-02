@@ -72,7 +72,7 @@ def get_author(tree, lang = 'en'):
     for num, node in enumerate(tree.iter()): 
         tailtext = get_text_and_tail(node).strip()
         if tailtext and len(tailtext) < 200:
-            res = re.findall(r"author[:;]* ([a-zA-Z' ]+)", tailtext, re.IGNORECASE)
+            res = re.findall(r"(author|Author|AUTHOR)[:;]* ([A-Z][a-zA-Z' ]+)", tailtext)
             if res:
                 res = res[0]
                 if res in meta_authors:
@@ -80,7 +80,7 @@ def get_author(tree, lang = 'en'):
                 else:
                     text_soft_authors.append((res, num))                
             else:
-                res = re.findall(r"\bby[:;]* ([a-zA-Z' ]+)", tailtext, re.IGNORECASE)        
+                res = re.findall(r"\b(by|By|BY)[:;]* ([A-Z][a-zA-Z' ]+)", tailtext)        
                 if res:
                     res = res[0]
                     if res in meta_authors:
