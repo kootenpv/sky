@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US" prefix="og: http://ogp.me/ns#">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US" prefix="og: http://ogp.me/ns#">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US" prefix="og: http://ogp.me/ns#"  style="margin-left:0 !important;" >
+<!--<![endif]-->
+
+
+<head>
+<script src="http://www.evanmarckatz.com/blog/wp-includes/js/jquery/jquery.js"></script>
+<meta charset="UTF-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"UQIBWFRVGwACUFlVBAU="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(t){function e(e,n,a){t&&t(e,n,a),a||(a={});for(var c=s(e),u=c.length,f=i(a,o,r),d=0;u>d;d++)c[d].apply(f,n);return f}function a(t,e){u[t]=s(t).concat(e)}function s(t){return u[t]||[]}function c(){return n(e)}var u={};return{on:a,emit:e,create:c,listeners:s,_events:u}}function r(){return{}}var o="nr@context",i=t("gos");e.exports=n()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],3:[function(t){function e(t){try{i.console&&console.log(t)}catch(e){}}var n,r=t("ee"),o=t(1),i={};try{n=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(i.console=!0,-1!==n.indexOf("dev")&&(i.dev=!0),-1!==n.indexOf("nr_dev")&&(i.nrDev=!0))}catch(a){}i.nrDev&&r.on("internal-error",function(t){e(t.stack)}),i.dev&&r.on("fn-err",function(t,n,r){e(r.stack)}),i.dev&&(e("NR AGENT IN DEVELOPMENT MODE"),e("flags: "+o(i,function(t){return t}).join(", ")))},{1:20,ee:"QJf3ax"}],4:[function(t){function e(t,e,n,i,s){try{c?c-=1:r("err",[s||new UncaughtException(t,e,n)])}catch(u){try{r("ierr",[u,(new Date).getTime(),!0])}catch(f){}}return"function"==typeof a?a.apply(this,o(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function n(t){r("err",[t,(new Date).getTime()])}var r=t("handle"),o=t(6),i=t("ee"),a=window.onerror,s=!1,c=0;t("loader").features.err=!0,t(3),window.onerror=e;try{throw new Error}catch(u){"stack"in u&&(t(4),t(5),"addEventListener"in window&&t(1),window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)&&t(2),s=!0)}i.on("fn-start",function(){s&&(c+=1)}),i.on("fn-err",function(t,e,r){s&&(this.thrown=!0,n(r))}),i.on("fn-end",function(){s&&!this.thrown&&c>0&&(c-=1)}),i.on("internal-error",function(t){r("ierr",[t,(new Date).getTime(),!0])})},{1:5,2:8,3:3,4:7,5:6,6:21,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],5:[function(t,e){function n(t){i.inPlace(t,["addEventListener","removeEventListener"],"-",r)}function r(t){return t[1]}var o=(t(1),t("ee").create()),i=t(2)(o),a=t("gos");if(e.exports=o,n(window),"getPrototypeOf"in Object){for(var s=document;s&&!s.hasOwnProperty("addEventListener");)s=Object.getPrototypeOf(s);s&&n(s);for(var c=XMLHttpRequest.prototype;c&&!c.hasOwnProperty("addEventListener");)c=Object.getPrototypeOf(c);c&&n(c)}else XMLHttpRequest.prototype.hasOwnProperty("addEventListener")&&n(XMLHttpRequest.prototype);o.on("addEventListener-start",function(t){if(t[1]){var e=t[1];"function"==typeof e?this.wrapped=t[1]=a(e,"nr@wrapped",function(){return i(e,"fn-",null,e.name||"anonymous")}):"function"==typeof e.handleEvent&&i.inPlace(e,["handleEvent"],"fn-")}}),o.on("removeEventListener-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{1:21,2:22,ee:"QJf3ax",gos:"7eSDFh"}],6:[function(t,e){var n=(t(2),t("ee").create()),r=t(1)(n);e.exports=n,r.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),n.on("raf-start",function(t){t[0]=r(t[0],"fn-")})},{1:22,2:21,ee:"QJf3ax"}],7:[function(t,e){function n(t,e,n){t[0]=o(t[0],"fn-",null,n)}var r=(t(2),t("ee").create()),o=t(1)(r);e.exports=r,o.inPlace(window,["setTimeout","setInterval","setImmediate"],"setTimer-"),r.on("setTimer-start",n)},{1:22,2:21,ee:"QJf3ax"}],8:[function(t,e){function n(){u.inPlace(this,p,"fn-")}function r(t,e){u.inPlace(e,["onreadystatechange"],"fn-")}function o(t,e){return e}function i(t,e){for(var n in t)e[n]=t[n];return e}var a=t("ee").create(),s=t(1),c=t(2),u=c(a),f=c(s),d=window.XMLHttpRequest,p=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"];e.exports=a,window.XMLHttpRequest=function(t){var e=new d(t);try{a.emit("new-xhr",[],e),f.inPlace(e,["addEventListener","removeEventListener"],"-",o),e.addEventListener("readystatechange",n,!1)}catch(r){try{a.emit("internal-error",[r])}catch(i){}}return e},i(d,XMLHttpRequest),XMLHttpRequest.prototype=d.prototype,u.inPlace(XMLHttpRequest.prototype,["open","send"],"-xhr-",o),a.on("send-xhr-start",r),a.on("open-xhr-start",r)},{1:5,2:22,ee:"QJf3ax"}],9:[function(t){function e(t){var e=this.params,r=this.metrics;if(!this.ended){this.ended=!0;for(var i=0;c>i;i++)t.removeEventListener(s[i],this.listener,!1);if(!e.aborted){if(r.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var a=t.responseType,u="arraybuffer"===a||"blob"===a||"json"===a?t.response:t.responseText,f=n(u);if(f&&(r.rxSize=f),this.sameOrigin){var d=t.getResponseHeader("X-NewRelic-App-Data");d&&(e.cat=d.split(", ").pop())}}else e.status=0;r.cbTime=this.cbTime,o("xhr",[e,r,this.startTime])}}}function n(t){if("string"==typeof t&&t.length)return t.length;if("object"!=typeof t)return void 0;if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if("undefined"!=typeof FormData&&t instanceof FormData)return void 0;try{return JSON.stringify(t).length}catch(e){return void 0}}function r(t,e){var n=i(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}if(window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)){t("loader").features.xhr=!0;var o=t("handle"),i=t(2),a=t("ee"),s=["load","error","abort","timeout"],c=s.length,u=t(1);t(4),t(3),a.on("new-xhr",function(){this.totalCbs=0,this.called=0,this.cbTime=0,this.end=e,this.ended=!1,this.xhrGuids={}}),a.on("open-xhr-start",function(t){this.params={method:t[0]},r(this,t[1]),this.metrics={}}),a.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),a.on("send-xhr-start",function(t,e){var r=this.metrics,o=t[0],i=this;if(r&&o){var u=n(o);u&&(r.txSize=u)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{a.emit("internal-error",[n])}catch(r){}}};for(var f=0;c>f;f++)e.addEventListener(s[f],this.listener,!1)}),a.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),a.on("xhr-load-added",function(t,e){var n=""+u(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),a.on("xhr-load-removed",function(t,e){var n=""+u(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),a.on("addEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-added",[t[1],t[2]],e)}),a.on("removeEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-removed",[t[1],t[2]],e)}),a.on("fn-start",function(t,e,n){e instanceof XMLHttpRequest&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),a.on("fn-end",function(t,e){this.xhrCbStart&&a.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{1:"XL7HBI",2:10,3:8,4:5,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],10:[function(t,e){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");return!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname),r.sameOrigin=!e.hostname||e.hostname===document.domain&&e.port===n.port&&e.protocol===n.protocol,r}},{}],11:[function(t,e){function n(t){return function(){r(t,[(new Date).getTime()].concat(i(arguments)))}}var r=t("handle"),o=t(1),i=t(2);"undefined"==typeof window.newrelic&&(newrelic=window.NREUM);var a=["setPageViewName","addPageAction","setCustomAttribute","finished","addToTrace","inlineHit","noticeError"];o(a,function(t,e){window.NREUM[e]=n("api-"+e)}),e.exports=window.NREUM},{1:20,2:21,handle:"D5DuLP"}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):(o[t]||(o[t]=[]),void o[t].push(e))}var r=t("ee").create(),o={};e.exports=n,n.ee=r,r.q=o},{ee:"QJf3ax"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],G9z0Bl:[function(t,e){function n(){var t=p.info=NREUM.info,e=u.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){s(d,function(e,n){e in t||(t[e]=n)});var n="https"===f.split(":")[0]||t.sslForHttp;p.proto=n?"https://":"http://",a("mark",["onload",i()]);var r=u.createElement("script");r.src=p.proto+t.agent,e.parentNode.insertBefore(r,e)}}function r(){"complete"===u.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),s=t(1),c=(t(2),window),u=c.document,f=(""+location).split("?")[0],d={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-632.min.js"},p=e.exports={offset:i(),origin:f,features:{}};u.addEventListener?(u.addEventListener("DOMContentLoaded",o,!1),c.addEventListener("load",n,!1)):(u.attachEvent("onreadystatechange",r),c.attachEvent("onload",n)),a("mark",["firstbyte",i()])},{1:20,2:11,handle:"D5DuLP"}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],20:[function(t,e){function n(t,e){var n=[],o="",i=0;for(o in t)r.call(t,o)&&(n[i]=e(o,t[o]),i+=1);return n}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],21:[function(t,e){function n(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=n},{}],22:[function(t,e){function n(t){return!(t&&"function"==typeof t&&t.apply&&!t[i])}var r=t("ee"),o=t(1),i="nr@wrapper",a=Object.prototype.hasOwnProperty;e.exports=function(t){function e(t,e,r,a){function nrWrapper(){var n,i,s,u;try{i=this,n=o(arguments),s=r&&r(n,i)||{}}catch(d){f([d,"",[n,i,a],s])}c(e+"start",[n,i,a],s);try{return u=t.apply(i,n)}catch(p){throw c(e+"err",[n,i,p],s),p}finally{c(e+"end",[n,i,u],s)}}return n(t)?t:(e||(e=""),nrWrapper[i]=!0,u(t,nrWrapper),nrWrapper)}function s(t,r,o,i){o||(o="");var a,s,c,u="-"===o.charAt(0);for(c=0;c<r.length;c++)s=r[c],a=t[s],n(a)||(t[s]=e(a,u?s+o:o,i,s))}function c(e,n,r){try{t.emit(e,n,r)}catch(o){f([o,e,n,r])}}function u(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){f([r])}for(var o in t)a.call(t,o)&&(e[o]=t[o]);return e}function f(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=r),e.inPlace=s,e.flag=i,e}},{1:21,ee:"QJf3ax"}]},{},["G9z0Bl",4,9]);</script>
+<meta name="viewport" content="initial-scale=1.0" />
+<title>You Didn&#039;t Lose The Person You Thought You Lost</title> <link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="pingback" href="http://www.evanmarckatz.com/blog/xmlrpc.php" />
+<!--[if lt IE 9]>
+<script>
+	document.createElement('header');
+	document.createElement('nav');
+	document.createElement('section');
+	document.createElement('article');
+	document.createElement('aside');
+	document.createElement('footer');
+	document.createElement('hgroup');
+	jQuery('.opt-in-form input').addPlaceholder();
+</script>
+<![endif]-->
+<script  async src="http://www.evanmarckatz.com/blog/wp-content/themes/emk/js/css3-mediaqueries.js"></script>
+<script src="http://fonts.googleapis.com/css?family=Bodoni" type="text/javascript" ></script>
+            <!--noptimize-->
+            <script type="text/javascript">
+                var popup_domination_admin_ajax = 'https://www.evanmarckatz.com/blog/wp-admin/admin-ajax.php';
+                var popup_domination = {"defaults":[],"delay":0,"cookie_time":7,"center":"Y","cookie_path":"\/","show_opt":"open","tab_height":"","tab_color":"#ee2222","tab_font_color":"#333333","tab_font_size":"13","tab_border_color":"#333333","tab_border_width":"2","tab_text":"Click To Subscribe","tab_position":"left","bar_height":"","bar_color":"#4b6eb2","bar_font_color":"#ffffff","bar_font_size":"13","bar_border_color":"#ffffff","bar_border_width":"2","bar_text":"Click here to increase subscribers by 524% overnight!","bar_position":"top","bar_button_text":"","user_can_close_the_bar":"","user_can_close_the_bar_time":"4","bar_button_color":"","bar_button_font_color":"","bar_button_font_size":"","bar_button_border_color":"","bar_button_border_width":"","show_anim":"open","show_where":"center","show_color":"#000000","show_opacity":"70","advance_custom_css":"iframe { min-height:50px !important;}","disable_analytics":"","show_referral":"","show_background":"","hide_mobile":"","allow_background_close":"true","linkclick":"popup-domination-link","unload_msg":"Don't leave! We have a special offer waiting for you!","impression_count":0,"redirect":"","splitcookie":false,"conversionpage":"","campaign":"","popupid":"20","mailingid":"-1","close_option":"","google_goal":"","output":"<div class=\"popup-dom-lightbox-wrapper\" id=\"pdlw\" style=\"display:none\">\r\n\t\t<div class=\"lightbox-main lightbox-color-purple\">\r\n\t\t<a href=\"#\" class=\"lightbox-close\" id=\"popup_domination_lightbox_close\"><span>Close<\/span><\/a>\r\n\t\t<div class=\"lightbox-main-content\">\r\n\t\t\t\t\t\t<div class=\"lightbox-top\">\r\n\t\t\t\t<div class=\"lightbox-top-content cf\">\r\n\t\t\t\t\t<p class=\"heading\">Love U Enrollment Ends Tonight at Midnight! <a target=\"_parent\"  href=\"http:\/\/www.evanmarckatz.com\/coaching\/loveu\/?utm_source=evanmarckatz.com&utm_medium=banner&utm_content=enrollment%20ends%20midnight&utm_campaign=loveu%20enrollment%20banner\">Enroll Now<\/a><\/p>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<\/div>\r\n\t\t\t<\/div>\r\n\t\t\t<div class=\"lightbox-clear\"><\/div>\r\n\t\t<\/div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t<div class=\"lightbox-clear\"><\/div>\r\n\t\t\t<\/div>\r\n<\/div>","dom_head":"<style>iframe { min-height:50px !important;}<\/style><link rel=\"stylesheet\" href=\"http:\/\/www.evanmarckatz.com\/blog\/wp-content\/plugins\/popup-domination\/themes\/lightboxnew5\/lightbox.css?ver=3.9.9.2\" type=\"text\/css\" media=\"all\" id=\"popdom_lightbox_theme\"\/>\n<script type=\"text\/javascript\" src=\"http:\/\/www.evanmarckatz.com\/blog\/wp-content\/plugins\/popup-domination\/js\/lightbox.js?ver=3.9.9.2\"><\/script>\n"};
+                var popup_non = 'false';
+                var popup_domination_new_window = "";
+            </script>
+            <!--/noptimize-->
+            
+<!-- This site is optimized with the Yoast WordPress SEO plugin v2.1.1 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="You know what it&#039;s like to get devastated when a promising new relationship doesn&#039;t work out? Well, take heart - you didn&#039;t actually lose ANYTHING. In fact..."/>
+<link rel="canonical" href="http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/" />
+<link rel="next" href="http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/2/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="You Didn&#039;t Lose The Person You Thought You Lost" />
+<meta property="og:description" content="You know what it&#039;s like to get devastated when a promising new relationship doesn&#039;t work out? Well, take heart - you didn&#039;t actually lose ANYTHING. In fact..." />
+<meta property="og:url" content="http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/" />
+<meta property="og:site_name" content="Dating Coach - Evan Marc Katz | Understand Men. Find Love." />
+<meta property="article:tag" content="boyfriend,dating advice for women,featured,how you can tell if a guy likes you,when to have sex when dating,why he disappeared" />
+<meta property="article:section" content="Sex" />
+<meta property="article:published_time" content="2011-03-17T08:00:31+00:00" />
+<meta property="article:modified_time" content="2014-08-18T09:42:17+00:00" />
+<meta property="og:updated_time" content="2014-08-18T09:42:17+00:00" />
+<meta property="og:image" content="http://www.evanmarckatz.com/blog/wp-content/uploads/2011/03/the-person-you-lost.jpg" />
+<script type='application/ld+json'>{"@context":"http:\/\/schema.org","@type":"WebSite","url":"http:\/\/www.evanmarckatz.com\/","name":"Dating Coach - Evan Marc Katz | Understand Men. Find Love."}</script>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Dating Coach - Evan Marc Katz | Understand Men. Find Love. &raquo; You Didn&#8217;t Lose The Person You Thought You Lost Comments Feed" href="http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/www.evanmarckatz.com\/blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.2"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='yarppWidgetCss-css'  href='http://www.evanmarckatz.com/blog/wp-content/plugins/yet-another-related-posts-plugin/style/widget.css?ver=4.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='cb_pinterest-css'  href='http://www.evanmarckatz.com/blog/wp-content/plugins/cb-pinterest-image-pinner/styles/style.css?ver=4.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='theme-style-css'  href='http://www.evanmarckatz.com/blog/wp-content/themes/emk/style.css?ver=4.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wordpress-popular-posts-css'  href='http://www.evanmarckatz.com/blog/wp-content/plugins/wordpress-popular-posts/style/wpp.css?ver=3.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='upprev-css-css'  href='http://www.evanmarckatz.com/blog/wp-content/plugins/upprev/styles/upprev.css?ver=3.3.28' type='text/css' media='all' />
+<link rel='stylesheet' id='tabby.css-css'  href='http://www.evanmarckatz.com/blog/wp-content/plugins/tabby-responsive-tabs/css/tabby.css?ver=1.2.1' type='text/css' media='all' />
+<script type="text/javascript">
+var iworks_upprev = { animation: 'flyout', position: 'right', offset_percent: 75, offset_element: '#comments', css_width: 360, css_side: 5, compare: 'simple', url_new_window: 0, ga_track_views: 1, ga_track_clicks: 1, ga_opt_noninteraction: 1, title: 'You Didn&#8217;t Lose The Person You Thought You Lost' };
+</script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-includes/js/jquery/jquery.js?ver=1.11.2'></script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-includes/js/tinymce/tiny_mce.js?ver=20081129'></script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-includes/js/tinymce/langs/wp-langs-en.js?ver=20081129'></script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-content/plugins/tinymcecomments/comment-reply.dev.js?ver=20090102'></script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-content/plugins/cb-pinterest-image-pinner/scripts/main.js?ver=1.91'></script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-content/plugins/popup-domination/js/load_lightbox.js?ver=3.9.9.2'></script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-content/plugins/upprev/scripts/upprev.js?ver=3.3.28'></script>
+<meta name="generator" content="WordPress 4.2.2" />
+<link rel='shortlink' href='http://bit.ly/18Cp5ZB' />
+
+<!-- Start Of Additions Generated By Greg's Threaded Comment Numbering Plugin 1.5.7 -->
+<link rel='stylesheet' id='gtcn-plugin-css'  href='http://www.evanmarckatz.com/blog/wp-content/plugins/gregs-threaded-comment-numbering/gtcn-css.css?ver=1.5.7' type='text/css' media='all' />
+<!-- End Of Additions Generated By Greg's Threaded Comment Numbering Plugin 1.5.7 -->
+	<script type="text/javascript">
+      /* <![CDATA[ */
+      function brstonewline(element_id, html, body) {
+	      html = html.replace(/<br\s*\/>/gi, "\n");
+	      return html;
+	   }
+	   
+	   function insertHTML(html) {
+	      tinyMCE.execCommand("mceInsertContent",false, html);
+	   }
+	   
+      tinyMCEPreInit = {
+	      base : "http://www.evanmarckatz.com/blog/wp-includes/js/tinymce",
+	      suffix : "",
+	      query : "ver=20081129",
+	      mceInit : {mode:"exact"	,elements:"comment"	,theme:"advanced"	,theme_advanced_buttons1:"bold,italic,underline,|,strikethrough,|,bullist,numlist,|,undo,redo,|,link,unlink,|,removeformat,spellchecker,code,sub,sup,forecolor,backcolor,justifyleft,justifycenter,justifyright"	,theme_advanced_buttons2:""	,theme_advanced_buttons3:""	,theme_advanced_toolbar_location:"top"	,theme_advanced_toolbar_align:"left"	,theme_advanced_statusbar_location:"none"	,theme_advanced_resizing:"false"	,theme_advanced_resize_horizontal:""	,theme_advanced_disable:"code"	,force_p_newlines:""	,force_br_newlines:"1"	,forced_root_block:"p"	,gecko_spellcheck:"1"	,skin:"o2k7"	,content_css:"http://www.evanmarckatz.com/blog/wp-includes/js/tinymce/plugins/wordpress/wordpress.css"	,directionality:"ltr"	,save_callback:"brstonewline"	,entity_encoding:"raw"	,plugins:""	,language:"en"	},
+
+	      go : function() {
+		      var t = this, sl = tinymce.ScriptLoader, ln = t.mceInit.language, th = t.mceInit.theme, pl = t.mceInit.plugins;
+
+		      sl.markDone(t.base + '/langs/' + ln + '.js');
+
+		      sl.markDone(t.base + '/themes/' + th + '/langs/' + ln + '.js');
+		      sl.markDone(t.base + '/themes/' + th + '/langs/' + ln + '_dlg.js');
+
+		      tinymce.each(pl.split(','), function(n) {
+			      if (n && n.charAt(0) != '-') {
+				      sl.markDone(t.base + '/plugins/' + n + '/langs/' + ln + '.js');
+				      sl.markDone(t.base + '/plugins/' + n + '/langs/' + ln + '_dlg.js');
+			      }
+		      });
+	      },
+
+	      load_ext : function(url,lang) {
+		      var sl = tinymce.ScriptLoader;
+
+		      sl.markDone(url + '/langs/' + lang + '.js');
+		      sl.markDone(url + '/langs/' + lang + '_dlg.js');
+	      }
+      };
+      
+      var subBtn = document.getElementById("submit");
+	   if (subBtn != null) {
+	      subBtn.onclick=function() {
+	         var inst = tinyMCE.getInstanceById("comment");
+	         document.getElementById("comment").value = inst.getContent();
+	         document.getElementById("commentform").submit();
+	         return false;
+	      }
+	   }
+	   tinyMCEPreInit.go();
+      tinyMCE.init(tinyMCEPreInit.mceInit);
+      /* ]]> */
+      </script>
+      
+	<script type="text/javascript">document.write('<style type="text/css">.tabber{display:none;}<\/style>');</script><link rel="stylesheet" type="text/css" media="screen" href="http://www.evanmarckatz.com/blog/wp-content/plugins/tabber-tabs-widget/tabber.css" /><link rel="alternate" type="application/rss+xml" title="RSS 2.0 Feed" href="http://www.evanmarckatz.com/feed/" />				<!-- WordPress Popular Posts v3.2.2 -->
+				<script type="text/javascript">//<![CDATA[
+
+					var sampling_active = 0;
+					var sampling_rate   = 100;
+					var do_request = false;
+
+					if ( !sampling_active ) {
+						do_request = true;
+					} else {
+						var num = Math.floor(Math.random() * sampling_rate) + 1;
+						do_request = ( 1 === num );
+					}
+
+					if ( do_request ) {
+
+						// Create XMLHttpRequest object and set variables
+						var xhr = ( window.XMLHttpRequest )
+						  ? new XMLHttpRequest()
+						  : new ActiveXObject( "Microsoft.XMLHTTP" ),
+						url = 'http://www.evanmarckatz.com/blog/wp-admin/admin-ajax.php',
+						params = 'action=update_views_ajax&token=4e601b051a&id=5965';
+						// Set request method and target URL
+						xhr.open( "POST", url, true );
+						// Set request header
+						xhr.setRequestHeader( "Content-type", "application/x-www-form-urlencoded" );
+						// Hook into onreadystatechange
+						xhr.onreadystatechange = function() {
+							if ( 4 === xhr.readyState && 200 === xhr.status ) {
+								if ( window.console && window.console.log ) {
+									window.console.log( xhr.responseText );
+								}
+							}
+						};
+						// Send request
+						xhr.send( params );
+
+					}
+
+				//]]></script>
+				<!-- End WordPress Popular Posts v3.2.2 -->
+				<script>jQuery(document).ready(function() { 
+   jQuery('body').bind('cb_pinner_reload',function(){ 
+       new CB_Pinterest_Pinner('.entry img,.advanced-recent-posts img,.pin-it img','#pins-feed-follow img',25,25); 
+   }); 
+   jQuery('body').trigger('cb_pinner_reload'); 
+}); 
+</script><!-- Vipers Video Quicktags v6.5.2 | http://www.viper007bond.com/wordpress-plugins/vipers-video-quicktags/ -->
+<style type="text/css">
+.vvqbox { display: block; max-width: 100%; visibility: visible !important; margin: 10px auto; } .vvqbox img { max-width: 100%; height: 100%; } .vvqbox object { max-width: 100%; } 
+</style>
+<script type="text/javascript">
+// <![CDATA[
+	var vvqflashvars = {};
+	var vvqparams = { wmode: "opaque", allowfullscreen: "true", allowscriptaccess: "always" };
+	var vvqattributes = {};
+	var vvqexpressinstall = "http://www.evanmarckatz.com/blog/wp-content/plugins/vipers-video-quicktags/resources/expressinstall.swf";
+// ]]>
+</script>
+<style type="text/css">
+#upprev_box{bottom:5px;width:360px;right:5px;display:block;right:-415px;display:block;}
+ </style>
+
+
+<!-- Start Visual Website Optimizer Asynchronous Code -->
+<script type='text/javascript'>
+var _vwo_code=(function(){
+var account_id=37564,
+settings_tolerance=2000,
+library_tolerance=2500,
+use_existing_jquery=false,
+// DO NOT EDIT BELOW THIS LINE
+f=false,d=document;return{use_existing_jquery:function(){return use_existing_jquery;},library_tolerance:function(){return library_tolerance;},finish:function(){if(!f){f=true;var a=d.getElementById('_vis_opt_path_hides');if(a)a.parentNode.removeChild(a);}},finished:function(){return f;},load:function(a){var b=d.createElement('script');b.src=a;b.type='text/javascript';b.innerText;b.onerror=function(){_vwo_code.finish();};d.getElementsByTagName('head')[0].appendChild(b);},init:function(){settings_timer=setTimeout('_vwo_code.finish()',settings_tolerance);this.load('//dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&r='+Math.random());var a=d.createElement('style'),b='body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}',h=d.getElementsByTagName('head')[0];a.setAttribute('id','_vis_opt_path_hides');a.setAttribute('type','text/css');if(a.styleSheet)a.styleSheet.cssText=b;else a.appendChild(d.createTextNode(b));h.appendChild(a);return settings_timer;}};}());_vwo_settings_timer=_vwo_code.init();
+</script>
+<!-- End Visual Website Optimizer Asynchronous Code -->
+<!-- GA Tracking Code -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-1429122-1', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+
+</script>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PZS8RR"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PZS8RR');</script>
+<!-- End Google Tag Manager -->
+<!-- IS -->
+<script type="text/javascript" src="https://aq200.infusionsoft.com/app/webTracking/getTrackingCode?trackingId=ad3b99ff28fbaa0c3dc4b30dfdea81b0"></script>
+<!-- End IS tracking -->
+<!-- FB tracking -->
+<!-- Facebook Conversion Code for Visited emk.com - Key Page Views - 27519078 1 -->
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', '6025808957403', {'value':'0.00','currency':'USD'}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6025808957403&amp;cd[value]=0.00&amp;cd[currency]=USD&amp;noscript=1" /></noscript>
+<!-- End FB tracking -->	
+<meta property="fb:admins" content="582571295"/>
+<meta property="fb:app_id" content="126355134216"/> 
+<script>
+var timeOut = 10000;
+</script>
+<script   src="http://www.evanmarckatz.com/blog/wp-content/themes/emk/js/theme_scripts.js"></script>
+ 
+
+<script>
+jQuery(document).ready(function() { 
+	jQuery('.rslides').responsiveSlides({
+		speed: 500,             // Integer: Speed of the transition, in milliseconds
+		timeout: 10000,          // Integer: Time between slide transitions, in milliseconds
+		nav: true,             // Boolean: Show navigation, true or false
+		pause: true,           // Boolean: Pause on hover, true or false
+		prevText: "Previous",   // String: Text for the "previous" button
+		nextText: "Next",       // String: Text for the "next" button
+	});
+});
+</script>
+</head>
+
+<body class="single single-post postid-5965 single-format-standard">
+
+
+
+<!-- accordion -->
+<!-- Endof accordion -->
+<!-- facebook script. -->
+<div id="fb-root"></div>
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+		  appId      : '126355134216',
+		  status     : true,
+		  xfbml      : true
+		});
+		FB.Event.subscribe('xfbml.render', function(response) {
+			  if(document.getElementById('facebook_like')) {
+				document.getElementById('facebook_like').style.display = 'block';
+			  }
+			  if(document.getElementById('facebook_share')) {
+				document.getElementById('facebook_share').style.display = 'block';
+			  }
+		});
+	  };
+	 (function(){
+		 // If we've already installed the SDK, we're done
+		 if (document.getElementById('facebook-jssdk')) {return;}
+
+		 // Get the first script element, which we'll use to find the parent node
+		 var firstScriptElement = document.getElementsByTagName('script')[0];
+
+		 // Create a new script element and set its id
+		 var facebookJS = document.createElement('script'); 
+		 facebookJS.id = 'facebook-jssdk';
+
+		 // Set the new script's source to the source of the Facebook JS SDK
+		 facebookJS.src = '//connect.facebook.net/en_US/all.js';
+
+		 // Insert the Facebook JS SDK into the DOM
+		 firstScriptElement.parentNode.insertBefore(facebookJS, firstScriptElement);
+	   }());
+</script>
+
+<section id="wrapper">
+	<header id="main-header" role="banner">
+	
+
+		<div>
+						<h2 class="site-title"><a href="http://www.evanmarckatz.com/" title="Dating Coach &#8211; Evan Marc Katz | Understand Men. Find Love." rel="home">Dating Coach &#8211; Evan Marc Katz | Understand Men. Find Love.</a></h2>
+			<h4 class="site-description">Understand Men. Find Love.</h4>
+		</div>
+
+		<nav id="main-nav" role="navigation">
+			<div class="header-contact"><a href="/contact/" rel="bookmark">Contact</a></div>
+			<div class="menu-toggle"><h4>Menu</h4></div>
+			<a class="assistive-text" href="#primary" title="Skip to content">Skip to content</a>
+			<ul id="main-nav-menu" class="nav-menu"><li id="menu-item-16573" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16573"><a href="http://www.evanmarckatz.com/free-advice/">Free Advice</a></li>
+<li id="menu-item-16574" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16574"><a href="http://www.evanmarckatz.com/products/">Products</a></li>
+<li id="menu-item-16575" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-16575"><a href="http://www.evanmarckatz.com/coaching/">Coaching</a>
+<ul class="sub-menu">
+	<li id="menu-item-22616" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-22616"><a href="http://www.evanmarckatz.com/coaching/">Overview</a></li>
+	<li id="menu-item-21633" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-21633"><a href="http://www.evanmarckatz.com/coaching/#private-coaching">Private Coaching</a></li>
+</ul>
+</li>
+<li id="menu-item-16576" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16576"><a href="http://www.evanmarckatz.com/success-stories/">Success Stories</a></li>
+<li id="menu-item-16577" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16577"><a rel="author" href="http://www.evanmarckatz.com/about-evan-marc-katz/">About</a></li>
+<li id="menu-item-16578" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-16578"><a href="http://www.evanmarckatz.com/blog/">Blog</a></li>
+</ul>		</nav><!-- #main-nav -->
+
+
+	</header><!-- #main-header -->
+
+
+<div id="breadcrumbs" class="block-full"><span xmlns:v="http://rdf.data-vocabulary.org/#"><span typeof="v:Breadcrumb"><a href="http://www.evanmarckatz.com" rel="v:url" property="v:title">Home</a> &gt; <span rel="v:child" typeof="v:Breadcrumb"><a href="http://www.evanmarckatz.com/blog/" rel="v:url" property="v:title">Blog</a> &gt; <span rel="v:child" typeof="v:Breadcrumb"><a href="http://www.evanmarckatz.com/blog/category/sex/" rel="v:url" property="v:title">Sex</a> &gt; <span class="breadcrumb_last">You Didn&#8217;t Lose The Person You Thought You Lost</span></span></span></span></span></div><script>
+var twitter_text = "You Didn&#8217;t Lose The Person You Thought You Lost";
+var	twitter_url = "http://bit.ly/18Cp5ZB";
+var shorturlToUse = "http://bit.ly/18Cp5ZB";
+var short_url = 'http://bit.ly/18Cp5ZB';
+</script>
+
+<div id="container">
+<div class="inner">
+
+	<div id="primary" role="main">
+
+			
+				
+	<article id="post-5965" class="post-5965 post type-post status-publish format-standard has-post-thumbnail hentry category-sex tag-boyfriend tag-dating-advice-for-women tag-featured tag-how-you-can-tell-if-a-guy-likes-you tag-when-to-have-sex-when-dating tag-why-he-disappeared">
+		<header class="single-post-header">
+			<h1 class="post-title">You Didn&#8217;t Lose The Person You Thought You Lost</h1>
+		</header><!-- .post-header -->
+		<div class="content">
+			<p><img class="aligncenter size-full wp-image-18964" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2011/03/the-person-you-lost.jpg" alt="You Didn't Lose The Person You Thought You Lost" width="400" height="267" /><br />
+You know what it&#8217;s like to get devastated when a promising new relationship doesn&#8217;t work out? Well, take heart &#8211; you didn&#8217;t actually lose ANYTHING.</p>
+<p>In fact, you gained the freedom to find the person you ARE meant to be with.</p>
+<p>It may not seem to be the case, but I want to point out to you that it&#8217;s a blessing when your dead-end relationship finally comes to a close&#8230;<!--more--></p>
+<p>A client of mine shared a story with me recently.</p>
+<p>A lawyer in her mid-50s, Carol said that she&#8217;d gone out with this new guy three times.</p>
+<p>He was older, divorced, and a real gentleman.</p>
+<p>Unlike many men she&#8217;d met online, this man made a great effort each time.</p>
+<p>He&#8217;d make plans in advance, email her in between dates, compliment her when he saw her, pay for everything, and talk about having a future together.</p>
+<p>He was even a great kisser!</p>
+<p>But one night while the new couple was fooling around on the couch, things got a little weird.</p>
+<p>To avoid going too far, too fast, Carol (after some heavy petting), said what I told her to say when putting on the brakes:</p>
+<p>&#8220;I also want you badly, but I only sleep with guys that I know I&#8217;m in a committed relationship with. That doesn&#8217;t mean that we can&#8217;t do a lot of other fun things together, but I don&#8217;t want the man I have sex with to be hitting on other women on Match.com tomorrow.&#8221;</p>
+<p>The idea behind this is to let the man know that you ARE into him, but that you have just this one very reasonable boundary.</p>
+<p>Generally, guys can understand this.</p>
+<p>If he&#8217;s really into you, this is his chance to step up and become your boyfriend. If he&#8217;s not, this is a clear sign to get out.</p>
+<p>Either way, it&#8217;s impossible for us to disrespect a woman who says she only has sex in a committed relationship. Even if we&#8217;re not getting our instant gratification met, it&#8217;s impossible for a man to find fault with a sexual woman who values herself.</p>
+<blockquote><p>A man&#8217;s failure to step up to the plate and act like a boyfriend is Red Flag #1 that he&#8217;s not a keeper.</p></blockquote>
+<p>Alas, Carol never heard from her guy the day after, or the day after that, or ever again. And when she started thinking, she started to get upset with me. After all, it was my advice that had killed her relationship. For all she knows, maybe if she would have slept with him, he would have asked her out again.</p>
+<p>Uh uh. Nope. Fuhgeddaboutit.</p>
+<p>Setting down boundaries for sex is a truth test &#8211; and this guy failed with flying colors.</p>
+<p>I&#8217;m not suggesting that you &#8220;test&#8221; men. Not at all. But a man&#8217;s failure to step up to the plate and act like a boyfriend is Red Flag #1 that he&#8217;s not a keeper.</p>
+<p>And this is why, despite her disappointment, Carol really shouldn&#8217;t be all that upset. Nor should you be upset if you ever set a reasonable boundary and the man walks away.</p>
+<p>What&#8217;s a reasonable boundary?</p>
+<p>Wanting to talk in between dates, making weekend plans in advance, committing to a relationship after three months.</p>
+<p>If you suggest these in a reasonable way at a reasonable point in time and a guy refuses, then guess what?</p>
+<p><a href="http://www.evanmarckatz.com/blog/wp-content/uploads/2011/03/When-you-choose-to-be-devastated-by-a-man-who-is-not-your-boyfriend.jpg"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/2011/03/When-you-choose-to-be-devastated-by-a-man-who-is-not-your-boyfriend-300x300.jpg" alt="When you choose to be devastated by a man who is not your boyfriend" width="300" height="300" class="alignleft size-medium wp-image-22684" /></a>He&#8217;s NOT the guy she thought he was. You didn&#8217;t lose your future husband. You lost the ILLUSION of your future husband. See, your future husband, when faced with the prospect of waiting for sex will do one of two things:</p>
+<p>a) Decide that, yes, he does like you enough to be your boyfriend. He was just too afraid to push things that fast, but he&#8217;s glad you suggested it.</p>
+<p>b) Decide that he&#8217;s not ready to commit yet, but he appreciates your respectable stance. You&#8217;ll both get semi-naked, have a little fun, and no hearts will be broken.</p>
+<p>Your future husband does NOT:</p>
+<p>c) Bail like a rat leaving from a sinking ship.</p>
+<p>So if you&#8217;re worrying about why some guy disappears suddenly on you &#8211; without any reasonable explanation &#8211; the thing to know is this:</p>
+<blockquote><p>You didn&#8217;t lose your future husband.</p>
+<p>You lost the ILLUSION of your future husband.</p></blockquote>
+<p>You&#8217;re OVERRATING that person&#8217;s character.</p>
+<p>He is NOT a good partner for you.</p>
+<p>Be GLAD that you learned that this person is not in it for the long haul.</p>
+<p>Remember, despite all your bad experiences, there are good men out there &#8211; men just like you, who are wondering where to connect with you.</p>
+<p>The only responsibility you have is to continue to make the effort to meet them.</p>
+			<div id="sb-container"><div class="sb-vertical"><div class="sb-fb"><span id="facebook_like">373</span><div class="fb-like" data-href="http://www.evanmarckatz.com/blog/you-didnt-lose-the-person-you-thought-you-lost/" data-send="false" data-layout="button" data-width="55" data-show-faces="false" data-font="lucida grande"></div></div><div class="sb-fb-share"><span id="facebook_share">112</span><div class="fb-share-button" data-href="http://www.evanmarckatz.com/blog/you-didnt-lose-the-person-you-thought-you-lost/"  data-type="button" data-num-posts="num_posts" data-width="55"    data-font="lucida grande" ></div></div><div class="sb-tw"><a href="https://twitter.com/share" class="twitter-share-button" data-text="You Didn&#8217;t Lose The Person You Thought You Lost" data-url="http://bit.ly/18Cp5ZB" data-counturl="http://www.evanmarckatz.com/blog/you-didnt-lose-the-person-you-thought-you-lost/" data-count="vertical" data-via="evanmarckatz">.</a></div><div class="sb-g1"><div class="g-plusone" data-size="tall" data-href="http://www.evanmarckatz.com/blog/you-didnt-lose-the-person-you-thought-you-lost/"></div></div><div class="sb-pi"><a href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.evanmarckatz.com%2Fblog%2Fyou-didnt-lose-the-person-you-thought-you-lost%2F&media=http%3A%2F%2Fwww.evanmarckatz.com%2Fblog%2Fwp-content%2Fuploads%2F2011%2F03%2Fthe-person-you-lost.jpg&description=Portrait%20of%20a%20handsome%20man%20untying%20his%20girlfriends%20bikini%20top%20at%20the%20beach" data-pin-do="buttonPin" data-pin-config="above"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a></div></div></div>
+		</div><!-- .content -->
+			</article><!-- #post -->
+				
+				<section class="opt-in opt-in-brown opt-in-blog"><div><h3>Join 7 Million Readers</h3><p>And the thousands of women I've helped find true love. Sign up for weekly updates for help understanding men.</p><div class="opt-in-form"><form accept-charset="UTF-8" action="https://aq200.infusionsoft.com/app/form/process/4bb8ca4e878efb4c01a4cb239328a757" class="infusion-form" method="POST">
+    <input name="inf_form_xid" type="hidden" value="4bb8ca4e878efb4c01a4cb239328a757" />
+    <input name="inf_form_name" type="hidden" value="Opt-in: EMK Newsletter" />
+    <input name="infusionsoft_version" type="hidden" value="1.33.0.47" />
+    	<span class="inf_input_field">
+        <label for="inf_field_FirstName" class="wf-input">Name:</label>
+        <input class="infusion-field-input-container" id="inf_field_FirstName" name="inf_field_FirstName" type="text" placeholder="Your First Name…"/>
+        <span class="inf-error" id="first-name"></span>
+        </span>
+        <span class="inf_email_field">
+        <label for="inf_field_Email" class="wf-input">Email:</label>
+        <input class="infusion-field-input-container" id="inf_field_Email" name="inf_field_Email" type="text"  placeholder="Your Email…"/>
+        <span class="inf-error" id="email-error"></span>     
+        </span>
+        <input type="submit" value="Join Us!" onclick="return inf_validation();" />
+</form>
+<script>
+function inf_validation() {
+ email = document.getElementById('inf_field_Email').value;
+ firstname= document.getElementById('inf_field_FirstName').value;
+ var reg = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/ 
+flag = true;
+if(firstname == '') {
+  document.getElementById('first-name').innerHTML= "*Please enter your first name";
+  flag = false;
+} else {
+   document.getElementById('first-name').innerHTML= "";
+}
+if( reg.test(email)) {
+   document.getElementById('email-error').innerHTML= "";
+} else {
+  document.getElementById('email-error').innerHTML= "*Please enter a valid email";
+  flag = false;
+}
+return flag;
+}
+</script><p class="privacy" >I hate spam as much as you do, therefore I will never sell, rent, or give away your email address.</p></div></div></section>
+				<nav class="nav-single">
+					<h3 class="assistive-text">Post navigation</h3>
+					<div class="nav-next"><a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/are-asians-the-most-desired-racial-group-in-america/" rel="next"><span class="meta-nav">Next Post &raquo; </span>Are Asians The “Most Desired” Racial Group In America? </a></div>
+					<div class="nav-previous"><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/how-do-i-date-after-my-divorce-if-i-think-all-women-are-gold-diggers/" rel="prev"><span class="meta-nav">Previous Post &raquo; </span>How Do I Date After My Divorce If I Think All Women Are Gold Diggers?</a></div>
+				</nav><!-- .nav-single -->
+				
+				
+<style>
+
+</style>
+<div id="comments" class="comments-area">
+<h3 class="comment-total">
+Join our conversation (139 Comments). <br /><a href="#respond">Click Here To Leave Your Comment Below.</a>
+</h3>
+<div class="arrow-img"></div>
+			<h3 class="comments-title assistive-text">
+			Comments:		</h3>
+       
+		
+	<div class="comments-container">
+	 
+	
+		
+		<ol class="commentlist">
+				<li class="comment even thread-even depth-1" id="li-comment-145351">
+		<article id="comment-145351" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/94cdf2e613139ff251f82ab4fd674ec7?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/94cdf2e613139ff251f82ab4fd674ec7?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">1</div>				<cite class="fn">Samantha</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Interesting. I didn&#8217;t meet my guy online and he said that when I feel ready to have sex he wants to. He says he&#8217;s not dating anyone else. I don&#8217;t want to push him, but if we are to have sex I want us to be exclusive. </p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145351#respond' onclick='return addComment.moveForm( "comment-145351", "145351", "respond", "5965" )' aria-label='Reply to Samantha'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145354">
+		<article id="comment-145354" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/f4f24b8206a269234c8a9b5cf0d8fd93?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/f4f24b8206a269234c8a9b5cf0d8fd93?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">2</div>				<cite class="fn">Goldie</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Good post, I can relate <img src="http://www.evanmarckatz.com/blog/wp-includes/images/smilies/simple-smile.png" alt=":)" class="wp-smiley" style="height: 1em; max-height: 1em;" /> Can I ask a question? There is one thing that I&#8217;m currently trying to figure out that this post has touched upon. I am not sure how I feel about this line:<br />
+ <br />
+<em>&#8220;I also want you badly, but I only sleep with guys that I know I’m in a committed relationship with.&#8221;</em><br />
+ <br />
+I agree that sleeping with relative strangers isn&#8217;t a great idea, and taking it slow appeals to me a lot, but here&#8217;s the thing. The way I understand it, from reading this blog, other resources, and my own experience, dating is a way of getting to know each other better, the end goal being to get to know each other well enough that we can accurately determine whether we&#8217;ll work out well together long-term.<br />
+ <br />
+Now, the way I see it, sex, in addition to being a fun and satisfying activity, is also a way of getting to know a person better. Which is why I am not sure if it&#8217;s safe to commit before having sex. Here&#8217;s a hypothetical situation &#8211; I meet a man online, we hit it off, we spend time together, we become exclusive, we take our profiles down, <em><strong>then</strong></em> we have sex. <em><strong>Then</strong></em> he lets his guard down completely around me and acts more like himself than he used to previously. I get to see the new side of this guy that I never saw before.<br />
+ <br />
+Now, suppose that I <em>do not like what I see</em>. Suppose I see new things about that guy, that he&#8217;s been careful not to expose around me before, that I really do not like and cannot live with. But I&#8217;m already committed to him, and my online account is closed. Doesn&#8217;t this complicate things a little? I mean, I can and should still break up with him, but won&#8217;t it be a lot more difficult under the circumstances?<br />
+ <br />
+I&#8217;m honestly trying to understand this and set a strategy for myself. Help me out here please.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145354#respond' onclick='return addComment.moveForm( "comment-145354", "145354", "respond", "5965" )' aria-label='Reply to Goldie'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment even depth-2" id="li-comment-4766813">
+		<article id="comment-4766813" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/dacb787034915848d47da1ecdf200bc7?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/dacb787034915848d47da1ecdf200bc7?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">2.1</div>				<cite class="fn">Maureen</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Sex is not what ultimately reveals the true nature of a person&#8230;  time does that all on it&#8217;s own. That&#8217;s why he is suggesting getting to know each other enough to decide if you want to be together. Enough time to know if this person is into you or just sex</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=4766813#respond' onclick='return addComment.moveForm( "comment-4766813", "4766813", "respond", "5965" )' aria-label='Reply to Maureen'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-145359">
+		<article id="comment-145359" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/b5fd69ddd4c2cdde67d77d16d3d1b9b8?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/b5fd69ddd4c2cdde67d77d16d3d1b9b8?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">3</div>				<cite class="fn">Ruby</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I think there is a basic contradiction here. Carol only went out with this man 3 times, but later on EMK says that it&#8217;s appropriate to expect a commitment after 3 MONTHS. An educated guess would tell me that she&#8217;d probably been seeing this man for less than a month, maybe just a couple of weeks. I think to expect a committed relationship after only 3 dates is absurd. If you don&#8217;t want to have sex outside of a committed relationship, then wait longer before you have sex. </p>
+<p>This is why I think that slowing down physical intimacy and dating other people until a relationship becomes exclusive is a good thing. If a man is at your place and you are practically having sex, he will want to go all the way. Doing heavy petting on the third date and then trying to stop it with an exclusivity talk may not give the desired result. </p>
+<p>Plus, to some people, the words &#8220;committed relationship&#8221; are tantamount to &#8220;marriage is on the horizon&#8221;!</p>
+<p>This all sounds so &#8220;high school&#8221; when you are talking about middle-aged people, but some things never change!</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145359#respond' onclick='return addComment.moveForm( "comment-145359", "145359", "respond", "5965" )' aria-label='Reply to Ruby'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-145363">
+		<article id="comment-145363" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/7e1559514a57e99f92867bba9081cd3e?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/7e1559514a57e99f92867bba9081cd3e?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">4</div>				<cite class="fn">Dawn</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Yes, I&#8217;m wondering the same thing. Evan has written in the past about not delaying sex too long and it seems to me that waiting three months for somone to become a boyfriend is too long to put off sex.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145363#respond' onclick='return addComment.moveForm( "comment-145363", "145363", "respond", "5965" )' aria-label='Reply to Dawn'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment byuser comment-author-evan bypostauthor odd alt depth-2" id="li-comment-145390">
+		<article id="comment-145390" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/db2e73aa799b5061c3b9fc50714a85d4?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/db2e73aa799b5061c3b9fc50714a85d4?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">4.1</div>				<cite class="fn"><a href='http://www.evanmarckatz.com/blog' rel='external nofollow' class='url'>Evan Marc Katz</a></cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Oh, and the other thing that y&#8217;all don&#8217;t seem to be following is this: </p>
+<p>I don&#8217;t advocate for sex or commitment after 3 dates OR 3 months. I merely point out that you need to know that a man is into YOU, not into SEX. If he&#8217;s excited about you, you&#8217;re excited about him, and you both want to be exclusive after 3 dates, GREAT. You&#8217;re an instant couple, driven by passion, and you can have amazing sex now and figure out if you&#8217;re compatible later. But if you sleep with the guy on Date 3 because you WANT to, you run the significant risk that you become the one-night stand or booty call option.</p>
+<p>My advice to hold out for commitment doesn&#8217;t tell you to pressure him for commitment. It reminds you that having sex with you is a VALUABLE experience and if you let every cute guy do it on the third date, you&#8217;re gonna get burned. I&#8217;m not even sure how you can argue with this.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145390#respond' onclick='return addComment.moveForm( "comment-145390", "145390", "respond", "5965" )' aria-label='Reply to Evan Marc Katz'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145368">
+		<article id="comment-145368" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/01359d6ec8f8310ccbe201b12245c2fb?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/01359d6ec8f8310ccbe201b12245c2fb?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">5</div>				<cite class="fn">Jennifer</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I really like the theme of this post; once I fully accepted the idea that you can&#8217;t &#8216;lose&#8217; the right one because if he was the right one then you wouldn&#8217;t have lost him, my worries about my dating past and future diminished greatly.</p>
+<p>Goldie#2- I&#8217;m with you regarding getting to know someone sexually; this is why I don&#8217;t require being in a committed relationship before having sex.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145368#respond' onclick='return addComment.moveForm( "comment-145368", "145368", "respond", "5965" )' aria-label='Reply to Jennifer'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment odd alt depth-2" id="li-comment-2429072">
+		<article id="comment-2429072" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/cf5605afdb3aa1bf9809b2b61e3b6880?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/cf5605afdb3aa1bf9809b2b61e3b6880?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">5.1</div>				<cite class="fn">Andrea</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Women like you spoil men with easy sex to the point where women like me have a hard time requiring respect and a commitment first.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=2429072#respond' onclick='return addComment.moveForm( "comment-2429072", "2429072", "respond", "5965" )' aria-label='Reply to Andrea'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment even depth-3" id="li-comment-4432977">
+		<article id="comment-4432977" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/ffa3094f77b52bdf114540a319f1f176?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/ffa3094f77b52bdf114540a319f1f176?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">5.1.1</div>				<cite class="fn">Mike</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I totally agree. most men I know though don&#8217;t want committed relationships with women who give in too easy. we want the unattainable. Keep on doing your thing, you&#8217;ll find him.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=4432977#respond' onclick='return addComment.moveForm( "comment-4432977", "4432977", "respond", "5965" )' aria-label='Reply to Mike'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145369">
+		<article id="comment-145369" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/49219f27766bd2c615135cb32dde4410?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/49219f27766bd2c615135cb32dde4410?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">6</div>				<cite class="fn">BloggyDaddy</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Well, I&#8217;m a guy that feels pretty weird if I meet a girl and she wants to have sex right away, which seems to be more of the norm these days.  Most of the guys I know talk about wanting one night stands and easy sex, but when push comes to shove, we would all rather have a woman put up some boundaries and make us wait or at least work a little more for it.  I start to feel like there are red flags if I go on a date and she wants sex that same night.  I&#8217;m not saying I wouldn&#8217;t do it; sometimes that&#8217;s more willpower than I&#8217;ve got, but it totally kills the idea that this could be relationship material.  There are always exceptions to the rule, but generally I&#8217;d rather wait if I really like her, it makes her more valuable in my eyes.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145369#respond' onclick='return addComment.moveForm( "comment-145369", "145369", "respond", "5965" )' aria-label='Reply to BloggyDaddy'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment even depth-2" id="li-comment-2429262">
+		<article id="comment-2429262" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/3efce74e907de131958e9a2b63e19912?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/3efce74e907de131958e9a2b63e19912?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">6.1</div>				<cite class="fn">ann</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>thank you for giving us your male perspective! </p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=2429262#respond' onclick='return addComment.moveForm( "comment-2429262", "2429262", "respond", "5965" )' aria-label='Reply to ann'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-145379">
+		<article id="comment-145379" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/b5fd69ddd4c2cdde67d77d16d3d1b9b8?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/b5fd69ddd4c2cdde67d77d16d3d1b9b8?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">7</div>				<cite class="fn">Ruby</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Dawn #4</p>
+<p>I don&#8217;t think it has to be 3 months (although I&#8217;d think at least a month or 2 as a general rule), just whatever you are comfortable with. I do think 3 dates is a bit soon for the exclusivity talk. </p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145379#respond' onclick='return addComment.moveForm( "comment-145379", "145379", "respond", "5965" )' aria-label='Reply to Ruby'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-145383">
+		<article id="comment-145383" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/96759ce4c678fb78084f5304fac6ac19?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/96759ce4c678fb78084f5304fac6ac19?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">8</div>				<cite class="fn">Laya</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Honestly if I was a guy I would be put off by how Carol approached on the subject. By explaining that she would like to sleep with him but only in a committed relationship because she would then wonder if he was flirting with other women on match, comes off to me as insecure to me. I don&#8217;t think a justification is necessary. Let the guy know you like to wait a while before sleeping with someone then let it go. Carol can then sit back and watch his behavior and decide if he meets her standard of a committed relationship. I too think Evan offers a bit of mixed messages. 3 dates is too short of a period of time to talk about commitment.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145383#respond' onclick='return addComment.moveForm( "comment-145383", "145383", "respond", "5965" )' aria-label='Reply to Laya'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment byuser comment-author-evan bypostauthor odd alt depth-2" id="li-comment-145389">
+		<article id="comment-145389" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/db2e73aa799b5061c3b9fc50714a85d4?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/db2e73aa799b5061c3b9fc50714a85d4?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">8.1</div>				<cite class="fn"><a href='http://www.evanmarckatz.com/blog' rel='external nofollow' class='url'>Evan Marc Katz</a></cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Laya,</p>
+<p>It&#8217;s not insecure to say, &#8220;I don&#8217;t sleep with men who are potentially sleeping with other women.&#8221; It&#8217;s practical. Notice that I didn&#8217;t instruct Carol to pressure him to be in a relationship. I just said that she should have her own (very reasonable) boundaries. No intercourse without commitment. </p>
+<p>I think it&#8217;s actually funny that you say, &#8220;3 dates is too short of a period to talk about commitment.&#8221; Really? But 3 dates is a perfect time to have sex? </p>
+<p>You got it backwards, sweetheart.</p>
+<p>You can be a perfectly sane, emotionally healthy, sexual being who wants to attack your man on Date 3 &#8211; just be forewarned: there&#8217;s only a 50% chance he ever calls you again. If you wait for him to be exclusive with you, there&#8217;s a 100% chance.</p>
+<p>I like my odds over yours.</p>
+<p>E</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145389#respond' onclick='return addComment.moveForm( "comment-145389", "145389", "respond", "5965" )' aria-label='Reply to Evan Marc Katz'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment even depth-3" id="li-comment-5299850">
+		<article id="comment-5299850" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/acbf866b2b7da6e16f0d2de5c962890d?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/acbf866b2b7da6e16f0d2de5c962890d?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">8.1.1</div>				<cite class="fn">Jennifer</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Hi Evan<br />
+imet a guy online. He asked me out on his first message to me. Made a dat for 5 days later.. Didn&#8217;t ask for or get my number. But two days later asked to meet for coffee. Which I agreed too. I gave him my number because he didn&#8217;t want to chat. Wanted to meet in person and talk. Day 5 came with thebig date (which went very well). I didnt hear fro. Him again for two days (in all fairness heknew I ws busy with a family function) then when hecalled again he asked when I was free again and made plans. It was on this, the third date he declared h hadn&#8217;t been looking for a relationship but that he wanted one with me. Two days later out again and he told me that he didn&#8217;t want to have sex with me until I was ready. I hadn&#8217;t even brought up any of this. Then the next day/date he asked me to be his girlfriend.<br />
+Because of your blogs that I have read I do believe this guy is totally into me and not pressuring me into anything.  He definitely stepped up because he sees something in me and wants to know me and be in a relationship with me. Sex will happen in time but the pressure is off. In the past I have given into desires and advnces. This is so much more refreshing. It&#8217;s not been long but we have covered sp much ground already without sex. I&#8217;m appreciative of the past men who &#8220;disappeared&#8221; because they themselves as myself didn&#8217;t or couldn&#8217;t set boundaries and moved to sex too quickly. Men are honest and I started listening.<br />
+Thanks Evan for you male insight as well as the other men who post comments.  The truth lies in knowing and understanding men.<br />
+Thanks Jennifer</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=5299850#respond' onclick='return addComment.moveForm( "comment-5299850", "5299850", "respond", "5965" )' aria-label='Reply to Jennifer'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-145392">
+		<article id="comment-145392" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/01359d6ec8f8310ccbe201b12245c2fb?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/01359d6ec8f8310ccbe201b12245c2fb?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">9</div>				<cite class="fn">Jennifer</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Evan #9,<br />
+100% ? Surely you jest <img src="http://www.evanmarckatz.com/blog/wp-includes/images/smilies/simple-smile.png" alt=":-)" class="wp-smiley" style="height: 1em; max-height: 1em;" /><br />
+i&#8217;m not against people waiting as long as they want for sex. But there are people out there that will say &#8216;okay we&#8217;re exclusive&#8217; just to get some and never call again.<br />
+So i&#8217;ve got a bit of a quibble with that 100%</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145392#respond' onclick='return addComment.moveForm( "comment-145392", "145392", "respond", "5965" )' aria-label='Reply to Jennifer'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment even depth-2" id="li-comment-2436872">
+		<article id="comment-2436872" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/74f885e2b118641f1801a7c8b0b580c2?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/74f885e2b118641f1801a7c8b0b580c2?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">9.1</div>				<cite class="fn">Fran</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Sad but true. Maybe 80%. I hope <img src="http://www.evanmarckatz.com/blog/wp-includes/images/smilies/simple-smile.png" alt=":)" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=2436872#respond' onclick='return addComment.moveForm( "comment-2436872", "2436872", "respond", "5965" )' aria-label='Reply to Fran'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145394">
+		<article id="comment-145394" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/806b69f0b6105b04e537f571a249a15b?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/806b69f0b6105b04e537f571a249a15b?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">10</div>				<cite class="fn">Maya</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Second that Evan.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145394#respond' onclick='return addComment.moveForm( "comment-145394", "145394", "respond", "5965" )' aria-label='Reply to Maya'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145395">
+		<article id="comment-145395" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/810b7b81cd08ce70ec1776b0c8693abe?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/810b7b81cd08ce70ec1776b0c8693abe?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">11</div>				<cite class="fn">Diana</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Evan is right. I held out to have sex with my boyfriend until we were in a committed relationship initiated by him. It has been a year and a half now, and he is asking me my ring size, saving extra money, and talking about our future and having children. We are both in our late thirties, and our love is a beautiful thing. He was worth the wait.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145395#respond' onclick='return addComment.moveForm( "comment-145395", "145395", "respond", "5965" )' aria-label='Reply to Diana'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment odd alt depth-2" id="li-comment-4594606">
+		<article id="comment-4594606" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/85b185491a5238f23a9d6769325dfe27?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/85b185491a5238f23a9d6769325dfe27?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">11.1</div>				<cite class="fn">Krystal</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Awesome Diana! Congratulations! <img src="http://www.evanmarckatz.com/blog/wp-includes/images/smilies/simple-smile.png" alt=":)" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=4594606#respond' onclick='return addComment.moveForm( "comment-4594606", "4594606", "respond", "5965" )' aria-label='Reply to Krystal'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-145397">
+		<article id="comment-145397" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/d077f1ffa361951d5aaa362aff1a2662?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/d077f1ffa361951d5aaa362aff1a2662?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">12</div>				<cite class="fn">Veronica</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>The one thing that concerns me is that she started to engage in heavy petting and then put the breaks on.  May have sounded like a bait and switch to her date.  Why even get yourself into that situation to begin with?  If you truly want to wait until this guy is committed &#8211; then heavy petting is out in my book until I see some indication that he&#8217;s truly interested in getting to know me better.  Maybe he didn&#8217;t call her again because he thought she was a tease, had an agenda, and was pressuring him in a roundabout way.  Personally, I don&#8217;t engage in heavy petting with someone I just started dating unless I plan on going all the way with it.  Let&#8217;s be adults here.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145397#respond' onclick='return addComment.moveForm( "comment-145397", "145397", "respond", "5965" )' aria-label='Reply to Veronica'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-145398">
+		<article id="comment-145398" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/d077f1ffa361951d5aaa362aff1a2662?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/d077f1ffa361951d5aaa362aff1a2662?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">13</div>				<cite class="fn">Fawn</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I have to disagree with Carol&#8217;s whole approach, too.  The one thing that concerns me is that she engaged in &#8220;heavy petting&#8221; with this guy knowing full well that she would not have sex with him unless he was willing to commit to an exclusive relationship.  Why even go there?   In her dates mind, that may have sounded like a bait and switch or some sort of agenda.  I don&#8217;t do &#8220;heavy petting&#8221; with anyone I don&#8217;t plan on sleeping with.  It&#8217;s a tease.  If a guy did this to me, I would be turned off, too. </p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145398#respond' onclick='return addComment.moveForm( "comment-145398", "145398", "respond", "5965" )' aria-label='Reply to Fawn'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-145402">
+		<article id="comment-145402" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/4103b8453b0cdfba8b658c8c6e5a9e5d?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/4103b8453b0cdfba8b658c8c6e5a9e5d?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">14</div>				<cite class="fn">Garnet</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>You are strumming my pain with your fingers, as the old song says.  The promising guy has pretty much disappeared after I asked for time on Date 3.  Sigh.  Why my heart is the open beginner variety, I don&#8217;t know.  At least your blog helps by confirming what I&#8217;m seeing from my angle. Thanks, I guess.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145402#respond' onclick='return addComment.moveForm( "comment-145402", "145402", "respond", "5965" )' aria-label='Reply to Garnet'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-145408">
+		<article id="comment-145408" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/366eb404224ed008bdf097413fed9bf3?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/366eb404224ed008bdf097413fed9bf3?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">15</div>				<cite class="fn">Chris</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>You can&#8217;t just consider if he really likes you, you have to ask, do you really like him?</p>
+<p>A while ago I met a girl I thought was AWESOME in every way for me.  We had a ton in common on paper, great chemistry and ended up having sex on Date #2.  Since she was very good looking and in her late 20s, you can imagine my surprise when I found out I was only her #4.  I was sure it meant that I was special.</p>
+<p>I knew I liked her and I was sure she liked me.  I started to act like we were already boyfriend and girlfriend, mostly by being too nice.  Women like guys who keep a aloof in the beginning and I scared her away.  She told me two weeks later she didn&#8217;t think I was &#8220;for real.&#8221;</p>
+<p>It was a while ago, but I still believe that I would have been a very good partner for her.  I know she would have been a good one for me.  Bottom Line: don&#8217;t go too fast. </p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145408#respond' onclick='return addComment.moveForm( "comment-145408", "145408", "respond", "5965" )' aria-label='Reply to Chris'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-145409">
+		<article id="comment-145409" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/f08bc7c58110d8d160ba22c05b3e3aeb?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/f08bc7c58110d8d160ba22c05b3e3aeb?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">16</div>				<cite class="fn">Selena</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Count me in the camp that doesn&#8217;t do &#8220;heavy petting&#8221; unless it&#8217;s as a prelude to intercourse. Does anyone post high school?</p>
+<p>Also, to me exclusive and commitment aren&#8217;t necessarily the same thing. I don&#8217;t want to share my body with someone who is sharing theirs with other people. That&#8217;s dating &#8220;exclusively&#8221;, or to put it less ambiguously, &#8220;focusing on each other for now&#8221;. </p>
+<p>Commitment comes later, after compatibility, including sexual compatibility has been established.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145409#respond' onclick='return addComment.moveForm( "comment-145409", "145409", "respond", "5965" )' aria-label='Reply to Selena'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment byuser comment-author-evan bypostauthor odd alt depth-2" id="li-comment-145444">
+		<article id="comment-145444" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/db2e73aa799b5061c3b9fc50714a85d4?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/db2e73aa799b5061c3b9fc50714a85d4?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">16.1</div>				<cite class="fn"><a href='http://www.evanmarckatz.com/blog' rel='external nofollow' class='url'>Evan Marc Katz</a></cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Selena and Diana,</p>
+<p>&#8220;Exclusive&#8221; and &#8220;commitment&#8221; &#8211; for all intents and purposes &#8211; are the same. Are you not actively dating or searching for other people online? Yes? Then you&#8217;re committed and you should feel safe having sex because he&#8217;s interested in YOU.</p>
+<p>As far as whether it&#8217;s normal and ethical to say no to intercourse but yes to everything else? Hell, I made a dating career out of it. If YOU insist that heavy petting must equal sex, that&#8217;s on you. For plenty of women, it is not. And it is, just like I said in Why He Disappeared, JUST like high school. You slowly round the bases. Just cause you let a guy get to first doesn&#8217;t mean he hits a home run. </p>
+<p>Put another way: most women I know have either a physical or mental list of all the men they&#8217;ve slept with. I don&#8217;t know many who remember every single &#8220;heavy petting&#8221; incident. Sex is a big deal to most women, which is why there are different emotional attachments surrounding it.</p>
+<p>Feel free to equate oral sex and intercourse. Feel free to sleep with men without commitment. I don&#8217;t judge you in the least. But if my job is to advise women on how to ethically and effectively protect themselves from men who will use them, my advice is far more effective than, &#8220;Well, it&#8217;s three dates in, he&#8217;s hot, he&#8217;s got my pants off, so, why not?&#8221; </p>
+<p>Followed by five days of agonizing that he hasn&#8217;t called you and is still active on Match.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145444#respond' onclick='return addComment.moveForm( "comment-145444", "145444", "respond", "5965" )' aria-label='Reply to Evan Marc Katz'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145411">
+		<article id="comment-145411" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/5c495a04f4e7ef2635738a32febe506a?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/5c495a04f4e7ef2635738a32febe506a?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">17</div>				<cite class="fn">SS</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>@Dawn #4<br />
+ <br />
+I waited four months. I didn&#8217;t come up with a specific amount of time, I just wanted to wait until I knew we were in an exclusive relationship AND I felt comfortable with the idea of being physically intimate with the man.<br />
+ <br />
+My partner said he was willing to wait&#8230; yes, he said I made him wait a while, but he understood why. I wasn&#8217;t playing a game or anything, but he said he appreciated the fact that I set a standard and made him reach it. He also proposed to me eight months later.<br />
+ <br />
+While I don&#8217;t care about how others choose to conduct their relationships &#8212; people can all have sex on the first date or wait until marriage, as far as I&#8217;m concerned &#8212; I was never worried about the fact that if I made a man wait for longer than three dates, that I might lose him. That&#8217;s a TERRIBLE way, in my opinion, to go into a relationship, because you&#8217;re basically violating your personal standards to keep a man from leaving. You&#8217;re acting out of fear, not out of personal choice.<br />
+ <br />
+I really hope that women aren&#8217;t having sex when they&#8217;re not ready because they believe that three months without having sex with a man is &#8220;too long.&#8221; That&#8217;s really scary to me that we live in a society where a lot of people consider three months without sex to be &#8220;too long.&#8221;</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145411#respond' onclick='return addComment.moveForm( "comment-145411", "145411", "respond", "5965" )' aria-label='Reply to SS'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145414">
+		<article id="comment-145414" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/054112ddb01072756b14871b5931e1ef?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/054112ddb01072756b14871b5931e1ef?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">18</div>				<cite class="fn">Angie</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Evan, a quick question &#8211; Would you think it is more appropriate to tell a guy BEFORE bringing him into your house and BEFORE engaging in &#8220;heavy petting&#8221; that you find him attractive, but don&#8217;t want to be part of his rotation?</p>
+<p>I think it is generally good practice far as safety and health are concerned that one doesn&#8217;t sleep with someone who is sleeping with multiple women, not just emotionally.  This way the guy knows your boundaries BEFORE you put the brakes on.</p>
+<p>Also, you never speak about this&#8230; while some guys are &#8220;good catches&#8221; on the outside (polite, respectful, well-educated, good jobs and good families), they completely lack passion and sexual abilities.  What if this *is* important to us?</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145414#respond' onclick='return addComment.moveForm( "comment-145414", "145414", "respond", "5965" )' aria-label='Reply to Angie'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145420">
+		<article id="comment-145420" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/d077f1ffa361951d5aaa362aff1a2662?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/d077f1ffa361951d5aaa362aff1a2662?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">19</div>				<cite class="fn">Fawn</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>@Chris#17<br />
+I think it really is a matter of readiness and maturity.  When I started dating the love of my life, I told him that he was a really nice guy and he took that as a bad thing because girls have been telling him he was too nice all of his dating life.  When I told him he was nice, I truly meant it as a compliment.  He was a breath of fresh air.  Here we are two years later, and he is still a really nice guy.  Not a pushover, mind you.  But sweet, caring and someone I can rely on.  He still gives me butterflies.  I guess what I&#8217;m trying to say, is maybe this girl was not ready for a committed relationship and she got scared off.  I am 50 years old and done playing games.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145420#respond' onclick='return addComment.moveForm( "comment-145420", "145420", "respond", "5965" )' aria-label='Reply to Fawn'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145423">
+		<article id="comment-145423" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/6c8c181a05c484087e3e4eab1dcafaf3?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/6c8c181a05c484087e3e4eab1dcafaf3?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">20</div>				<cite class="fn">Sayanta</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Ruby #3- </p>
+<p>Your last line about high-school- AMEN! That&#8217;s what I was thinking. Seriously- people in their 50s, and professionals, behaving like this? Asking the same kind of advice that a 17 year old would ask? I guess the whole &#8216;age brings wisdom&#8217; saying is dead wrong.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145423#respond' onclick='return addComment.moveForm( "comment-145423", "145423", "respond", "5965" )' aria-label='Reply to Sayanta'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145425">
+		<article id="comment-145425" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/0d5dc56cf41c60c87282e65e3cec895e?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/0d5dc56cf41c60c87282e65e3cec895e?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">21</div>				<cite class="fn">Tosha</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Great post! I have gone too fast before and learned my lesson.  The time I went too fast and it did not work out, I was left feeling horrible.  While I still have some other things I am working on, I have come to value that part of me and want to share it with someone that values me as well.<br />
+I so appreciate the male perspective on this.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145425#respond' onclick='return addComment.moveForm( "comment-145425", "145425", "respond", "5965" )' aria-label='Reply to Tosha'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145427">
+		<article id="comment-145427" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/74a2ba0b32850b5ebc0866ae4fa826e0?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/74a2ba0b32850b5ebc0866ae4fa826e0?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">22</div>				<cite class="fn">BeenThereDoneThat</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I actually love this post!  I believe in having this boundary.  I went out with a guy recently who tried on our first meet/date.  I said I had to take things slower and I never heard from him again.  I was wondering the same thing; if I had had sex with him that night, would he have called?  I know you have to take the risk of getting hurt but sleeping with someone too soon for me is upping the risk ante more than I am comfortable with.  </p>
+<p>Thank you, thank you, THANK YOU, Evan, for the reminder that getting out of a dead end relationship is a good thing. </p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145427#respond' onclick='return addComment.moveForm( "comment-145427", "145427", "respond", "5965" )' aria-label='Reply to BeenThereDoneThat'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145435">
+		<article id="comment-145435" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/28f7f3ed35ac5841dbe4dbae6efc59a3?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/28f7f3ed35ac5841dbe4dbae6efc59a3?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">23</div>				<cite class="fn">Diana</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Hey Selena (#18). You took the words right out of my mouth. <img src="http://www.evanmarckatz.com/blog/wp-includes/images/smilies/simple-smile.png" alt=":)" class="wp-smiley" style="height: 1em; max-height: 1em;" /> I also agree with several other posters in that I do not agree with her heavy petting with the guy, and then suddenly putting the brakes on due to the &#8220;commitment&#8221; issue. I think he lost respect for Carol because of the way she handled the situation. If commitment or exclusivity is of the utmost importance to you, then have an open and honest discussion about your boundaries after he makes his intentions known, but not half way to the bedroom.<br />
+ <br />
+My boundaries are exclusivity and allowing enough time to pass to create a sense of trust, comfort and knowledge that he&#8217;s into &#8220;me&#8221; first and foremost. A &#8220;committed relationship&#8221; is not the same thing as exclusivity, as Selena pointed out. Honestly, I think that term is used too loosely because it means different things to different people, and it can easily get misconstrued.<br />
+ <br />
+And what is the meaning behind &#8220;doing other fun things together?&#8221; Are these sex related things? If that&#8217;s the case, then what? It&#8217;s okay to do certain unmentionables, but not the deed? Heck. If you&#8217;re going to go that far, does putting off the deed really matter? Of course, other fun things could mean the typical dating fare, too.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145435#respond' onclick='return addComment.moveForm( "comment-145435", "145435", "respond", "5965" )' aria-label='Reply to Diana'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145451">
+		<article id="comment-145451" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/9260562c167be9ab2824c8c4ca5766c7?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/9260562c167be9ab2824c8c4ca5766c7?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">24</div>				<cite class="fn">Katarina Phang</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I&#8217;d be very thrilled if I ever got the chance of wanting to have sex with a guy these days.  Just to reasonably like them enough to see them again is hard enough.</p>
+<p>I think in this case, she should have asked herself first:  how do I feel about this?  Am I ready to have sex with him? </p>
+<p>If yes, then she should have followed her heart knowing that sex might or might not lead to anything deeper.  Guys might disappear before or after sex, there is no guarantee either way.   So I also questioned what Evan really meant by &#8220;100% chance.&#8221;</p>
+<p>She should only have sex because she wants and enjoys it and it&#8217;s a part of getting to know him better.</p>
+<p>If no, then the answer is obvious.  Refrain from heavy petting or forewarn him before things go too far that she&#8217;s not ready for full intercourse.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145451#respond' onclick='return addComment.moveForm( "comment-145451", "145451", "respond", "5965" )' aria-label='Reply to Katarina Phang'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145439">
+		<article id="comment-145439" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/48a1bb539c6d2ba66255d3098081a2c2?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/48a1bb539c6d2ba66255d3098081a2c2?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">25</div>				<cite class="fn">R.C.</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I wish it had of been me Evan gave this advice to a few years ago fresh from a divorce and trying to date again.  She should have been grateful she DIDN&#8217;T give up the goodies.  He would have split anyway after it was all said and done.  His actions was a clear indication of that.  She would of REALLY been disappointed and hurt had he actuallly nailed then bailed.  As the saying goes&#8230;&#8230;&#8230;..Actions always speak the loudest.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145439#respond' onclick='return addComment.moveForm( "comment-145439", "145439", "respond", "5965" )' aria-label='Reply to R.C.'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-145440">
+		<article id="comment-145440" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/d531442cc7f18e5397847573c94b5223?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/d531442cc7f18e5397847573c94b5223?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">26</div>				<cite class="fn">starthrower68</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>I wouldn&#8217;t put passion before principle.  If they walk, let &#8217;em.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145440#respond' onclick='return addComment.moveForm( "comment-145440", "145440", "respond", "5965" )' aria-label='Reply to starthrower68'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-145450">
+		<article id="comment-145450" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/a29e191c2b08e4cdb4924078482c6d40?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/a29e191c2b08e4cdb4924078482c6d40?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">27</div>				<cite class="fn">JerseyGirl</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>If women shouldn&#8217;t expect commitment just because she is going out with a man, having a good time and connecting, it would be stupid for there to be a reverse expectation that just because a woman engages in heavy petting or kissing with a man that she is expected to go sleep with him. In the early stages of a relationship there are no promises to anyone in sex or commitment. No one is beholden to the other.</p>
+<p>So in this instance, a very rare one, I agree with Evan&#8217;s advice completely and his subsequent comments. </p>
+<p>And on that note, I&#8217;d like to say something from BloggyDaddy who said:<br />
+&#8220;Most of the guys I know talk about wanting one night stands and easy sex, but when push comes to shove, we would all rather have a woman put up some boundaries and make us wait or at least work a little more for it.  I start to feel like there are red flags if I go on a date and she wants sex that same night.  I’m not saying I wouldn’t do it; sometimes that’s more willpower than I’ve got, but it totally kills the idea that this could be relationship material.  There are always exceptions to the rule, but generally I’d rather wait if I really like her, it makes her more valuable in my eyes.&#8221;</p>
+<p>I know this is a common mentality with guys but it&#8217;s really an immature one too. It&#8217;s the stuff of high school boys. Not a man. </p>
+<p>If you rather wait, then wait. Don&#8217;t make a woman your own personal moral gate keeper. No woman wants a man that can&#8217;t man up and make his own choices, stand up for what he really wants vs making the woman his scape goat to use her then blame her. Do I expect that you&#8217;ll really take my comment seriously? No, I have no doubt you will go right on making women your moral gate keepers while perversally punishing them for it at the same time when they give you exactly what you want. But the free pass you and other guys give yourselves while you condemn the woman that act like you is really strange and childish. And at the end of the day, this isn&#8217;t a man most women respect anyway. One that holds *her* accountable for how he acts. One that holds *her* accountable for his sexual lust then punishes her by saying &#8220;nahh you aren&#8217;t good enough for commitment&#8221;. </p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145450#respond' onclick='return addComment.moveForm( "comment-145450", "145450", "respond", "5965" )' aria-label='Reply to JerseyGirl'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	<ol class="children">
+	<li class="comment odd alt depth-2" id="li-comment-5582624">
+		<article id="comment-5582624" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/ec083042a841d63111d5edf354ff7a91?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/ec083042a841d63111d5edf354ff7a91?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">27.1</div>				<cite class="fn">viliana</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Very true. At the end of the day these men will commit with a woman like Carol, who will make him her doormat. Men always will have what they deserve, a bitch who will make their life a hell.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=5582624#respond' onclick='return addComment.moveForm( "comment-5582624", "5582624", "respond", "5965" )' aria-label='Reply to viliana'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-145452">
+		<article id="comment-145452" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://0.gravatar.com/avatar/f08bc7c58110d8d160ba22c05b3e3aeb?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/f08bc7c58110d8d160ba22c05b3e3aeb?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">28</div>				<cite class="fn">Selena</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Actually I agree with your &#8220;advice&#8221; EMK &#8211; insofar as it is to set one&#8217;s own boundaries and make them clear to a potential lover. Also, I agree that it&#8217;s the women&#8217;s responsibility to determine whether the guy she has had x amount of dates with is interested in her, or just interested in having sex with her. But <em>for me, </em>dating one person at a time (exclusivity) IS NOT the same thing as commitment to being boyfriend/girlfriend. Off-line (and maybe even on-line for all I know) it is still <strong>very </strong>common for people to focus on dating only one person instead of a few/several at the same time.</p>
+<p>There is nothing wrong with waiting to have sex, but many adults find genital manipulation that <em>doesn&#8217;t </em>lead to climax very frustrating and certainly not the time to &#8220;put on the brakes&#8221; and have the &#8220;I want a commitment before we go any further&#8221; discussion. Blarney. Frankly, the consequences for women who try this timing could be much worse than the guy disappearing the next day.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145452#respond' onclick='return addComment.moveForm( "comment-145452", "145452", "respond", "5965" )' aria-label='Reply to Selena'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-145453">
+		<article id="comment-145453" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://1.gravatar.com/avatar/d531442cc7f18e5397847573c94b5223?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/d531442cc7f18e5397847573c94b5223?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">29</div>				<cite class="fn">starthrower68</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Hey listen, I got one who decided he didn&#8217;t want to talk to me just because I got a math question wrong.  Life goes on.  It&#8217;s all good&#8230;</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145453#respond' onclick='return addComment.moveForm( "comment-145453", "145453", "respond", "5965" )' aria-label='Reply to starthrower68'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-145458">
+		<article id="comment-145458" class="comment">
+			<header class="comment-author vcard">
+				<img alt='' src='http://2.gravatar.com/avatar/28f7f3ed35ac5841dbe4dbae6efc59a3?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/28f7f3ed35ac5841dbe4dbae6efc59a3?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' />				<div class="comment-counter">30</div>				<cite class="fn">Diana</cite>
+			</header><!-- .comment-meta -->
+
+			<section class="comment-content comment">
+								<p>Evan, I <strong>know</strong> you made a dating career out of it. 😉 I guess my post wasn&#8217;t clear. I don&#8217;t disagree with your overall message to women. I&#8217;m not sure why you think otherwise. There&#8217;s absolutely no way I would sleep with a man three dates in, regardless of our &#8220;relationship&#8221; status. I wouldn&#8217;t even consider us to <strong>be</strong> in a relationship after just three dates. This is a boundary I established, well, almost before you were born. I can assure you, I&#8217;m not a, &#8220;let&#8217;s get it on three dates in&#8221; kind of woman.<br />
+ <br />
+My issue with Carol&#8217;s situation was how the heavy petting more than likely sent a clear signal to the man that sex would follow. There&#8217;s nothing wrong with heavy petting without sex, if that is your interest, but I think this (and any other boundaries you may have) should be discussed &#8220;before&#8221; you find yourself in that kind of situation.<br />
+ <br />
+And I&#8217;m sorry. But if I&#8217;m willing to provide oral sex, then I&#8217;m willing to have intercourse. Oral sex may not have the &#8220;attachment&#8221; effect, but it&#8217;s pretty darn personal and not something I&#8217;d do until we were exclusive and I knew he was into &#8220;me&#8221; first.</p>
+			</section><!-- .comment-content -->
+
+			<footer class="comment-meta">
+				<a class='comment-reply-link' href='/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog&#038;replytocom=145458#respond' onclick='return addComment.moveForm( "comment-145458", "145458", "respond", "5965" )' aria-label='Reply to Diana'>Reply</a>							</footer><!-- .comment-meta -->
+		</article><!-- #comment-## -->
+	</li><!-- #comment-## -->
+		</ol><!-- .commentlist -->
+<script>
+</script>
+
+			<nav id="comment-nav" class="navigation" role="navigation">
+        
+			<h5 class="comment-nav-title">View More Comments: </h5>
+       
+			<span class='page-numbers current'>1</span>
+<a class='page-numbers' href='http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/comment-page-2/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog#comments'>2</a>
+<a class='page-numbers' href='http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/comment-page-3/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog#comments'>3</a>
+<span class="page-numbers dots">&hellip;</span>
+<a class='page-numbers' href='http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/comment-page-5/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog#comments'>5</a>
+<a class="next page-numbers" href="http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/comment-page-2/?utm_source=twitter&#038;utm_medium=social&#038;utm_campaign=DidntLoseWhoYouThought-blog#comments">Next &raquo;</a> 
+		</nav>
+		
+      
+	
+							<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=DidntLoseWhoYouThought-blog#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://www.evanmarckatz.com/blog/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required='true' required='required' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-describedby="email-notes" aria-required='true' required='required' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true" required="required"></textarea></p>						<p class="form-allowed-tags" id="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;s&gt; &lt;strike&gt; &lt;strong&gt; </code></p>
+						<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='5965' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="2800d1b363" /></p><!-- Subscribe to Comments Reloaded version 150428 --><!-- BEGIN: subscribe to comments reloaded --><p><label for='subscribe-reloaded'><select name='subscribe-reloaded' id='subscribe-reloaded'>
+									<option value='none' >Don't subscribe</option>
+									<option value='yes' >All</option>
+									<option value='replies' selected='selected'>Replies to my comments</option>
+								</select> Notify me of followup comments via e-mail. You can also <a href='http://www.evanmarckatz.com/blog/comment-subscriptions?srp=5965&amp;srk=63120871100842e24b69860c49e9531c&amp;sra=s'>subscribe</a> without commenting.</label></p><!-- END: subscribe to comments reloaded --><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="85"/></p>					</form>
+							</div><!-- #respond -->
+				
+	</div><!-- comments-container -->
+
+</div><!-- #comments .comments-area -->
+
+
+			
+	</div><!-- #primary -->
+
+
+			<div id="secondary" class="widget-area" role="complementary">
+			<aside id="search-13" class="widget widget_search"><h3 class="widget-title">Search my Date-A-Base</h3><div class="search-container"><h3>Have a Dating Question? Search My Date-A-Base.</h3>
+<p>If you’re looking to answer your most pressing dating and relationship question, my blog is like Google for your love life!</p>
+<p>Just type your one-line question into the search box below to see my answer.</p><div class="single-text">Over 1,000 questions already answered:</div><form role="search" method="get" id="searchform" action="http://www.evanmarckatz.com/"><label class="screen-reader-text" for="s">Search for:</label><input type="text" value="" name="s" id="s"  placeholder="ex. Why do men…?"    /><input type="submit" id="searchsubmit" value="Search Now" /></form></div></aside><aside id="slipfire-tabber-3" class="widget tabbertabs">		
+		<div class="tabber style2">
+			<div id="custom_recent_posts-2" class="tabbertab"><h3 class="widget-title section-title">Latest</h3><ul class="custom-widget-list">				<li>
+					<a href="http://www.evanmarckatz.com/blog/uncategorized/times-up-by-the-end-of-the-day-youll-be-losing-this/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/Time’s-Up.-By-the-End-Of-the-Day-You’ll-Be-Losing-This-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Time’s Up. By the End Of the Day, You’ll Be Losing This" />						</span>
+						<span class="custom-widget-title">
+							Time’s Up. By the End Of the Day, You’ll Be Losing This…						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/uncategorized/your-time-your-money-your-happiness-and-your-questions-answered/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/Your-Time-Your-Money-Your-Happiness-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Your Time, Your Money, Your Happiness" />						</span>
+						<span class="custom-widget-title">
+							Your Time, Your Money, Your Happiness, and Your Questions Answered						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/uncategorized/the-biggest-lie-ever-perpetrated-by-parents-couples-and-self-help-gurus/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/Biggest-Lie-Ever-Perpetrated-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Biggest Lie Ever Perpetrated" />						</span>
+						<span class="custom-widget-title">
+							The Biggest Lie Ever Perpetrated by Parents, Couples and Self-Help Gurus						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/uncategorized/my-memorial-day-gift-to-you/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/My-Memorial-Day-Gift-to-You-150x150.jpg" class="attachment-40x40 wp-post-image" alt="winning the love lottery" />						</span>
+						<span class="custom-widget-title">
+							My Memorial Day Gift to You!						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/uncategorized/encore-presentation-how-you-can-stop-wasting-time-on-the-wrong-men-and-finally-choose-your-husband/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/How-You-Can-Stop-Wasting-Time-on-the-Wrong-Men-150x150.jpg" class="attachment-40x40 wp-post-image" alt="How You Can Stop Wasting Time on the Wrong Men" />						</span>
+						<span class="custom-widget-title">
+							(Encore Presentation!) How You Can Stop Wasting Time on the Wrong Men and Finally Choose Your Husband.						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/uncategorized/warning-your-live-webinar-how-to-stop-wasting-time-on-the-wrong-men-and-finally-choose-your-husband-is-starting-in-3-2-1/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/How-to-Stop-Wasting-Time-on-the-Wrong-Men-and-Finally-Choose-Your-Husband-150x150.jpg" class="attachment-40x40 wp-post-image" alt="How to Stop Wasting Time on the Wrong Men and Finally Choose Your Husband" />						</span>
+						<span class="custom-widget-title">
+							(WARNING) Your Live Webinar “How to Stop Wasting Time on the Wrong Men and Finally Choose Your Husband.” Is Starting In 3, 2, 1…						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/understanding-men/video-the-secret-to-getting-a-man-to-love-you/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/The-Secret-to-Getting-a-Man-To-Love-You-150x150.jpg" class="attachment-40x40 wp-post-image" alt="The Secret to Getting a Man To Love You" />						</span>
+						<span class="custom-widget-title">
+							(Video) The Secret to Getting a Man To Love You						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/dating-tips-advice/video-the-reason-you-attract-men-who-treat-you-poorly/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/The-Reason-You-Attract-Men-Who-Treat-You-Poorly-150x150.jpg" class="attachment-40x40 wp-post-image" alt="The Reason You Attract Men Who Treat You Poorly" />						</span>
+						<span class="custom-widget-title">
+							(Video) The Reason You Attract Men Who Treat You Poorly						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/marriage/how-to-predict-your-own-divorce/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/How-To-Predict-Your-Own-Divorce-150x150.jpg" class="attachment-40x40 wp-post-image" alt="relationships take work" />						</span>
+						<span class="custom-widget-title">
+							How To Predict Your Own Divorce						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/uncategorized/my-midlife-crisis/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2015/05/My-Midlife-Crisis-And-Your-Biggest-Problem-With-Dating-150x150.jpg" class="attachment-40x40 wp-post-image" alt="My Midlife Crisis - And Your Biggest Problem With Dating" />						</span>
+						<span class="custom-widget-title">
+							My Midlife Crisis (And Your Most Important Question About Understanding Men!)						</span>
+					</a>
+				</li>
+				</ul></div>
+<!-- WordPress Popular Posts Plugin v3.2.2 [W] [all] [comments] [regular] -->
+<div id="wpp-6" class="tabbertab">
+<h3 class="widget-title section-title">Popular</h3>
+<ul class="wpp-list">
+<li><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/dating-advice-for-short-men-life-is-unfair/" title="If You Are Short, Fat, Older or An Asian Man, You Must Read This. But Especially If You&#8217;re Short." target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/121-featured-40x40.jpg" width=40 height=40 title="If You Are Short, Fat, Older or An Asian Man, You Must Read This. But Especially If You&#8217;re Short." alt="If You Are Short, Fat, Older or An Asian Man, You Must Read This. But Especially If You&#8217;re Short." class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/dating-tips-advice/dating-advice-for-short-men-life-is-unfair/" title="If You Are Short, Fat, Older or An Asian Man, You Must Read This. But Especially If You&#8217;re Short." class="wpp-post-title" target="_self">If You Are Short, Fat, Older or An Asian Man, You Must Read This. But Especially If You&#8217;re Short.</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/why-do-women-in-their-30s-not-want-to-date-men-in-their-40s/" title="Why Do Women in Their 30s Not Want to Date Men in Their 40s?" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/2352-featured-40x40.jpg" width=40 height=40 title="Why Do Women in Their 30s Not Want to Date Men in Their 40s?" alt="Why Do Women in Their 30s Not Want to Date Men in Their 40s?" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/why-do-women-in-their-30s-not-want-to-date-men-in-their-40s/" title="Why Do Women in Their 30s Not Want to Date Men in Their 40s?" class="wpp-post-title" target="_self">Why Do Women in Their 30s Not Want to Date Men in Their 40s?</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-don%e2%80%99t-men-hate-being-single-as-much-as-women-do/" title="Why Don’t Men Hate Being Single As Much As Women Do?" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/7200-featured-40x40.jpg" width=40 height=40 title="Why Don’t Men Hate Being Single As Much As Women Do?" alt="Why Don’t Men Hate Being Single As Much As Women Do?" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-don%e2%80%99t-men-hate-being-single-as-much-as-women-do/" title="Why Don’t Men Hate Being Single As Much As Women Do?" class="wpp-post-title" target="_self">Why Don’t Men Hate Being Single As Much As Women Do?</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-dont-men-like-smart-strong-successful-women/" title="Why Don&#8217;t Men Like Smart, Strong, Successful Women?" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/123-featured-40x40.jpg" width=40 height=40 title="Why Don&#8217;t Men Like Smart, Strong, Successful Women?" alt="Why Don&#8217;t Men Like Smart, Strong, Successful Women?" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-dont-men-like-smart-strong-successful-women/" title="Why Don&#8217;t Men Like Smart, Strong, Successful Women?" class="wpp-post-title" target="_self">Why Don&#8217;t Men Like Smart, Strong, Successful Women?</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/cheating/what-do-men-get-out-of-looking-at-other-women-and-why-do-men-cheat/" title="What Do Men Get Out of Looking At Other Women? (And Why Do Men Cheat?)" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/11290-featured-40x40.jpg" width=40 height=40 title="What Do Men Get Out of Looking At Other Women? (And Why Do Men Cheat?)" alt="What Do Men Get Out of Looking At Other Women? (And Why Do Men Cheat?)" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/cheating/what-do-men-get-out-of-looking-at-other-women-and-why-do-men-cheat/" title="What Do Men Get Out of Looking At Other Women? (And Why Do Men Cheat?)" class="wpp-post-title" target="_self">What Do Men Get Out of Looking At Other Women? (And Why Do Men Cheat?)</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-are-women-expected-to-date-men-with-a-lower-educational-level/" title="Why Are Women Expected to Date Men With a Lower Educational Level?" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/12176-featured-40x40.jpg" width=40 height=40 title="Why Are Women Expected to Date Men With a Lower Educational Level?" alt="Why Are Women Expected to Date Men With a Lower Educational Level?" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-are-women-expected-to-date-men-with-a-lower-educational-level/" title="Why Are Women Expected to Date Men With a Lower Educational Level?" class="wpp-post-title" target="_self">Why Are Women Expected to Date Men With a Lower Educational Level?</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-would-a-younger-woman-want-to-date-a-much-older-man/" title="Why Would a Younger Woman Want to Date a Much Older Man?" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/202-featured-40x40.jpg" width=40 height=40 title="Why Would a Younger Woman Want to Date a Much Older Man?" alt="Why Would a Younger Woman Want to Date a Much Older Man?" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-would-a-younger-woman-want-to-date-a-much-older-man/" title="Why Would a Younger Woman Want to Date a Much Older Man?" class="wpp-post-title" target="_self">Why Would a Younger Woman Want to Date a Much Older Man?</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/how-come-older-men-cant-get-younger-women/" title="How Come Everyone I Want to Meet Online Isn’t Interested in Me?" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/125-featured-40x40.jpg" width=40 height=40 title="How Come Everyone I Want to Meet Online Isn’t Interested in Me?" alt="How Come Everyone I Want to Meet Online Isn’t Interested in Me?" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/how-come-older-men-cant-get-younger-women/" title="How Come Everyone I Want to Meet Online Isn’t Interested in Me?" class="wpp-post-title" target="_self">How Come Everyone I Want to Meet Online Isn’t Interested in Me?</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/understanding-men/i-think-im-hot-but-my-boyfriend-doesnt-seem-to-think-so/" title="I Think I’m Hot But My Boyfriend Doesn’t Seem to Think So" target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/10588-featured-40x40.jpg" width=40 height=40 title="I Think I’m Hot But My Boyfriend Doesn’t Seem to Think So" alt="I Think I’m Hot But My Boyfriend Doesn’t Seem to Think So" class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/understanding-men/i-think-im-hot-but-my-boyfriend-doesnt-seem-to-think-so/" title="I Think I’m Hot But My Boyfriend Doesn’t Seem to Think So" class="wpp-post-title" target="_self">I Think I’m Hot But My Boyfriend Doesn’t Seem to Think So</a> </li>
+<li><a href="http://www.evanmarckatz.com/blog/sex/men-look-for-sex-and-find-love-women-look-for-love-and-find-sex/" title="Men Look for Sex and Find Love. Women Look for Love and Find Sex." target="_self"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/wordpress-popular-posts/423-featured-40x40.jpg" width=40 height=40 title="Men Look for Sex and Find Love. Women Look for Love and Find Sex." alt="Men Look for Sex and Find Love. Women Look for Love and Find Sex." class="wpp-thumbnail wpp_cached_thumb wpp_featured" /></a> <a href="http://www.evanmarckatz.com/blog/sex/men-look-for-sex-and-find-love-women-look-for-love-and-find-sex/" title="Men Look for Sex and Find Love. Women Look for Love and Find Sex." class="wpp-post-title" target="_self">Men Look for Sex and Find Love. Women Look for Love and Find Sex.</a> </li>
+
+</ul>
+</div>
+<!-- End WordPress Popular Posts Plugin v3.2.2 -->
+<div id="posts_in_tag-2" class="tabbertab"><h3 class="widget-title section-title">Featured</h3><ul class="custom-widget-list">				<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/can-you-have-meaningless-sex-while-you%E2%80%99re-looking-for-a-long-term-relationship/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2009/08/meaningless-sex-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Can You Have Meaningless Sex While You&#039;re Looking for a Long Term Relationship?" />						</span>
+						<span class="custom-widget-title">
+							Can You Have Meaningless Sex While You&#8217;re Looking for a Long Term Relationship?						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/how-do-i-get-my-conservative-boyfriend-to-loosen-up-sexually/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2013/03/conservative-boyfriend-150x150.jpg" class="attachment-40x40 wp-post-image" alt="How Do I Get My Conservative Boyfriend to Loosen Up Sexually?" />						</span>
+						<span class="custom-widget-title">
+							How Do I Get My Conservative Boyfriend to Loosen Up Sexually?						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/who-enjoys-casual-sex/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2014/08/Who-enjoys-casual-sex-26290432-150x150.jpg" class="attachment-40x40 wp-post-image" alt="6 Reasons You Stay With the Wrong Man For Too Long" />						</span>
+						<span class="custom-widget-title">
+							Who Enjoys Casual Sex?						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/when-should-i-have-sex-with-him-for-the-first-time/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2013/03/sex-for-the-first-time-150x150.jpg" class="attachment-40x40 wp-post-image" alt="When Should I Have Sex With Him For the First Time?" />						</span>
+						<span class="custom-widget-title">
+							When Should I Have Sex With Him For the First Time?						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/why-men-should-say-no-to-spontaneous-sex/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2007/10/Blog-pic-couple-cuddling-4441652-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Why Men Should Say No to Sex" />						</span>
+						<span class="custom-widget-title">
+							Why Men Should Say No to Sex						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/is-sex-on-the-third-date-the-new-normal/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2012/08/3rd-date-sex-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Is Sex on the Third Date the New Normal?" />						</span>
+						<span class="custom-widget-title">
+							Is Sex on the Third Date the New Normal?						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/why-women-should-make-men-wait-for-sex-part-ii/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2014/02/Blog-pic-romantic-couple-7719707-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Why Women Should Make Men Wait for Sex - Part II" />						</span>
+						<span class="custom-widget-title">
+							Why Women Should Make Men Wait For Sex – Part II						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/is-his-low-sex-drive-a-dealbreaker/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2011/11/low-sex-drive-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Is His Low Sex Drive A Dealbreaker?" />						</span>
+						<span class="custom-widget-title">
+							Is His Low Sex Drive A Dealbreaker?						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/can-a-hot-woman-like-me-hold-out-on-sex-until-i-get-a-commitment/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2008/08/hold-out-on-sex-150x150.jpg" class="attachment-40x40 wp-post-image" alt="Can a Hot Woman Like Me Hold Out on Sex Until I Get a Commitment?" />						</span>
+						<span class="custom-widget-title">
+							Can a Hot Woman Like Me Hold Out on Sex Until I Get a Commitment?						</span>
+					</a>
+				</li>
+								<li>
+					<a href="http://www.evanmarckatz.com/blog/sex/you-didnt-lose-the-person-you-thought-you-lost/">
+						<span class="custom-widget-img">
+							<img width="40" height="40" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2011/03/the-person-you-lost-150x150.jpg" class="attachment-40x40 wp-post-image" alt="You Didn&#039;t Lose The Person You Thought You Lost" />						</span>
+						<span class="custom-widget-title">
+							You Didn&#8217;t Lose The Person You Thought You Lost						</span>
+					</a>
+				</li>
+				</ul></div>		</div>
+		
+</aside><aside id="categories-5" class="widget widget_categories"><h3 class="widget-title">Explore the Blog</h3>		<ul>
+	<li class="cat-item cat-item-6"><a href="http://www.evanmarckatz.com/blog/category/dating-tips-advice/" title="You may think dating is a dirty word. Not when you do it my way. If you’ve ever struggled with attracting the “right” guys, getting second dates, or turning a hook-up into a boyfriend, my blog posts on dating will show you how to stop making the mistakes that have plagued you for your whole life.">Dating</a>
+</li>
+	<li class="cat-item cat-item-1241"><a href="http://www.evanmarckatz.com/blog/category/chemistry/" title="Passion. Lust. Chemistry. No matter what you call it, it’s one of the most intoxicating forces on the planet. But if you don’t understand how amazing chemistry can actually HURT your long-term relationship chances, you need to read all of the blog posts below.">Chemistry</a>
+</li>
+	<li class="cat-item cat-item-1250"><a href="http://www.evanmarckatz.com/blog/category/understanding-men/" title="I don’t speak for all men. But I try to speak for the most desirable ones: smart, successful, confident, driven, honest, experienced, sensitive, and marriage-oriented. If you want to be in a relationship with a man like that, please read every single post below to get a better sense of how we think. Knowledge is power.">Understanding Men</a>
+</li>
+	<li class="cat-item cat-item-1242"><a href="http://www.evanmarckatz.com/blog/category/communication/" title="I know you think you’re probably a great communicator. Think again. Most women are either sabotaged by oversharing your thoughts, not fully accepting your man for who he is, or by pressuring him to be someone he’s not. If you’ve done any of these things, my posts on communication are for you.">Communication</a>
+</li>
+	<li class="cat-item cat-item-716"><a href="http://www.evanmarckatz.com/blog/category/flirting/" title="I can’t tell you how many smart, strong, successful women tell me that they were born without the flirting gene! It doesn’t have to be this way. Flirting comes from confidence, experience, and self-awareness, and if you struggle to attract your ideal man, you would be well served to check out my posts on the art of flirting and attraction.">Flirting</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://www.evanmarckatz.com/blog/category/online-dating-tips-advice/" title="Did you know that nearly 1/5 of all marriages start from online dating? Did you know that I wrote a bestselling book about online dating and have written more profiles than anyone in the world? Did you know that if you’ve tried online dating and hated it, that there are a hundred things you can do better to attract more men and higher quality men? Click the below articles to learn more.">Online Dating</a>
+</li>
+	<li class="cat-item cat-item-715"><a href="http://www.evanmarckatz.com/blog/category/cheating/" title="I’ll admit; I’m no expert on infidelity. I’m happily married and have never cheated on a girlfriend in my entire life. But if you’re plagued by jealousy, trust issues, or insecurities brought on by unfaithful men, you need to learn how to choose a loyal, trustworthy partner. If you can’t trust your boyfriend, he shouldn’t be your boyfriend. See below what you should and should not accept from your partner.">Cheating</a>
+</li>
+	<li class="cat-item cat-item-1247"><a href="http://www.evanmarckatz.com/blog/category/letting-go/" title="If you’ve been ignored online, dated a series of players and disappearing acts, and wasted months and years on non-committal men, it’s no surprise that you’re feeling down about love. However, the only way to find a healthy relationship is to let go of the past, date frequently, and carry yourself with joy and confidence. Please, read the blog posts below, and remember: the next man has nothing to do with the last man who broke your heart.">Letting Go</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://www.evanmarckatz.com/blog/category/sex/" title="“Men look for sex and find love.” If you disagree, you still don’t understand how sex is the primary driver for men. Essentially, men fall for you during the process of pursuing sex with you. Which means that if you have sex before you get into a relationship with him, you’re taking a predictably high risk that things aren’t going to work out. Click below to understand how men think about sex; you will be forever empowered. ">Sex</a>
+</li>
+	<li class="cat-item cat-item-1189"><a href="http://www.evanmarckatz.com/blog/category/marriage/" title="Far from a dying institution, over 95% of people eventually get married. Yes, the divorce rate is close to 40%. Yes, people marry later in life. But if you are a college educated woman over the age of 30, you are extremely likely to find a man who will marry you, cherish you and stay with you for life. You just have to know how to choose wisely. Click below to see how I can help you on your journey to wedded bliss. ">Marriage</a>
+</li>
+		</ul>
+</aside><aside id="twitter_profile-3" class="widget widget_twitter_profile"><h3 class="widget-title">Twitter Live Feed</h3><div class="twitter-feed"><a class="twitter-timeline"  href="https://twitter.com/evanmarckatz"  data-widget-id="349206251441364993" data-tweet-limit="3" data-chrome="noheader nofooter noscrollbar" data-border-color="#f2f2f2" data-link-color="#0e9dae">Loading Tweets by @evanmarckatz…</a></div></aside><aside id="fblikebox_widget-3" class="widget widget_fblikebox_widget"><div class="fb-wrap"><div class="fb-like-box" data-href="https://www.facebook.com/pages/Evan-Marc-Katz-Americas-Leading-Dating-Expert/23002636685" data-width="304" data-height="300"data-show-faces="true" data-show-border="false" data-stream="false"data-header="true"style="width:304px; height:300px;"></div></div></aside><aside id="custom_recent_comments-3" class="widget widget_custom_recent_comments"><h3 class="widget-title">You Said</h3><ul><li class="recent-comment-excerpt"><img alt='' src='http://0.gravatar.com/avatar/95cb141caa90f1fe1180cb62bb419b1f?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/95cb141caa90f1fe1180cb62bb419b1f?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/communication/my-boyfriend-shares-an-apartment-with-his-ex-but-says-its-platonic-should-i-be-worried/comment-page-3/#comment-5793681">"All this would sound okay if he was happy for you to meet his ex. The fact he doesn't want her to meet you rings alarm bells. A good friend of mine was living with her boyfriend for several years and…"<br /><span class="author">Starbuck84</span> on <span class="title"><em>My Boyfriend Shares An Apartment With His Ex But Says It’s Platonic. Should I Be Worried?</em></span></a></li><li class="recent-comment-excerpt"><img alt='' src='http://0.gravatar.com/avatar/3c6669d0fe2a35b6173572843a812228?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/3c6669d0fe2a35b6173572843a812228?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-would-a-younger-woman-want-to-date-a-much-older-man/comment-page-13/#comment-5793137">"Ah.  The May-December argument.  Trying to make logic out of a feeling. I think that there are no rules for who we we become enamored with.
+I'm 27, a college grad, I own my own home, have a nest eg…"<br /><span class="author">Victoria</span> on <span class="title"><em>Why Would a Younger Woman Want to Date a Much Older Man?</em></span></a></li><li class="recent-comment-excerpt"><img alt='' src='http://1.gravatar.com/avatar/d3d7873373d134dffc49734967ba1c28?s=50&#038;d=mm&#038;r=r' srcset='http://1.gravatar.com/avatar/d3d7873373d134dffc49734967ba1c28?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/chemistry/how-do-you-know-when-its-right-its-not-what-you-think/comment-page-1/#comment-5792932">"I met a man online. The first date was nothing to write home about, he's nice but rather frumpy..but a great smile and amazing eyes. Even though there was no chemistry to speak of on the first date I…"<br /><span class="author">lisa</span> on <span class="title"><em>How Do You Know When It’s “Right?” It’s Not What You Think…</em></span></a></li><li class="recent-comment-excerpt"><img alt='' src='http://2.gravatar.com/avatar/216e4c7eff5b4a921c7086ffe70753f1?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/216e4c7eff5b4a921c7086ffe70753f1?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/am-i-too-old-to-have-success-in-online-dating/comment-page-1/#comment-5792705">"I have the same observation. Andrew.  For awhile I was amazed at women's profiles with their shopping list of demands ("don't contact me if...you must be blah blah blah....""with no statement of what…"<br /><span class="author">Jay</span> on <span class="title"><em>Am I Too Old to Have Success in Online Dating?</em></span></a></li><li class="recent-comment-excerpt"><img alt='' src='http://2.gravatar.com/avatar/b0baaab8088d415751d2ba82a2bf9e07?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/b0baaab8088d415751d2ba82a2bf9e07?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/letting-go/my-boyfriend-of-7-years-doesnt-want-to-move-in-or-get-married-what-should-i-do/comment-page-10/#comment-5792655">"Just wondering if she has ever asked the boyfriend if he would like to lose his fears and speak to someone( maybe a pastor)?  I know of a few men who said NEVER but are now married because they chang…"<br /><span class="author">Kelli</span> on <span class="title"><em>My Boyfriend of 7 Years Doesn’t Want to Move In or Get Married. What Should I Do?</em></span></a></li><li class="recent-comment-excerpt"><img alt='' src='http://2.gravatar.com/avatar/bbcb8a8f62e5da5985f7d4995cf95fd5?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/bbcb8a8f62e5da5985f7d4995cf95fd5?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/how-long-should-i-wait-for-him-to-commit-to-me/comment-page-5/#comment-5791374">"the truth is most men don't want to be in committed relationships. we want our freedom.…"<br /><span class="author">Spider</span> on <span class="title"><em>How Long Should I Wait for Him to Commit to Me?</em></span></a></li><li class="recent-comment-excerpt"><img alt='' src='http://0.gravatar.com/avatar/0268a29cde7a1f59816c47648a0ac31d?s=50&#038;d=mm&#038;r=r' srcset='http://0.gravatar.com/avatar/0268a29cde7a1f59816c47648a0ac31d?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/2-tests-to-determine-if-hes-worthy-of-being-your-boyfriend/comment-page-1/#comment-5791372">"Betsey, wonderful, humanistic approach to this "problem." Thank you for injecting a valuable different opinion. I sat reading the rest of the posts with cartoonish slack jaw. Frankly, I wouldn't want…"<br /><span class="author">Efraim</span> on <span class="title"><em>2 Tests to Determine if He’s Worthy Of Being Your Boyfriend</em></span></a></li><li class="recent-comment-excerpt"><img alt='' src='http://2.gravatar.com/avatar/bbcb8a8f62e5da5985f7d4995cf95fd5?s=50&#038;d=mm&#038;r=r' srcset='http://2.gravatar.com/avatar/bbcb8a8f62e5da5985f7d4995cf95fd5?s=100&amp;d=mm&amp;r=r 2x' class='avatar avatar-50 photo' height='50' width='50' /><a href="http://www.evanmarckatz.com/blog/sex/why-women-should-make-men-wait-for-sex/comment-page-4/#comment-5791342">"it's just this simple. if a man is dating a woman and not having sex with her, he is getting or trying to get it else where. a man will continue to see a woman that he is not having sex with if she ha…"<br /><span class="author">Spider</span> on <span class="title"><em>Why Women Should Make Men Wait For Sex</em></span></a></li></ul></aside>			<div class="clear"></div>
+		</div><!-- #secondary -->
+	
+</div>
+</div><!-- #container -->
+
+<div class='yarpp-related'>
+
+	<div class="heading-hand"><h2><span class="text">Recommended for You</span><img src="http://www.evanmarckatz.com/blog/wp-content/themes/emk/images/hand/recommended-for-you.png" alt="Recommended for You" /></h2></div>	<div class="block-full related-posts">
+		<div class="three-columns">
+			<ol>
+																	<li class="box">
+						<header>
+							<div class="post-thumbnail"><div class="category-image cat-dating-tips-advice"></div></div>
+							<h3 class="post-title">
+								<a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-would-he-choose-religion-over-me/" title="Permalink to Why Would a Person Choose Religion Over Me?" rel="bookmark">Why Would a Person Choose Religion Over Me?</a>
+							</h3>
+						</header> 
+						<p>Dear Evan, Have you ever dated someone who was really religious and he/she chose religion over you? The thing is, I&#8217;m not of any religion, but I&#8217;m pretty open-minded. Someone&hellip;</p>
+						<a href="http://www.evanmarckatz.com/blog/dating-tips-advice/why-would-he-choose-religion-over-me/" title="Permalink to Why Would a Person Choose Religion Over Me?" class="button button-small read-more-link" rel="bookmark">Read More…</a>
+											</li>
+																		<li class="box">
+						<header>
+							<div class="post-thumbnail"><img width="400" height="267" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2008/02/Blog-pic-woman-baseball-5292291.jpg" class="attachment-400x9999" alt="Why Do I Hit Home Runs in Person Yet Strike Out Online?" /></div>
+							<h3 class="post-title">
+								<a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/why-do-i-do-well-in-real-life-but-strike-out-in-online-dating/" title="Permalink to Why Do I Hit Home Runs in Person Yet Strike Out Online?" rel="bookmark">Why Do I Hit Home Runs in Person Yet Strike Out Online?</a>
+							</h3>
+						</header> 
+						<p>I’m 32, recently single and am looking forward to being back in the dating scene. I’ve tried the major online dating site in the past using a three month subscription.&hellip;</p>
+						<a href="http://www.evanmarckatz.com/blog/online-dating-tips-advice/why-do-i-do-well-in-real-life-but-strike-out-in-online-dating/" title="Permalink to Why Do I Hit Home Runs in Person Yet Strike Out Online?" class="button button-small read-more-link" rel="bookmark">Read More…</a>
+											</li>
+																		<li class="box">
+						<header>
+							<div class="post-thumbnail"><img width="400" height="267" src="http://www.evanmarckatz.com/blog/wp-content/uploads/2010/12/When-did-guys-lose-the-power-xsmall.jpg" class="attachment-400x9999" alt="Stop working" /></div>
+							<h3 class="post-title">
+								<a href="http://www.evanmarckatz.com/blog/dating-tips-advice/when-did-guys-lose-all-the-power-in-dating/" title="Permalink to When Did Guys Lose All The Power In Dating?" rel="bookmark">When Did Guys Lose All The Power In Dating?</a>
+							</h3>
+						</header> 
+						<p>Dear Evan, I&#8217;ve been reading your blog for a long time now and most of the comments are great to read as well. The one thing that bothers me a&hellip;</p>
+						<a href="http://www.evanmarckatz.com/blog/dating-tips-advice/when-did-guys-lose-all-the-power-in-dating/" title="Permalink to When Did Guys Lose All The Power In Dating?" class="button button-small read-more-link" rel="bookmark">Read More…</a>
+											</li>
+																</ol>
+		</div>
+	</div>
+</div>
+
+<div id="bottom-testimonials"><div class="heading-hand"><h3><span class="text">Happy Clients</span><img src="http://www.evanmarckatz.com/blog/wp-content/themes/emk/images/hand/happy-clients.png" alt="Happy Clients" /></h3></div><script src="http://www.evanmarckatz.com/blog/wp-includes/js/jquery/jquery.js"></script><div class="testimonial-slides"><ul class="rslides"><li class="testimonial box"><div class="testimonial-image"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/2013/06/KarenM.jpg" alt="Karen M." /></div><div class="testimonial-content"><h4 class="testimonial-quote">&quot;I have read it 10 times already, and keep revisiting it every time I begin to even hint at a moment’s insecurity.&quot;</h4><p>Brilliant! Once you understand where men are coming from, which I would not have been able to do without the help of "Why He Disappeared," it is very simple!  I have never felt so relaxed around him, he knows this and wants to spend more time with me. His choice!</p><footer>Karen M.</footer></div></li><li class="testimonial box"><div class="testimonial-image"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/2013/06/ConnieD.jpg" alt="Connie D." /></div><div class="testimonial-content"><h4 class="testimonial-quote">&quot;Give the guy a chance to prove he might have what you need for a satisfying relationship.&quot;</h4><p>I am a firm believer in dating at least 4 seasons and we are already in our 3rd season of love. We have discussed marriage and will revisit the idea this October.</p><footer>Connie D.</footer></div></li><li class="testimonial box"><div class="testimonial-image"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/2013/06/MarieN.jpg" alt="Marie N." /></div><div class="testimonial-content"><h4 class="testimonial-quote">&quot;I was able to learn from others’ experiences without having to go through all of it myself.  That’s why the Inner Circle was invaluable.&quot;</h4><p>I went from being unsure and inexperienced to having a great boyfriend who adores me and treats me really well and is now actively thinking and talking about marriage and kids.</p><footer>Marie N.</footer></div></li><li class="testimonial box"><div class="testimonial-image"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/2013/06/CathyC.jpg" alt="Cathy C." /></div><div class="testimonial-content"><h4 class="testimonial-quote">&quot;Thank you for what you do, Evan.&quot;</h4><p>Here's the deal.  I read your blog - I devour your newsletters.  I've learned so much about men (and myself) through the process. </p><footer>Cathy C.</footer></div></li><li class="testimonial box"><div class="testimonial-image"><img src="http://www.evanmarckatz.com/blog/wp-content/uploads/2013/06/LisaR.jpg" alt="Lisa R." /></div><div class="testimonial-content"><h4 class="testimonial-quote">&quot;After reading Evan’s material. I enjoyed my dates and I learned to trust my feelings and instincts more.&quot;</h4><p>He is everything I never knew I always wanted. He is kind and caring, with wonderful values. He makes me feel like the most special woman in the world.  I never have to wonder how he feels about me, I KNOW.</p><footer>Lisa R.</footer></div></li></ul><div class="clear"></div></div></div>
+
+	
+	<footer id="main-footer">
+		<nav  id="footer-nav">
+			<div>
+				<div id="social-nav"><ul class="menu"><li class="facebook menu-item menu-item-type-custom menu-item-object-custom menu-item-16581"><a target="_blank" rel="external" href="https://www.facebook.com/pages/Evan-Marc-Katz-Americas-Leading-Dating-Expert/23002636685">Facebook</a></li>
+<li class="twitter menu-item menu-item-type-custom menu-item-object-custom menu-item-16582"><a target="_blank" rel="external" href="http://twitter.com/evanmarckatz">Twitter</a></li>
+<li class="google menu-item menu-item-type-custom menu-item-object-custom menu-item-16583"><a target="_blank" rel="external" href="https://plus.google.com/u/0/+evanmarckatz/posts">Google+</a></li>
+<li class="youtube menu-item menu-item-type-custom menu-item-object-custom menu-item-16584"><a target="_blank" rel="external" href="http://www.youtube.com/user/EvanMarcKatz">YouTube</a></li>
+<li class="rss menu-item menu-item-type-custom menu-item-object-custom menu-item-16585"><a target="_blank" href="/feed/atom/">RSS Feed</a></li>
+</ul></div>						<ul id="quicklinks-mobile" class="menu"><li id="menu-item-16596" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16596"><a href="http://www.evanmarckatz.com/products/">Products</a></li>
+<li id="menu-item-16597" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16597"><a href="http://www.evanmarckatz.com/coaching/">Coaching</a></li>
+<li id="menu-item-16598" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-16598"><a href="http://www.evanmarckatz.com/blog/">Explore the Blog</a></li>
+<li id="menu-item-16599" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16599"><a href="http://www.evanmarckatz.com/free-advice/">Free Dating Advice</a></li>
+<li id="menu-item-16600" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16600"><a href="http://www.evanmarckatz.com/success-stories/">Success Stories</a></li>
+<li id="menu-item-16601" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16601"><a href="http://www.evanmarckatz.com/about-evan-marc-katz/">About Evan Marc Katz</a></li>
+</ul>			</div>
+		</nav>
+		
+		<nav id="quicklinks">
+			<ul>
+				<li id="nav_menu-3" class="quicklink widget_nav_menu"><div class="menu-quicklinks-left-container"><ul id="menu-quicklinks-left" class="menu"><li id="menu-item-16588" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-16588"><a href="http://www.evanmarckatz.com/products/">Products</a>
+<ul class="sub-menu">
+	<li id="menu-item-17283" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17283"><a href="http://www.evanmarckatz.com/products/why-he-disappeared/">Why He Disappeared</a></li>
+	<li id="menu-item-17281" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17281"><a href="http://www.evanmarckatz.com/products/finding-the-one-online/">Finding The One Online</a></li>
+	<li id="menu-item-16589" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16589"><a target="_blank" rel="external" href="http://www.e-cyrano.com/">e-Cyrano Online Dating Profile Writing</a></li>
+</ul>
+</li>
+<li id="menu-item-16590" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-16590"><a href="http://www.evanmarckatz.com/coaching/">Coaching</a>
+<ul class="sub-menu">
+	<li id="menu-item-25463" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25463"><a href="http://www.evanmarckatz.com/coaching/2015-coaching-options/">2015 Coaching Options</a></li>
+</ul>
+</li>
+<li id="menu-item-16595" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16595"><a href="http://www.evanmarckatz.com/success-stories/">Success Stories</a></li>
+</ul></div></li>	
+			</ul>	
+			<ul>
+				<li id="categories-3" class="quicklink widget_categories"><h4 class="quicklink-title">Explore the Blog</h4>		<ul>
+	<li class="cat-item cat-item-6"><a href="http://www.evanmarckatz.com/blog/category/dating-tips-advice/" title="You may think dating is a dirty word. Not when you do it my way. If you’ve ever struggled with attracting the “right” guys, getting second dates, or turning a hook-up into a boyfriend, my blog posts on dating will show you how to stop making the mistakes that have plagued you for your whole life.">Dating</a>
+</li>
+	<li class="cat-item cat-item-1241"><a href="http://www.evanmarckatz.com/blog/category/chemistry/" title="Passion. Lust. Chemistry. No matter what you call it, it’s one of the most intoxicating forces on the planet. But if you don’t understand how amazing chemistry can actually HURT your long-term relationship chances, you need to read all of the blog posts below.">Chemistry</a>
+</li>
+	<li class="cat-item cat-item-1250"><a href="http://www.evanmarckatz.com/blog/category/understanding-men/" title="I don’t speak for all men. But I try to speak for the most desirable ones: smart, successful, confident, driven, honest, experienced, sensitive, and marriage-oriented. If you want to be in a relationship with a man like that, please read every single post below to get a better sense of how we think. Knowledge is power.">Understanding Men</a>
+</li>
+	<li class="cat-item cat-item-1242"><a href="http://www.evanmarckatz.com/blog/category/communication/" title="I know you think you’re probably a great communicator. Think again. Most women are either sabotaged by oversharing your thoughts, not fully accepting your man for who he is, or by pressuring him to be someone he’s not. If you’ve done any of these things, my posts on communication are for you.">Communication</a>
+</li>
+	<li class="cat-item cat-item-716"><a href="http://www.evanmarckatz.com/blog/category/flirting/" title="I can’t tell you how many smart, strong, successful women tell me that they were born without the flirting gene! It doesn’t have to be this way. Flirting comes from confidence, experience, and self-awareness, and if you struggle to attract your ideal man, you would be well served to check out my posts on the art of flirting and attraction.">Flirting</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://www.evanmarckatz.com/blog/category/online-dating-tips-advice/" title="Did you know that nearly 1/5 of all marriages start from online dating? Did you know that I wrote a bestselling book about online dating and have written more profiles than anyone in the world? Did you know that if you’ve tried online dating and hated it, that there are a hundred things you can do better to attract more men and higher quality men? Click the below articles to learn more.">Online Dating</a>
+</li>
+	<li class="cat-item cat-item-715"><a href="http://www.evanmarckatz.com/blog/category/cheating/" title="I’ll admit; I’m no expert on infidelity. I’m happily married and have never cheated on a girlfriend in my entire life. But if you’re plagued by jealousy, trust issues, or insecurities brought on by unfaithful men, you need to learn how to choose a loyal, trustworthy partner. If you can’t trust your boyfriend, he shouldn’t be your boyfriend. See below what you should and should not accept from your partner.">Cheating</a>
+</li>
+	<li class="cat-item cat-item-1247"><a href="http://www.evanmarckatz.com/blog/category/letting-go/" title="If you’ve been ignored online, dated a series of players and disappearing acts, and wasted months and years on non-committal men, it’s no surprise that you’re feeling down about love. However, the only way to find a healthy relationship is to let go of the past, date frequently, and carry yourself with joy and confidence. Please, read the blog posts below, and remember: the next man has nothing to do with the last man who broke your heart.">Letting Go</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://www.evanmarckatz.com/blog/category/sex/" title="“Men look for sex and find love.” If you disagree, you still don’t understand how sex is the primary driver for men. Essentially, men fall for you during the process of pursuing sex with you. Which means that if you have sex before you get into a relationship with him, you’re taking a predictably high risk that things aren’t going to work out. Click below to understand how men think about sex; you will be forever empowered. ">Sex</a>
+</li>
+	<li class="cat-item cat-item-1189"><a href="http://www.evanmarckatz.com/blog/category/marriage/" title="Far from a dying institution, over 95% of people eventually get married. Yes, the divorce rate is close to 40%. Yes, people marry later in life. But if you are a college educated woman over the age of 30, you are extremely likely to find a man who will marry you, cherish you and stay with you for life. You just have to know how to choose wisely. Click below to see how I can help you on your journey to wedded bliss. ">Marriage</a>
+</li>
+		</ul>
+</li>	
+			</ul>	
+			<ul>
+						<li id="recent-posts-5" class="quicklink widget_recent_entries">		<h4 class="quicklink-title">Recent Posts</h4>		<ul>
+					<li>
+				<a href="http://www.evanmarckatz.com/blog/uncategorized/times-up-by-the-end-of-the-day-youll-be-losing-this/">Time’s Up. By the End Of the Day, You’ll Be Losing This…</a>
+						</li>
+					<li>
+				<a href="http://www.evanmarckatz.com/blog/uncategorized/your-time-your-money-your-happiness-and-your-questions-answered/">Your Time, Your Money, Your Happiness, and Your Questions Answered</a>
+						</li>
+					<li>
+				<a href="http://www.evanmarckatz.com/blog/uncategorized/the-biggest-lie-ever-perpetrated-by-parents-couples-and-self-help-gurus/">The Biggest Lie Ever Perpetrated by Parents, Couples and Self-Help Gurus</a>
+						</li>
+					<li>
+				<a href="http://www.evanmarckatz.com/blog/uncategorized/my-memorial-day-gift-to-you/">My Memorial Day Gift to You!</a>
+						</li>
+					<li>
+				<a href="http://www.evanmarckatz.com/blog/uncategorized/encore-presentation-how-you-can-stop-wasting-time-on-the-wrong-men-and-finally-choose-your-husband/">(Encore Presentation!) How You Can Stop Wasting Time on the Wrong Men and Finally Choose Your Husband.</a>
+						</li>
+					<li>
+				<a href="http://www.evanmarckatz.com/blog/uncategorized/warning-your-live-webinar-how-to-stop-wasting-time-on-the-wrong-men-and-finally-choose-your-husband-is-starting-in-3-2-1/">(WARNING) Your Live Webinar “How to Stop Wasting Time on the Wrong Men and Finally Choose Your Husband.” Is Starting In 3, 2, 1…</a>
+						</li>
+				</ul>
+		</li>	
+			</ul>					
+		</nav>
+
+
+		<section class="site-info" role="contentinfo">
+          
+            <div class="site-title"><a href="http://www.evanmarckatz.com/" title="Dating Coach &#8211; Evan Marc Katz | Understand Men. Find Love." rel="home">Dating Coach &#8211; Evan Marc Katz | Understand Men. Find Love.</a></div>
+            
+			<div class="site-description">Understand Men. Find Love.</div>
+
+  
+<ul id="menu-footer-menu" class="menu"><li id="menu-item-16586" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16586"><span class="delimiter">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="http://www.evanmarckatz.com/sitemap/">Site Map</a></li>
+<li id="menu-item-19738" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19738"><span class="delimiter">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="http://www.evanmarckatz.com/privacy-policy/">Privacy Policy</a></li>
+<li id="menu-item-19739" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19739"><span class="delimiter">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="http://www.evanmarckatz.com/terms-of-use/">Terms of Use</a></li>
+<li id="menu-item-23470" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23470"><span class="delimiter">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="http://www.evanmarckatz.com/partner-program/get-started/">Partner Program</a></li>
+<li id="menu-item-16587" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16587"><span class="delimiter">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="http://www.evanmarckatz.com/contact/">Contact</a></li>
+</ul>	
+			<div id="lym-credit">
+            Powered by <a href="http://www.everythingwebbased.com/" rel="nofollow">Everything Web Based</a></div>					
+			<div class="copyright">&copy; 2015 Dating Coach &#8211; Evan Marc Katz | Understand Men. Find Love.</div>
+		</section><!-- .site-info -->
+
+	</footer><!-- #main-footer -->
+</section><!-- #wrapper -->
+
+<script type="text/javascript">
+var iworks_upprev = { animation: 'flyout', position: 'right', offset_percent: 75, offset_element: '#comments', css_width: 360, css_side: 5, compare: 'simple', url_new_window: 0, ga_track_views: 1, ga_track_clicks: 1, ga_opt_noninteraction: 1, title: 'You Didn&#8217;t Lose The Person You Thought You Lost' };
+</script>
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-content/plugins/akismet/_inc/form.js?ver=3.1.1'></script>
+<link rel='stylesheet' id='yarppRelatedCss-css'  href='http://www.evanmarckatz.com/blog/wp-content/plugins/yet-another-related-posts-plugin/style/related.css?ver=4.2.2' type='text/css' media='all' />
+<script type='text/javascript' src='http://www.evanmarckatz.com/blog/wp-content/plugins/tabber-tabs-widget/js/tabber-minimized.js?ver=4.2.2'></script>
+<div id="upprev_box"><h6>Read previous post:</h6><div class="upprev_excerpt"><h5><a href="http://www.evanmarckatz.com/blog/dating-tips-advice/how-do-i-date-after-my-divorce-if-i-think-all-women-are-gold-diggers/" rel="You Didn&#8217;t Lose The Person You Thought You Lost">How Do I Date After My Divorce If I Think All Women Are Gold Diggers?</a></h5><p>Evan - First, I'd like to thank you and everyone who posts on your blog. Now that I'm back in...</p></div><a id="upprev_close" href="#" rel="close">Close</a></div>
+<!--<script async="async">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>-->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>   
+<script src="https://apis.google.com/js/platform.js" async defer></script>       
+
+<script async="async" type="text/javascript" src="http://www.evanmarckatz.com/blog/wp-content/themes/emk/js/pint.js" data-pin-hover="true" ></script>
+
+
+<script>
+var timeOut = 10000;
+</script>
+<script   src="http://www.evanmarckatz.com/blog/wp-content/themes/emk/js/theme_scripts.js"></script>
+
+<script>
+</script>
+ 
+<script>jQuery(document).ready(function(){ jQuery('.nolabel input').addPlaceholder();});</script>
+
+
+<!-- script to remove affiliate ends here -->
+<script language="javascript">
+jQuery(document).ready(function(){
+	jQuery('#menu-item-20662').remove();
+		});
+</script>
+<!-- script ends here -->
+<style type="text/css">
+/*.sb-horizontal .sb-fb {
+	width: 140px;
+}*/
+.sb-horizontal .sb-fb-share, .sb-horizontal .sb-fb {
+	width: 90px;
+}.sb-horizontal .sb-fb-share{
+margin-top: -3px;}
+.sb-horizontal .sb-pi {
+	width: 60px;
+}
+.sb-horizontal .sb-g1{width: 70px !important}
+.post.box .sb-horizontal .sb-fb-share{margin-top: 0px}
+#sb-container .sb-vertical .sb-fb-share{ margin-bottom:8px}
+#sb-container .sb-vertical .sb-fb-share span{ vertical-align:inherit}
+/*@media screen and (min-width: 320px) and (max-width: 400px) {
+	#sb-container .sb-vertical .pi{ display:block; margin-top:38px}
+	}*/
+	
+</style>
+<script>
+
+function globalIframePopCss () {
+	 	 var styles = jQuery('#popdom_iframe').attr('style');
+		styles = styles+";max-height:53px !important;min-height:53px !important;";
+		jQuery('#popdom_iframe').attr('style' ,styles);
+}
+function applyResponsiveChange() {
+	
+	if (jQuery( window ).width() >= 320 && jQuery( window ).width() <= 480  && jQuery('#popdom_iframe').length > 0) {
+	  
+		var styles = jQuery('#popdom_iframe').attr('style');
+		styles = styles+";max-height:70px !important; min-height:70px !important;";
+				
+		jQuery('#popdom_iframe').attr('style' ,styles);
+	} 
+	else if (jQuery( window ).width() >= 481 && jQuery( window ).width() <= 768  && jQuery('#popdom_iframe').length > 0) {
+	  
+		var styles = jQuery('#popdom_iframe').attr('style');
+		styles = styles+";max-height:61px !important; min-height:61px !important;";
+				
+		jQuery('#popdom_iframe').attr('style' ,styles);
+	}
+	else if(jQuery('#popdom_iframe').length > 0) {
+	 
+		globalIframePopCss(); 
+	}
+
+}
+
+
+</script>
+
+
+<script>
+
+function globalIframePopCss2 () {
+	 	 var styles = jQuery('#pdifr').attr('style');
+		styles = styles+";max-height:53px !important;min-height:64px !important;";
+		jQuery('#pdifr').attr('style' ,styles);
+}
+function applyResponsiveChange2() {
+	
+	if (jQuery( window ).width() >= 320 && jQuery( window ).width() <= 480  && jQuery('#pdifr').length > 0) {
+	  
+		var styles = jQuery('#pdifr').attr('style');
+		styles = styles+";max-height:70px !important; min-height:70px !important;";
+		 
+			styles = styles+";max-height:53px !important;min-height:64px !important;";
+		 
+		jQuery('#pdifr').attr('style' ,styles);
+	} 
+	else if (jQuery( window ).width() >= 481 && jQuery( window ).width() <= 768  && jQuery('#pdifr').length > 0) {
+	  
+		var styles = jQuery('#pdifr').attr('style');
+		styles = styles+";max-height:61px !important; min-height:61px !important;";
+		 
+			styles = styles+";max-height:53px !important;min-height:64px !important;";
+		 
+		jQuery('#pdifr').attr('style' ,styles);
+	}
+	else if(jQuery('#pdifr').length > 0) {
+	 
+		globalIframePopCss2(); 
+	}
+
+}
+document.addEventListener("DOMNodeInserted", function(event) {	 
+	if (event.target.nodeName=="IFRAME" && event.target.id=="pdifr") { 
+		globalIframePopCss2(); 	 
+	}
+});
+jQuery( window ).resize(function() {
+	applyResponsiveChange2();
+});
+jQuery(document).ready(function() {
+	applyResponsiveChange2();
+});
+</script>
+
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"56f52432a9","applicationID":"3248734","transactionName":"ZlZTYUBRDUBQVkUMVl8ccFZGWQxdHkZYC15dVg==","queueTime":0,"applicationTime":1788,"atts":"ShFQFwhLHk4=","errorBeacon":"bam.nr-data.net","agent":"js-agent.newrelic.com\/nr-632.min.js"}</script></body>
+</html>
+
+<!-- Performance optimized by W3 Total Cache. Learn more: http://www.w3-edge.com/wordpress-plugins/
+
+Object Caching 6667/7735 objects using disk
+
+ Served from: www.evanmarckatz.com @ 2015-05-31 15:20:31 by W3 Total Cache -->

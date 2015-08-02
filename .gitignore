@@ -11,3 +11,4 @@ __pycache__/
 /lib/
 /pip-selfcheck.json
 comments/
+sky/legacy/tests/

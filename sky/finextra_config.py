@@ -1,12 +1,13 @@
 try:
     from .configs import DEFAULT_CRAWL_CONFIG
-    from .index import Index
+    from .scraper import Scrape
     from .helper import *
 except:
     from configs import DEFAULT_CRAWL_CONFIG
-    from index import Index 
+    from scraper import Scrape 
     from helper import *
-        
+
+from sky.crawler import crawl
 
 # Crawling 
 CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG
@@ -42,21 +43,18 @@ CRAWL_CONFIG.update({
     'max_workers' : 10,
 })
 
-import sys
-sys.path.append('./crawler')
-import crawl
 crawl.start(CRAWL_CONFIG)
 
-# Indexing
+# Scrapeing
 
-INDEX_CONFIG = CRAWL_CONFIG.copy()
+SCRAPE_CONFIG = CRAWL_CONFIG.copy()
 
-INDEX_CONFIG.update({ 
+SCRAPE_CONFIG.update({ 
     'template_proportion' : 0.09,
     'max_templates' : 1000
 })
 
-skindex = Index(INDEX_CONFIG)
+skindex = Scrape(SCRAPE_CONFIG)
 
 res= skindex.process_all(remove_visuals = True)
 

@@ -83,6 +83,7 @@ class Crawler:
         self.max_saved_responses = int(self.max_saved_responses)
         self.max_workers = min(int(self.max_workers), self.max_saved_responses)    
         self.max_tries_per_url = int(self.max_tries_per_url)
+        self.max_redirects_per_url = int(self.max_redirects_per_url)
         self.max_hops = int(self.max_hops)
         self.q = JoinablePriorityQueue(loop = self.loop)
         self.seen_urls = set()
@@ -206,7 +207,7 @@ class Crawler:
     def fetch(self, prio, url, max_redirects_per_url): 
         """Fetch one URL."""
         # Using max_workers since they are not being quit
-        if self.num_saved_responses >= self.max_saved_responses:
+        if self.num_saved_responses >= self.max_saved_responses: 
             return
         tries = 0
         exception = None
@@ -242,6 +243,7 @@ class Crawler:
                                                  encoding=None,
                                                  num_urls=0,
                                                  num_new_urls=0))
+            response.close()
             return
 
         if is_redirect(response):
@@ -258,6 +260,7 @@ class Crawler:
                                                  num_new_urls=0))
 
             if next_url in self.seen_urls:
+                response.close()
                 return
             if max_redirects_per_url > 0:
                 LOGGER.info('redirect to %r from %r', next_url, url)
@@ -274,7 +277,7 @@ class Crawler:
                 prio = bad - good # lower is better
                 self.q.put_nowait((prio, link, self.max_redirects_per_url))
             self.seen_urls.update(links)
-
+        response.close()
 
     @asyncio.coroutine
     def work(self):
