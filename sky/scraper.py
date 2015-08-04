@@ -29,10 +29,12 @@ try:
     from .get_date import get_dates
     from .get_author import get_author
     from .links import get_sorted_links
+    from .language import get_language
+    from .images import get_images
 except SystemError: 
     from helper import * 
-    from findTitle import getRuleTitle
     from remove_boilerplate import DomainNodesDict
+    from findTitle import getRuleTitle 
     from get_date import get_dates
     from get_author import get_author
     from links import get_sorted_links
@@ -78,12 +80,6 @@ class Scrape():
     def load_local_pages(self): 
         saved_html_dir = os.path.join(self.collections_path, self.collection_name)
         for _, _, files in os.walk(saved_html_dir):
-
-    # This will have to be changed into the database variant    
-    def load_pages(self): 
-        saved_html_dir = os.path.join(self.collections_path, self.collection_name)
-        for root, _, files in os.walk(saved_html_dir):
-
             for name in files:
                 if not name.startswith('.DS_'):
                     with open(os.path.join(saved_html_dir, name)) as f:
