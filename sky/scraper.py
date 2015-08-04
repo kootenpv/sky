@@ -14,11 +14,13 @@ try:
     from .dbpedia import load_dbpedia
     from .dbpedia import get_dbpedia_from_words
     from .language import get_language
+    from .images import get_images
 except SystemError:
     from money import MoneyMatcher
     from dbpedia import load_dbpedia
     from dbpedia import get_dbpedia_from_words
     from language import get_language
+    from images import get_images
     
 # dbpedia = load_dbpedia()
 
@@ -286,3 +288,11 @@ class Scrape():
 # ind = Scrape(SCRAPE_CONFIG)
 
 # r = ind.process_all()
+
+
+
+
+
+
+
+

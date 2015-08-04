@@ -12,3 +12,4 @@ __pycache__/
 /pip-selfcheck.json
 comments/
 sky/legacy/tests/
+cloudant.*

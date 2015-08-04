@@ -170,26 +170,6 @@ def urlmatcher(url1, url2):
 def get_sorted_similar_urls(tree, url):
     return sorted(tree.xpath('//a/@href'), key = lambda x: (url != x, urlmatcher(url, x)), reverse = True)
 
-def get_images(tree, wrong_imgs = None): 
-    if wrong_imgs is None:
-        wrong_imgs = ['adsense', 'icon', 'logo', 'advert', 'toolbar', 'footer', 'layout', 'banner'] 
-    img_candidates = tree.xpath('//img[string-length(@src) > 3]')
-    img_candidates += tree.xpath('//meta[contains(@property, "image")]')
-    leftover = []
-    for img_candidate in img_candidates: 
-        if any([any([w in img_candidate.attrib[a] for w in wrong_imgs]) for a in img_candidate.attrib]):
-            continue
-        if img_candidate.tag == 'img':
-            try:
-                if 'height' in img_candidate.attrib and int(img_candidate.attrib['height']) < 25:
-                    continue 
-                if 'width' in img_candidate.attrib and int(img_candidate.attrib['width']) < 25:
-                    continue 
-            except ValueError: 
-                pass
-        leftover.append(img_candidate) 
-    return leftover
-
 def get_last_text_non_a_node(tree):
     for node in reversed(list(tree.iter())):
         if node.tag == 'a':

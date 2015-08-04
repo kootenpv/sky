@@ -76,8 +76,10 @@ class CrawlCloudantPlugin(CrawlPlugin):
         self.plugins = []
 
     def login(self):
-        USERNAME = '835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix'
-        PASSWORD = 'd7dee22ff32682d1cd3a26f8d8dc8c8e8eea602db2c446e5fa5fafb4ef66d75b'
+        with open('cloudant.username') as f:
+            USERNAME = f.read()    
+        with open('cloudant.password') as f:
+            PASSWORD = f.read() 
         account = cloudant.Account(USERNAME)
         account.login(USERNAME, PASSWORD)
         self.crawler_plugins_db = account.database('crawler-plugins') 
