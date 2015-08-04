@@ -1,3 +1,4 @@
+import os
 import json
 import translate
 
@@ -35,8 +36,10 @@ for a in answers:
 
 for a in bad:
     answers.pop(a)        
-    
-with open('/Users/pascal/GDrive/sky/sky/author_translation_table.json', 'w', encoding='utf8') as json_file:
+
+fname = os.path.join(os.path.dirname(__file__), 'author_translation_table.json')    
+
+with open(fname, 'w', encoding='utf8') as json_file:
     json.dump(answers, json_file, ensure_ascii=False)
 
     

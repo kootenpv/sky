@@ -9,8 +9,9 @@ try:
 except:
     from helper import *
 
+fname = os.path.join(os.path.dirname(__file__), 'date_translation_table.json')
 
-with open(os.path.join('/Users/pascal/GDrive/sky/sky/date_translation_table.json')) as f:
+with open(fname) as f:
     date_translation_table = json.load(f)
     uppered = {x.title() : date_translation_table[x] for x in date_translation_table}
     date_translation_table.update(uppered)

@@ -6,8 +6,10 @@ try:
     from .helper import *
 except:
     from helper import *
+    
+fname = os.path.join(os.path.dirname(__file__), 'author_translation_table.json')
 
-with open(os.path.join('/Users/pascal/GDrive/sky/sky/author_translation_table.json')) as f:
+with open(fname) as f:
     author_translation_table = json.load(f)
     uppered = {x.title() : author_translation_table[x] for x in author_translation_table}
     author_translation_table.update(uppered)

@@ -1,5 +1,11 @@
-from nltk.corpus import stopwords
+import os
 
+try:
+    from nltk.corpus import stopwords
+    stopset = set(stopwords.words('english'))    
+except ImportError: 
+    print("Cannot use dbpedia without 'pip install nltk'")
+    
 try:
     import ujson as json
 except ImportError:
@@ -37,7 +43,6 @@ def get_dbpedia_from_words(pos_tags, db_dict, ok_entities = None):
     return classes
 
 def load_dbpedia():
-    with open('/Users/pascal/GDrive/sky/sky/dbpedia.json') as f:
+    # looks for 'dbpedia.json'; sky/sky/dbpedia.json
+    with open(os.path.join(os.path.dirname(__file__), 'dbpedia.json')) as f:
         return json.load(f)
-
-stopset = set(stopwords.words('english'))    
