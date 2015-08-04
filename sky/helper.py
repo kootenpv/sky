@@ -1,6 +1,5 @@
 import lxml.html.diff
 import lxml.html
-from selenium import webdriver
 from bs4 import UnicodeDammit
 import tldextract
 import re
