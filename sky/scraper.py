@@ -1,7 +1,5 @@
 # logging all actions
 # simplify
-# author! :)
-# date removal
 
 import re
 import os
@@ -9,26 +7,23 @@ import json
 import lxml.html
 import justext
 
-try:
-    from .money import MoneyMatcher
-    from .dbpedia import load_dbpedia
-    from .dbpedia import get_dbpedia_from_words
-    from .language import get_language
-    from .images import get_images
-except SystemError:
-    from money import MoneyMatcher
-    from dbpedia import load_dbpedia
-    from dbpedia import get_dbpedia_from_words
-    from language import get_language
-    from images import get_images
+# try:    
+#     from .dbpedia import load_dbpedia
+#     from .dbpedia import get_dbpedia_from_words 
+#     from .money import MoneyMatcher 
+# except SystemError:
+#     from dbpedia import load_dbpedia
+#     from dbpedia import get_dbpedia_from_words 
+#     from money import MoneyMatcher
     
 # dbpedia = load_dbpedia()
+# money = MoneyMatcher()
 
-money = MoneyMatcher()
-
-try: 
+try:
+    from .language import get_language
+    from .images import get_images 
     from .helper import *
-    from .templated import DomainNodesDict
+    from .remove_boilerplate import DomainNodesDict
     from .findTitle import getRuleTitle
     from .get_date import get_dates
     from .get_author import get_author
@@ -36,10 +31,12 @@ try:
 except SystemError: 
     from helper import * 
     from findTitle import getRuleTitle
-    from templated import DomainNodesDict
+    from remove_boilerplate import DomainNodesDict
     from get_date import get_dates
     from get_author import get_author
     from links import get_sorted_links
+    from language import get_language
+    from images import get_images
 
 class Scrape():
     # todo is finextr date
@@ -59,7 +56,8 @@ class Scrape():
         self.domain = extractDomain(self.seed_urls[0])
         self.url_to_tree_mapping  = {}
         self.url_to_headers_mapping = {}
-        self.load_pages() 
+        self.load_local_pages() 
+        # Boilerplate remover class
         self.domain_nodes_dict = DomainNodesDict(self.domain, self.min_templates, self.max_templates, self.template_proportion)
         self.add_template_elements() 
 
@@ -74,10 +72,10 @@ class Scrape():
             setattr(self, config_key, config_value)
         self.domain = extractDomain(self.seed_urls[0])
 
-    # This will have to be changed into the database variant    
-    def load_pages(self): 
+    # This might have to be changed into the database variant    
+    def load_local_pages(self): 
         saved_html_dir = os.path.join(self.collections_path, self.collection_name)
-        for root, _, files in os.walk(saved_html_dir):
+        for _, _, files in os.walk(saved_html_dir):
             for name in files:
                 if not name.startswith('.DS_'):
                     with open(os.path.join(saved_html_dir, name)) as f:
@@ -236,7 +234,7 @@ class Scrape():
 
         links = [x.attrib['href'] for x in tree.xpath('//a') if 'href' in x.attrib and x.attrib['href'].startswith(self.domain) and self.should_save(x.attrib['href'])]
 
-        money_amounts = money.find('\n'.join(body_content), 1000) + money.find(title, 1000)
+        # money_amounts = money.find('\n'.join(body_content), 1000) + money.find(title, 1000)
 
         data = {'title' : title, 
                 'body' : body_content, 
@@ -246,7 +244,7 @@ class Scrape():
                 'cleaned' : cleaned_html, 
                 'url' : url, 
                 'domain' : self.domain,
-                'money': money_amounts,
+                # 'money': money_amounts,
                 'related' : get_sorted_links(links, url)[:5] }
 
         filtered_data = {k : v for k, v in data.items() if k not in exclude_data}
@@ -264,6 +262,7 @@ class Scrape():
         return results
 
     def get_content(self, html):
+        # I should refactor the other get_content when this fails into here
         lang_mapping = {'nl' : 'Dutch', 'en' : 'English', 'com' : 'English'}
         if self.detected_language not in lang_mapping:
             return ''
@@ -288,11 +287,3 @@ class Scrape():
 # ind = Scrape(SCRAPE_CONFIG)
 
 # r = ind.process_all()
-
-
-
-
-
-
-
-
