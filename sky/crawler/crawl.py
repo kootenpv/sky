@@ -43,6 +43,9 @@ def start(config = '', logging_level = 2):
 
     asyncio.set_event_loop(loop)
     crawler = get_crawler_from_config(config, loop)
+
+    if crawler.login_url:
+        loop.run_until_complete(crawler.login())
     
     try:
         loop.run_until_complete(crawler.crawl())  # Crawler gonna crawl.
@@ -53,6 +56,3 @@ def start(config = '', logging_level = 2):
         report(crawler)
         crawler.close()
         loop.close()
-
-
-

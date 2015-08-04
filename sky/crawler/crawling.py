@@ -78,6 +78,10 @@ class Crawler:
         self.crawl_filter_strings = [] 
         self.index_required_strings = [] 
         self.index_filter_strings = [] 
+        self.login_data = {}
+        self.login_url = None
+        self.headers = {'User-Agent': 'My User Agent 1.0', 
+                        'From': 'youremail@domain.com' }
         for k,v in config.items():
             setattr(self, k, v)
         self.max_saved_responses = int(self.max_saved_responses)
@@ -88,7 +92,6 @@ class Crawler:
         self.q = JoinablePriorityQueue(loop = self.loop)
         self.seen_urls = set()
         self.done = []
-        self.connector = aiohttp.TCPConnector(loop=self.loop)
         self.root_domains = self.handle_root_of_seeds()
         self.t0 = time.time()
         self.t1 = None 
@@ -96,6 +99,15 @@ class Crawler:
         self.domain = extractDomain(self.seed_urls[0])
         self.file_storage_place = os.path.join(self.collections_path, self.collection_name)    
         os.makedirs(self.file_storage_place)
+        self.session = aiohttp.ClientSession(headers = self.headers) 
+
+    @asyncio.coroutine        
+    def login(self):
+        resp = yield from self.session.post(self.login_url, data = aiohttp.FormData(self.login_data))
+        print('login')
+        print(dir(resp))
+        print(resp.status)
+        yield from resp.release()
 
     def handle_root_of_seeds(self):
         root_domains = set() 
@@ -115,7 +127,7 @@ class Crawler:
 
     def close(self):
         """Close resources."""
-        self.connector.close()
+        self.session.close()
 
     def host_okay(self, host):
         """Check if a host should be crawled.
@@ -208,20 +220,13 @@ class Crawler:
         """Fetch one URL."""
         # Using max_workers since they are not being quit
         if self.num_saved_responses >= self.max_saved_responses: 
+            self.q.task_done()
             return
         tries = 0
         exception = None
         while tries < self.max_tries_per_url:
             try:
-                response = yield from aiohttp.request(
-                    'get', url,
-                    connector=self.connector,
-                    allow_redirects=False,
-                    loop=self.loop,
-                    headers = { 
-                        'User-Agent': 'My User Agent 1.0', 
-                        'From': 'youremail@domain.com'  # This is another valid field
-                        })
+                response = yield from self.session.get(url, allow_redirects=False)
                 if tries > 1:
                     LOGGER.info('try %r for %r success', tries, url)
                 break
@@ -243,7 +248,7 @@ class Crawler:
                                                  encoding=None,
                                                  num_urls=0,
                                                  num_new_urls=0))
-            response.close()
+            response.release()
             return
 
         if is_redirect(response):
@@ -260,7 +265,7 @@ class Crawler:
                                                  num_new_urls=0))
 
             if next_url in self.seen_urls:
-                response.close()
+                response.release()
                 return
             if max_redirects_per_url > 0:
                 LOGGER.info('redirect to %r from %r', next_url, url)
@@ -277,7 +282,7 @@ class Crawler:
                 prio = bad - good # lower is better
                 self.q.put_nowait((prio, link, self.max_redirects_per_url))
             self.seen_urls.update(links)
-        response.close()
+        response.release()
 
     @asyncio.coroutine
     def work(self):

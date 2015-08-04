@@ -1,3 +1,9 @@
+# Very important in the next step to merge the scraper and the crawler
+# How will it work:
+# It will only keep in memory the (url,htmls) that should be indexed
+# Whenever there are the maximum number of templates (now 1000) reached in memory, it will create a template object
+# 
+
 # logging all actions
 # simplify
 
@@ -291,3 +297,4 @@ class Scrape():
 # ind = Scrape(SCRAPE_CONFIG)
 
 # r = ind.process_all()
+

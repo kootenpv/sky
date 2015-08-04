@@ -40,11 +40,12 @@ class CrawlPlugin():
     def handle_results(self):
         pass
 
-    def run(self):
+    def run(self, use_cache = False):
         self.crawl_config = self.get_default_plugin()
         self.apply_specific_plugin()
         self.scrape_config = self.get_scrape_config()
-        self.start_crawl()
+        if not use_cache:
+            self.start_crawl()
         self.data = self.scrape_data()
         self.handle_results()
 
@@ -98,10 +99,9 @@ class CrawlCloudantPlugin(CrawlPlugin):
                 self.crawl_config.update(plugin)        
         
     def handle_results(self): 
-        ids = self.data.keys()
-        cloudant_data = {}
-        cloudant_data['docs'] = [{'id' : k, 'doc' : self.data[v] } for k, v in zip(ids, self.data)]
-        self.crawler_documents_db.bulk_docs(cloudant_data)
+        for url_id in self.data:
+            self.data[url_id]['_id'] = url_id
+        self.crawler_documents_db.bulk_docs(*list(self.data.values()))
 
     def save_config(self, config):
         """
