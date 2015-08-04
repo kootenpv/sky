@@ -1,6 +1,9 @@
 # logging all actions
 # simplify
 
+# author! :)
+# date removal
+
 import re
 import os
 import json
@@ -19,11 +22,9 @@ import justext
 # dbpedia = load_dbpedia()
 # money = MoneyMatcher()
 
-try:
-    from .language import get_language
-    from .images import get_images 
+try: 
     from .helper import *
-    from .remove_boilerplate import DomainNodesDict
+    from .templated import DomainNodesDict
     from .findTitle import getRuleTitle
     from .get_date import get_dates
     from .get_author import get_author
@@ -56,6 +57,7 @@ class Scrape():
         self.domain = extractDomain(self.seed_urls[0])
         self.url_to_tree_mapping  = {}
         self.url_to_headers_mapping = {}
+
         self.load_local_pages() 
         # Boilerplate remover class
         self.domain_nodes_dict = DomainNodesDict(self.domain, self.min_templates, self.max_templates, self.template_proportion)
@@ -76,6 +78,12 @@ class Scrape():
     def load_local_pages(self): 
         saved_html_dir = os.path.join(self.collections_path, self.collection_name)
         for _, _, files in os.walk(saved_html_dir):
+
+    # This will have to be changed into the database variant    
+    def load_pages(self): 
+        saved_html_dir = os.path.join(self.collections_path, self.collection_name)
+        for root, _, files in os.walk(saved_html_dir):
+
             for name in files:
                 if not name.startswith('.DS_'):
                     with open(os.path.join(saved_html_dir, name)) as f:

@@ -11,5 +11,6 @@ __pycache__/
 /lib/
 /pip-selfcheck.json
 comments/
-sky/legacy/tests/
 cloudant.*
+sky/legacy/tests/
+sky/gener
