@@ -11,9 +11,6 @@ class CrawlPlugin():
         self.scrape_config = None
         self.data = {}
 
-    def login(self):
-        pass
-
     def get_default_plugin(self):
         pass
 
@@ -44,7 +41,6 @@ class CrawlPlugin():
         pass
 
     def run(self):
-        self.login()
         self.crawl_config = self.get_default_plugin()
         self.apply_specific_plugin()
         self.scrape_config = self.get_scrape_config()
@@ -74,12 +70,13 @@ class CrawlCloudantPlugin(CrawlPlugin):
         self.crawler_plugins_db = None
         self.crawler_documents_db = None
         self.plugins = []
+        self.login()
 
     def login(self):
         with open('cloudant.username') as f:
-            USERNAME = f.read()    
+            USERNAME = f.read()
         with open('cloudant.password') as f:
-            PASSWORD = f.read() 
+            PASSWORD = f.read()
         account = cloudant.Account(USERNAME)
         account.login(USERNAME, PASSWORD)
         self.crawler_plugins_db = account.database('crawler-plugins') 
@@ -92,12 +89,12 @@ class CrawlCloudantPlugin(CrawlPlugin):
     def get_default_plugin(self): 
         self.get_plugins()
         for plugin in self.plugins:
-            if plugin['name'] == 'default':
+            if plugin['_id'] == 'default':
                 return plugin 
         
     def apply_specific_plugin(self): 
         for plugin in self.plugins:
-            if plugin['name'] == self.plugin_name:
+            if plugin['_id'] == self.plugin_name:
                 self.crawl_config.update(plugin)        
         
     def handle_results(self): 
@@ -105,3 +102,36 @@ class CrawlCloudantPlugin(CrawlPlugin):
         cloudant_data = {}
         cloudant_data['docs'] = [{'id' : k, 'doc' : self.data[v] } for k, v in zip(ids, self.data)]
         self.crawler_documents_db.bulk_docs(cloudant_data)
+
+    def save_config(self, config):
+        """
+        Example of a specific config:
+        
+        config = { 
+        "seed_urls" : [ 
+            "http://www.adformatie.nl/"
+        ],
+
+        "collection_name" : "adformatie.nl",
+
+        "crawl_filter_strings" : [ 
+            "lynkx", "tab=", "/academie-voor-arbeidsmarktcommunicatie", "events."
+        ],
+
+        "crawl_required_strings" : [
+            "nieuws/", "channel/"
+        ],        
+
+        "index_filter_strings" : [
+
+        ],
+
+        "index_required_strings" : [
+            "nieuws/"
+        ], 
+
+        "max_saved_responses" : 100
+
+        }
+        """
+        self.crawler_plugins_db[self.plugin_name] = config

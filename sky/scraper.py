@@ -24,7 +24,7 @@ import justext
 
 try: 
     from .helper import *
-    from .templated import DomainNodesDict
+    from .remove_boilerplate import DomainNodesDict
     from .findTitle import getRuleTitle
     from .get_date import get_dates
     from .get_author import get_author
@@ -281,9 +281,9 @@ class Scrape():
 # SCRAPE_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
 
 # SCRAPE_CONFIG.update({ 
-#     'collections_path' : '/Users/pascal/GDrive/siteview/collections/',
-#     'seed_urls' : ['http://www.nu.nl'],
-#     'collection_name' : 'nu.nl',
+#     'collections_path' : '/Users/pascal/GDrive/sky_collections/',
+#     'seed_urls' : ['http://www.adformatie.nl'],
+#     'collection_name' : 'adformatie.nl',
 #     'template_proportion' : 0.09,
 #     'max_templates' : 1000
 # })
