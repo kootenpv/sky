@@ -7,6 +7,7 @@ Installation summary (note: sky/sky/ is different from sky/):
 - pip install -r requirements.txt
 - add export PYTHONPATH=$PYTHONPATH:/path/to/this/clone/sky to .bashrc
 - source ~/.bashrc
+- Instead of the previous 2 steps, you can instead use
 - if it is the first time using tldextract, run: `python3 -c "import tldextract; tldextract.extract('http://google.nl')"` to load Top Level Domain extracts
 - Create cloudant.username (in /path/to/clone/sky/sky/)
 - Create cloudant.password (in /path/to/clone/sky/sky/)
@@ -49,24 +50,26 @@ To create a crawler, a crawler config has to be uploaded to Cloudant to the craw
 
 #### Create config
 
-If we want to for example crawl news from emerce.nl (http://www.emerce.nl/nieuws/), we can use the following config:
+If we want to for example crawl games-news from nu.nl (http://www.nu.nl/games/), we can use the following config:
 
 ```python
 config = {
   "seed_urls": [
-    "http://www.emerce.nl/"
+    "http://www.nu.nl/games"
   ],
-  "collection_name": "emerce.nl",
+  "collection_name": "nu.nl",
   "crawl_filter_strings": [],
-  "crawl_required_strings": [],
+  "crawl_required_strings": [
+    'games/'
+    ],
   "index_filter_strings": [],
   "index_required_strings": [
-    "nieuws/"
+    "games/"
   ]
 }
 ```
 
-**Important**: whenever a crawl is being done, first the "default" (project-based) config is loaded, after which the specific named plugin config overwrites all the settings. For example, the default is to save a maximum amount of 1000000 responses. In testing plugin "nu.nl", you can overwrite this (advised) to only `max_saved_responses : 100`. See our Technical Design for a full specification of all the options available.
+**Important**: whenever a crawl is being done, first the "[default](https://835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix.cloudant.com/dashboard.html#database/crawler-plugins/default)" (project-based) config is loaded, after which the specific named plugin config overwrites all the settings. For example, the default is to save a maximum amount of 1000000 responses. In testing plugin "nu.nl", you can overwrite this (advised) to only `max_saved_responses : 100`. See our Technical Design for a full specification of all the options available.
 
 ### Uploading a config to Cloudant
 

@@ -134,5 +134,9 @@ class CrawlCloudantPlugin(CrawlPlugin):
         "max_saved_responses" : 100
 
         }
-        """
+        """ 
+        doc = self.crawler_plugins_db.get(self.plugin_name).json()
+        if 'error' in doc:
+            doc = {}
+        doc.update(config)     
         self.crawler_plugins_db[self.plugin_name] = config
