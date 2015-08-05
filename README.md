@@ -37,6 +37,8 @@ sys.path.append('/path/to/this/clone/sky')
 
 at the top of a script to be able to `import sky`.
 
+If it is the first time using tldextract, run: `python3 -c "import tldextract; tldextract.extract('http://google.nl')"` to load Top Level Domain extracts.CC
+
 To make a connection with Cloudant, put `cloudant.password` and `cloudant.username` single line files in `..../sky/sky/.` 
 
 For now, go to Cloudant, visit database `crawler-plugins`, [go to the document "default"](https://835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix.cloudant.com/dashboard.html#database/crawler-plugins/default), and change `collections_path` to the path where you want to store HTML locally.
