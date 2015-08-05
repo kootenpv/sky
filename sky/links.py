@@ -3,7 +3,7 @@ import re
 def get_word_set(url): 
     question_mark_index = url.find('?')
     url = url[:question_mark_index] if question_mark_index > -1 else url
-    return set(re.split('[a-zA-Z0-9]', url))
+    return set(re.split('[^a-zA-Z0-9]', url))
 
 def get_similarity(url1, ws2, sc2):
     ws1 = get_word_set(url1) 
@@ -14,9 +14,4 @@ def get_similarity(url1, ws2, sc2):
 def get_sorted_links(urls, request_url):
     wsr = get_word_set(request_url)
     slash_count = request_url.count('/')
-    return sorted(set(urls), key = lambda u: get_similarity(u, wsr, slash_count), reverse = True) 
-    
-
-    
-    
-    
+    return sorted(set(urls), key = lambda u: get_similarity(u, wsr, slash_count), reverse = True)

@@ -11,6 +11,7 @@ class CrawlPlugin():
         self.crawl_config = None
         self.scrape_config = None
         self.data = {}
+        self.documents = []
 
     def get_default_plugin(self):
         pass
@@ -38,6 +39,9 @@ class CrawlPlugin():
         # Process all by removing boilerplate and extracting information
         return skindex.process_all(exclude_data = ['cleaned', 'author'])
 
+    def get_documents(self, maximum_number_of_documents = 10000):
+        return "Not implemented yet, using args; {}".format(maximum_number_of_documents)
+
     def handle_results(self):
         pass
 
@@ -49,6 +53,17 @@ class CrawlPlugin():
             self.start_crawl()
         self.data = self.scrape_data()
         self.handle_results()
+
+    def analyze_documents(self, force_get_documents = False, n = 5):
+        if not self.documents or force_get_documents:
+            self.documents = self.get_documents()
+        title_sort = sorted(self.documents, key = lambda doc: len(doc['title']))
+        body_sort = sorted(self.documents, key = lambda doc: len(' '.join(doc['body'])))
+        date_sort = sorted(self.documents, key = lambda doc: len(doc['publish_date']))
+        url_sort = sorted(self.documents, key = lambda doc: len(doc['url']))
+        return {k :[(d['url'], d[k]) for d in sorted_type][:n] 
+                for k, sorted_type in zip(['title', 'body', 'publish_date', 'url'], 
+                                          [title_sort, body_sort, date_sort, url_sort])}
 
 class CrawlFilePlugin(CrawlPlugin):
     def __init__(self, plugin_name): 
@@ -104,6 +119,12 @@ class CrawlCloudantPlugin(CrawlPlugin):
             self.data[url_id]['_id'] = slugify(url_id)
         self.crawler_documents_db.bulk_docs(*list(self.data.values()))
 
+    def get_documents(self, maximum_number_of_documents = 10000): 
+        all_docs_uri_tmp = '{}/_all_docs?include_docs=true&limit={}'
+        all_docs_uri = all_docs_uri_tmp.format(self.crawler_documents_db.uri, maximum_number_of_documents)
+        return [x['doc'] for x in self.crawler_documents_db.get(all_docs_uri).json()['rows']
+                if self.plugin_name in x['doc']['url']]
+        
     def save_config(self, config):
         """
         Example of a specific config:
@@ -140,3 +161,25 @@ class CrawlCloudantPlugin(CrawlPlugin):
             doc = {}
         doc.update(config)     
         self.crawler_plugins_db[self.plugin_name] = config
+
+ccp = CrawlCloudantPlugin('adformatie.nl')
+
+docs = ccp.analyze_documents()
+
+
+
+
+title_sort = sorted(ccp.documents, key = lambda doc: len(doc['title']))
+body_sort = sorted(ccp.documents, key = lambda doc: len(' '.join(doc['body'])))
+date_sort = sorted(ccp.documents, key = lambda doc: len(doc['publish_date']))
+url_sort = sorted(ccp.documents, key = lambda doc: len(doc['url']))
+for k, sorted_type in zip(['title', 'body', 'publish_date', 'url'], 
+                       [title_sort, body_sort, date_sort, url_sort]):
+    print([(d['url'], d[k]) for d in sorted_type][:5])
+
+
+
+
+
+
+time python3 -c "import cloudant; account = cloudant.Account('835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix'); account.login('835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix', 'd7dee22ff32682d1cd3a26f8d8dc8c8e8eea602db2c446e5fa5fafb4ef66d75b'); db = account.database('crawler-documents'); all_docs_uri_tmp = ; db.get('{}/_all_docs?include_docs=true'.format(db.uri))"
