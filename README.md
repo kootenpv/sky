@@ -1,6 +1,6 @@
 ### sky
 
-Installation summary:
+Installation summary (note: sky/sky/ is different from sky/):
 
 - git clone https://github.com/kootenpv/sky
 - cd sky/sky
@@ -45,7 +45,7 @@ To create a crawler, a crawler config has to be uploaded to Cloudant to the craw
 
 #### Create config
 
-If we want to for example crawl http://www.nu.nl/games, we can use the following config:
+If we want to for example crawl news from emerce.nl (http://www.emerce.nl/nieuws/), we can use the following config:
 
 ```python
 config = {
