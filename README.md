@@ -5,10 +5,12 @@ Installation summary (note: sky/sky/ is different from sky/):
 - git clone https://github.com/kootenpv/sky
 - cd sky/sky
 - pip install -r requirements.txt
-- export PYTHONPATH=$PYTHONPATH:/path/to/this/clone/sky
+- add export PYTHONPATH=$PYTHONPATH:/path/to/this/clone/sky to .bashrc
+- source ~/.bashrc
+- if it is the first time using tldextract, run: `python3 -c "import tldextract; tldextract.extract('http://google.nl')"` to load Top Level Domain extracts
 - Create cloudant.username (in /path/to/clone/sky/sky/)
 - Create cloudant.password (in /path/to/clone/sky/sky/)
-- Go to the [document "default"](https://835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix.cloudant.com/dashboard.html#database/crawler-plugins/default), and change `collections_path` to the path where you want to store HTML locally.
+- Go to the [document "default"](https://835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix.cloudant.com/dashboard.html#database/crawler-plugins/default), and change `collections_path` to the path where you want to store HTML locally. Make sure this is an existing directory (e.g. /Users/taco/rabo_collections)
 
 #### Installation
 
@@ -18,13 +20,13 @@ The following should be done:
 pip install -r requirements.txt
 ```
 
-Make sky available globally by adding:
+Make sky available globally by adding the path to the PYTHONPATH environment variable:
 
 ```python
 export PYTHONPATH=$PYTHONPATH:/path/to/this/clone/sky
 ```
 
-to your `.bashrc`
+to your `.bashrc` (and source `~/.bashrc`)
 
 or instead on a "per session basis" use:
 
