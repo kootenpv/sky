@@ -23,7 +23,7 @@ class CrawlPlugin():
 
         scrape_config.update({ 
             'template_proportion' : 0.09,
-            'max_templates' : 1000,
+            'max_templates' : 1000
         })
 
         return scrape_config
