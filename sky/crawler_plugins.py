@@ -161,25 +161,3 @@ class CrawlCloudantPlugin(CrawlPlugin):
             doc = {}
         doc.update(config)     
         self.crawler_plugins_db[self.plugin_name] = config
-
-ccp = CrawlCloudantPlugin('adformatie.nl')
-
-docs = ccp.analyze_documents()
-
-
-
-
-title_sort = sorted(ccp.documents, key = lambda doc: len(doc['title']))
-body_sort = sorted(ccp.documents, key = lambda doc: len(' '.join(doc['body'])))
-date_sort = sorted(ccp.documents, key = lambda doc: len(doc['publish_date']))
-url_sort = sorted(ccp.documents, key = lambda doc: len(doc['url']))
-for k, sorted_type in zip(['title', 'body', 'publish_date', 'url'], 
-                       [title_sort, body_sort, date_sort, url_sort]):
-    print([(d['url'], d[k]) for d in sorted_type][:5])
-
-
-
-
-
-
-time python3 -c "import cloudant; account = cloudant.Account('835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix'); account.login('835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix', 'd7dee22ff32682d1cd3a26f8d8dc8c8e8eea602db2c446e5fa5fafb4ef66d75b'); db = account.database('crawler-documents'); all_docs_uri_tmp = ; db.get('{}/_all_docs?include_docs=true'.format(db.uri))"

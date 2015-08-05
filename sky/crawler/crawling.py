@@ -248,7 +248,7 @@ class Crawler:
                                                  encoding=None,
                                                  num_urls=0,
                                                  num_new_urls=0))
-            response.release()
+            yield from response.release()
             return
 
         if is_redirect(response):
@@ -265,7 +265,7 @@ class Crawler:
                                                  num_new_urls=0))
 
             if next_url in self.seen_urls:
-                response.release()
+                yield from response.release()
                 return
             if max_redirects_per_url > 0:
                 LOGGER.info('redirect to %r from %r', next_url, url)
@@ -282,7 +282,7 @@ class Crawler:
                 prio = bad - good # lower is better
                 self.q.put_nowait((prio, link, self.max_redirects_per_url))
             self.seen_urls.update(links)
-        response.release()
+        yield from response.release()
 
     @asyncio.coroutine
     def work(self):
