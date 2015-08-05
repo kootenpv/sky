@@ -252,6 +252,7 @@ class Scrape():
                 'publish_date' : str(date), 
                 'author' : author,
                 'cleaned' : cleaned_html, 
+                'language' : self.detected_language,
                 'url' : url, 
                 'domain' : self.domain,
                 # 'money': money_amounts,

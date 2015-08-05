@@ -2,6 +2,7 @@ import json
 from sky.configs import DEFAULT_CRAWL_CONFIG
 from sky.scraper import Scrape
 from sky.crawler import crawl
+from sky.helper import slugify
 import cloudant
 
 class CrawlPlugin():
@@ -22,7 +23,7 @@ class CrawlPlugin():
 
         scrape_config.update({ 
             'template_proportion' : 0.09,
-            'max_templates' : 1000
+            'max_templates' : 1000,
         })
 
         return scrape_config
@@ -100,7 +101,7 @@ class CrawlCloudantPlugin(CrawlPlugin):
         
     def handle_results(self): 
         for url_id in self.data:
-            self.data[url_id]['_id'] = url_id
+            self.data[url_id]['_id'] = slugify(url_id)
         self.crawler_documents_db.bulk_docs(*list(self.data.values()))
 
     def save_config(self, config):

@@ -58,3 +58,51 @@ def pretty_print_entities(text):
 # find all indicators
 # all single capital words not starting a sentence --> companies
 # resolve 
+
+
+
+
+
+
+# jruby -S language-identifier
+# jruby -S tokenizer
+# jruby -S pos-tagger
+# jruby -S tree-tagger
+# jruby -S polarity-tagger
+# jruby -S property-tagger
+# jruby -S constituent-parser
+# jruby -S ner
+# jruby -S coreference
+# jruby -S ned
+# jruby -S opinion-detector
+# jruby -S opinion-detector-basic
+# jruby -S kaf2json
+# jruby -S outlet
+# jruby -S scorer
+
+
+# echo "They're offering $1.5 million in grants, and their first project is a Science Learning Challenge. That's for companies and nonprofits that are building tech to help students develop science and engineering skills. They'll pick up to 15 challenge winners with grants that range from $50,000 to $150,000. While we've seen literacy efforts and math kick up in the last few years, we'd like to see that same vibrancy in science education, said Stacey Childress, CEO of NewSchools Venture Fund. The ed tech that we like to fund is synergistic. It blends the best of technology with live instruction and immersive and engaging content. Along with the capital, NewSchools is working with a nonprofit research group called WestEd to provide design feedback and recommendations based on what educational research suggests will work best. They'll build small-scale studies to test usability and feasibility in the classroom. Childress said that NewSchools is in the process of raising another $60 million philanthropic fund over the next three years. They've had several funds over the organization's life since 1998 that range from a few million dollars to $75 million. Through that capital, the organization has supported about 442 charter schools throughout the country, serving 171,000 kids. Generally, they've backed educational entrepreneurs creating new schools, but they also want to fund technical teams building software and tools, as well. That's what this new accelerator is about. This is just the first part of what we're doing in this area, Childress said. We want to invest in ed tech and identify market gaps like the ones in science we were just talking about." | /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S language-identifier | /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S tokenizer | /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S pos-tagger | /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S ner
+
+
+
+
+# txt="""They're offering $1.5 million in grants, and their first project is a Science Learning Challenge. That's for companies and nonprofits that are building tech to help students develop science and engineering skills. They'll pick up to 15 challenge winners with grants that range from $50,000 to $150,000. While we've seen literacy efforts and math kick up in the last few years, we'd like to see that same vibrancy in science education, said Stacey Childress, CEO of NewSchools Venture Fund. The ed tech that we like to fund is synergistic. It blends the best of technology with live instruction and immersive and engaging content. Along with the capital, NewSchools is working with a nonprofit research group called WestEd to provide design feedback and recommendations based on what educational research suggests will work best. They'll build small-scale studies to test usability and feasibility in the classroom. Childress said that NewSchools is in the process of raising another $60 million philanthropic fund over the next three years. They've had several funds over the organization's life since 1998 that range from a few million dollars to $75 million. Through that capital, the organization has supported about 442 charter schools throughout the country, serving 171,000 kids. Generally, they've backed educational entrepreneurs creating new schools, but they also want to fund technical teams building software and tools, as well. That's what this new accelerator is about. This is just the first part of what we're doing in this area, Childress said. We want to invest in ed tech and identify market gaps like the ones in science we were just talking about."""
+
+
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-tree-tagger && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-polarity-tagger && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-property-tagger && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-constituent-parser && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-ner && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-coreference && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-ned && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-opinion-detector && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-opinion-detector-basic && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-kaf2json && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-outlet && \
+# /Users/pascal/Downloads/jruby-9.0.0.0/bin/jruby -S gem install opener-scorer
+
+
+# docker run -d -p 3306:3306 --name opener-mysql -e MYSQL_ROOT_PASSWORD=SECRET -e MYSQL_DATABASE=opener_development mysql
+# docker run -e DB_PASS=SECRET -e DB_USER=root -e DB_HOST=192.168.59.103 -p 9292:9292 -ti bencomp/opener-basic
+
