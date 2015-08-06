@@ -4,6 +4,7 @@ from sky.scraper import Scrape
 from sky.crawler import crawl
 from sky.helper import slugify
 import cloudant
+from elasticsearch import Elasticsearch
 
 class CrawlPlugin():
     def __init__(self, plugin_name):
@@ -40,9 +41,9 @@ class CrawlPlugin():
         return skindex.process_all(exclude_data = ['cleaned', 'author'])
 
     def get_documents(self, maximum_number_of_documents = 10000):
-        return "Not implemented yet, using args; {}".format(maximum_number_of_documents)
+        pass
 
-    def handle_results(self):
+    def handle_results(self, to = None):
         pass
 
     def run(self, use_cache = False):
@@ -54,7 +55,7 @@ class CrawlPlugin():
         self.data = self.scrape_data()
         self.handle_results()
 
-    def analyze_documents(self, force_get_documents = False, n = 5):
+    def get_bad_summary(self, force_get_documents = False, n = 5):
         if not self.documents or force_get_documents:
             self.documents = self.get_documents()
         title_sort = sorted(self.documents, key = lambda doc: len(doc['title']))
@@ -77,7 +78,7 @@ class CrawlFilePlugin(CrawlPlugin):
             specific_config = json.load(f)
         self.crawl_config.update(specific_config)        
         
-    def handle_results(self):
+    def handle_results(self, to = "file"):
         with open('results_{}.json'.format(self.plugin_name), 'w') as f:
             json.dump(self.data, f)
 
@@ -114,10 +115,11 @@ class CrawlCloudantPlugin(CrawlPlugin):
             if plugin['_id'] == self.plugin_name:
                 self.crawl_config.update(plugin)        
         
-    def handle_results(self): 
-        for url_id in self.data:
-            self.data[url_id]['_id'] = slugify(url_id)
-        self.crawler_documents_db.bulk_docs(*list(self.data.values()))
+    def handle_results(self, to = "es"): 
+        if to == "cloudant":
+            for url_id in self.data:
+                self.data[url_id]['_id'] = slugify(url_id)
+            self.crawler_documents_db.bulk_docs(*list(self.data.values()))
 
     def get_documents(self, maximum_number_of_documents = 10000): 
         all_docs_uri_tmp = '{}/_all_docs?include_docs=true&limit={}'
@@ -161,3 +163,8 @@ class CrawlCloudantPlugin(CrawlPlugin):
             doc = {}
         doc.update(config)     
         self.crawler_plugins_db[self.plugin_name] = config
+
+for plugin in ['distrifood.nl', 'emerce.nl', 'levensmiddelenkrant.nl', 'adformatie.nl']:
+    ccp = CrawlCloudantPlugin(plugin)        
+    ccp.run(True)
+

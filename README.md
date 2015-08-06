@@ -92,3 +92,12 @@ ccp.run()
 ```
 
 Optionally it is possible to use the local cache (`ccp.run(use_cache=True)`). If you want to change anything in the settings that changes the crawling rules / indexing rules, you'll have to delete to local cache folder that has been created.
+
+### Bad crawl/index settings
+
+After crawling, it is recommended to check the summary of potential bad paths. For title, body, publish_date, and url the shortest (five) values are sorted so it can give a suggestion about which paths might be bad. (reasoning: if a title is really short or non existent, most likely it is a document that should be filtered)
+
+```python
+ccp = CrawlCloudantPlugin(plugin_name)
+ccp.get_bad_documents()
+```
