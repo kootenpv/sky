@@ -1,5 +1,5 @@
 __project__ = 'sky'
-__version__ = "0.0.104"
+__version__ = "0.0.105"
 
 from .dbpedia import get_dbpedia_from_words
 from .helper import *
