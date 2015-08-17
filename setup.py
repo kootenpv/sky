@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '94'
+MICRO_VERSION = '95'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name = 'sky',
@@ -45,5 +45,6 @@ setup(name = 'sky',
             "date_translation_table.json"
         ],
     },
+    include_package_data=True,
     zip_safe = False,
     platforms='any')
