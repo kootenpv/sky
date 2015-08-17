@@ -1,2 +1,0 @@
-recursive-include data *.json
-recursive-include sky/data *.json

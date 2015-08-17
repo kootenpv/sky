@@ -12,7 +12,7 @@ setup(name = 'sky',
       author = 'Pascal van Kooten',
       author_email = 'kootenpv@gmail.com',
       license = 'MIT',
-      packages = ['sky', 'sky.data'],
+      packages = ['sky'],
       install_requires = [ 
           'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect', 
           'python-dateutil', 'sh', 'beautifulsoup4'
@@ -40,7 +40,6 @@ setup(name = 'sky',
           'Topic :: System :: Systems Administration',
           'Topic :: Utilities'
     ], 
-    package_data = {'data': ['*.json'], 'sky/data' : ['*.json']},
-    package_dir = {'sky': 'sky', 'data' : 'data', 'sky/data' : 'sky/data'},
+    include_package_data = True,
     zip_safe = False,
     platforms='any')
