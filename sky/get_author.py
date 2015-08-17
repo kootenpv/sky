@@ -1,13 +1,11 @@
 import re
 import json
 import os
+from pkg_resources import resource_filename
 
-try:
-    from .helper import *
-except:
-    from helper import *
-    
-fname = os.path.join(os.path.dirname(__file__), '/data/author_translation_table.json')
+from sky.helper import *
+
+fname = os.path.abspath(resource_filename('sky.data', 'author_translation_table.json'))
 
 with open(fname) as f:
     author_translation_table = json.load(f)

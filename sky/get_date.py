@@ -4,12 +4,11 @@ import dateutil.parser
 import datetime
 import os
 
-try:
-    from .helper import *
-except:
-    from helper import *
+from pkg_resources import resource_filename
 
-fname = os.path.join(os.path.dirname(__file__), '/data/date_translation_table.json')
+from sky.helper import *
+
+fname = os.path.abspath(resource_filename('sky.data', 'date_translation_table.json'))
 
 with open(fname) as f:
     date_translation_table = json.load(f)
