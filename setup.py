@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '100'
+MICRO_VERSION = '101'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name = 'sky',
@@ -40,7 +40,7 @@ setup(name = 'sky',
           'Topic :: System :: Systems Administration',
           'Topic :: Utilities'
     ], 
-    package_data={'data': ['*']},
-    package_dir={'sky': 'sky', 'data' : 'data', 'sky/data' : 'sky/data'},
+    package_data = {'data': ['*.json'], 'sky/data' : ['*.json']},
+    package_dir = {'sky': 'sky', 'data' : 'data', 'sky/data' : 'sky/data'},
     zip_safe = False,
     platforms='any')
