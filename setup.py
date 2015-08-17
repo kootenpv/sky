@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '99'
+MICRO_VERSION = '100'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name = 'sky',
@@ -12,7 +12,7 @@ setup(name = 'sky',
       author = 'Pascal van Kooten',
       author_email = 'kootenpv@gmail.com',
       license = 'MIT',
-      packages = ['sky'],
+      packages = ['sky', 'sky.data'],
       install_requires = [ 
           'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect', 
           'python-dateutil', 'sh', 'beautifulsoup4'
@@ -40,5 +40,7 @@ setup(name = 'sky',
           'Topic :: System :: Systems Administration',
           'Topic :: Utilities'
     ], 
+    package_data={'data': ['*']},
+    package_dir={'sky': 'sky', 'data' : 'data', 'sky/data' : 'sky/data'},
     zip_safe = False,
     platforms='any')
