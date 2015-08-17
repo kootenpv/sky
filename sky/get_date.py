@@ -9,7 +9,7 @@ try:
 except:
     from helper import *
 
-fname = os.path.join(os.path.dirname(__file__), 'date_translation_table.json')
+fname = os.path.join(os.path.dirname(__file__), '/data/date_translation_table.json')
 
 with open(fname) as f:
     date_translation_table = json.load(f)

@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '92'
+MICRO_VERSION = '93'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name = 'sky',
@@ -14,8 +14,9 @@ setup(name = 'sky',
       license = 'MIT',
       packages = ['sky'],
       install_requires = [ 
-          'lxml', 'tldextract', 'requests', 'justext', 'langdetect', 'python-dateutil', 'sh'
-      ],
+          'lxml', 'tldextract', 'requests', 'justext', 'langdetect', 'python-dateutil', 'sh', 'beautifulsoup4'
+      ], 
+      # optional: ZODB, zodbpickle, cloudant, elasticsearch, selenium, asciitree, nltk
       classifiers = [ 
           'Environment :: Console',
           'Intended Audience :: Developers',
@@ -38,5 +39,11 @@ setup(name = 'sky',
           'Topic :: System :: Systems Administration',
           'Topic :: Utilities'
     ], 
+    package_data={
+        "sky.data": [
+            "author_translation_table.json",
+            "date_translation_table.json"
+        ],
+    },
     zip_safe = False,
     platforms='any')

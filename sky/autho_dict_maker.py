@@ -37,7 +37,7 @@ for a in answers:
 for a in bad:
     answers.pop(a)        
 
-fname = os.path.join(os.path.dirname(__file__), 'author_translation_table.json')    
+fname = os.path.join(os.path.dirname(__file__), '/data/author_translation_table.json')    
 
 with open(fname, 'w', encoding='utf8') as json_file:
     json.dump(answers, json_file, ensure_ascii=False)
