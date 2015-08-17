@@ -40,6 +40,5 @@ setup(name = 'sky',
           'Topic :: System :: Systems Administration',
           'Topic :: Utilities'
     ], 
-    include_package_data=True,
     zip_safe = False,
     platforms='any')
