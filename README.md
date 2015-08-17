@@ -2,12 +2,6 @@
 
 Installation summary (note: sky/sky/ is different from sky/):
 
-- git clone https://github.com/kootenpv/sky
-- cd sky/sky
-- pip install -r requirements.txt
-- add export PYTHONPATH=$PYTHONPATH:/path/to/this/clone/sky to .bashrc
-- source ~/.bashrc
-- Instead of the previous 2 steps, you can instead use
 - if it is the first time using tldextract, run: `python3 -c "import tldextract; tldextract.extract('http://google.nl')"` to load Top Level Domain extracts
 - Create cloudant.username (in /path/to/clone/sky/sky/)
 - Create cloudant.password (in /path/to/clone/sky/sky/)
@@ -18,25 +12,10 @@ Installation summary (note: sky/sky/ is different from sky/):
 The following should be done:
 
 ```python
-pip install -r requirements.txt
+pip3 install sky
 ```
 
-Make sky available globally by adding the path to the PYTHONPATH environment variable:
-
-```python
-export PYTHONPATH=$PYTHONPATH:/path/to/this/clone/sky
-```
-
-to your `.bashrc` (and source `~/.bashrc`)
-
-or instead on a "per session basis" use:
-
-```python
-import sys
-sys.path.append('/path/to/this/clone/sky')
-```
-
-at the top of a script to be able to `import sky`.
+This will install some lovely packages.
 
 If it is the first time using tldextract, run: `python3 -c "import tldextract; tldextract.extract('http://google.nl')"` to load Top Level Domain extracts.CC
 
