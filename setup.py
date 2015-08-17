@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '102'
+MICRO_VERSION = '104'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name = 'sky',
@@ -12,7 +12,7 @@ setup(name = 'sky',
       author = 'Pascal van Kooten',
       author_email = 'kootenpv@gmail.com',
       license = 'MIT',
-      packages = ['sky'],
+      packages = ['sky', 'sky/crawler'],
       install_requires = [ 
           'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect', 
           'python-dateutil', 'sh', 'beautifulsoup4'
