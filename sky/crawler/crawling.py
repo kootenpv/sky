@@ -104,7 +104,7 @@ class Crawler:
         delete = False
         if delete and os.path.isdir(self.file_storage_place): 
             shutil.rmtree(self.file_storage_place) 
-        if not os.path.isdir(self.file_storage_place): 
+        if self.file_storage_place and not os.path.isdir(self.file_storage_place): 
             os.makedirs(self.file_storage_place)
             
         self.session = aiohttp.ClientSession(headers = self.headers) 
@@ -157,6 +157,7 @@ class Crawler:
         """Record the FetchStatistic for completed / failed URL."""
         self.done.append(fetch_statistic)
 
+    @asyncio.coroutine
     def save_response(self, text, response): 
         with open(os.path.join(self.file_storage_place, slugify(response.url)), 'w') as f:
             json.dump({'url' : response.url, 'html' : text, 'headers' : dict(response.headers)}, f) 
@@ -227,8 +228,7 @@ class Crawler:
         """Fetch one URL."""
         # Using max_workers since they are not being quit
         if self.num_saved_responses >= self.max_saved_responses: 
-            # NOT SURE IF THIS IS NEEDED
-            self.q.task_done()
+            # NOT SURE IF THIS IS NEEDED 
             return
         tries = 0
         exception = None

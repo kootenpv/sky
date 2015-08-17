@@ -29,13 +29,21 @@ DEFAULT_CRAWL_CONFIG = {
     
     'max_tries_per_url' : 1, 
     
-    'max_workers' : 100, 
+    'max_workers' : 5, 
     
-    'max_saved_responses' : 100, 
+    'max_saved_responses' : 20, 
 
-    # Unimplemented 
-    'max_hops' : 100, 
     'login_url' : '',
-    'login_data' : {}
+    'login_data' : {},
+    
+    # Unimplemented 
+    'max_hops' : 10
 }
 
+PRODUCTION_CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
+
+PRODUCTION_CRAWL_CONFIG.update({
+    'max_saved_responses' : 1000000000, 
+    'max_hops' : 100,
+    'max_workers' : 100
+})
