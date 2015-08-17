@@ -1,3 +1,8 @@
+## <figure> should also be considered
+## background-url should also be allowed
+
+## Also return most likely logo (logo, favicon??, first image?, icon)
+
 def get_images(tree, wrong_imgs = None): 
     if wrong_imgs is None:
         wrong_imgs = ['adsense', 'icon', 'logo', 'advert', 'toolbar', 'footer', 'layout', 'banner'] 

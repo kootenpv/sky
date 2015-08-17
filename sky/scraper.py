@@ -69,6 +69,10 @@ class Scrape():
         self.load_local_pages() 
         # Boilerplate remover class
         self.domain_nodes_dict = DomainNodesDict(self.domain, self.min_templates, self.max_templates, self.template_proportion)
+        if 'template_dict' in config:
+            self.domain_nodes_dict.update(dict(config['template_dict'])) 
+            vals = self.domain_nodes_dict.values()
+            self.domain_nodes_dict.num_urls = max(vals) if vals else 0
         self.add_template_elements() 
 
     def should_save(self, url):
@@ -103,8 +107,7 @@ class Scrape():
         for url in self.url_to_tree_mapping:
             self.domain_nodes_dict.add_template_elements(self.url_to_tree_mapping[url])
 
-    def process(self, url, remove_visuals, exclude_data): 
-        tree = self.url_to_tree_mapping[url]
+    def process(self, url, tree, remove_visuals, exclude_data): 
         if self.detected_language is None:
             self.detected_language = get_language(tree, self.url_to_headers_mapping[url], self.domain)
         # print('language: {}'.format(self.detected_language))    
@@ -256,6 +259,7 @@ class Scrape():
                 'url' : url, 
                 'domain' : self.domain,
                 # 'money': money_amounts,
+                'summary' : '',
                 'related' : get_sorted_links(links, url)[:5] }
 
         filtered_data = {k : v for k, v in data.items() if k not in exclude_data}
@@ -269,7 +273,7 @@ class Scrape():
         for num, url in enumerate(self.url_to_tree_mapping):
             if num > maxn:
                 break
-            results[url] = self.process(url, remove_visuals, exclude_data)
+            results[url] = self.process(url, self.url_to_tree_mapping[url], remove_visuals, exclude_data)
         return results
 
     def get_content(self, html):

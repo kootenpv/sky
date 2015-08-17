@@ -10,6 +10,10 @@ import time
 import urllib.parse
 import tldextract
 import json
+import shutil
+
+from sky.scraper import Scrape
+from sky.helper import makeTree
 
 try:
     # Python 3.4.
@@ -27,11 +31,9 @@ import aiohttp  # Install with "pip install aiohttp".
 
 LOGGER = logging.getLogger(__name__)
 
-
 def lenient_host(host):
     parts = host.split('.')[-2:]
     return ''.join(parts)
-
 
 def is_redirect(response):
     return response.status in (300, 301, 302, 303, 307)
@@ -80,32 +82,37 @@ class Crawler:
         self.index_filter_strings = [] 
         self.login_data = {}
         self.login_url = None
+        self.seen_urls = set()
         self.headers = {'User-Agent': 'My User Agent 1.0', 
                         'From': 'youremail@domain.com' }
         for k,v in config.items():
             setattr(self, k, v)
+        self.seen_urls = set(self.seen_urls)
         self.max_saved_responses = int(self.max_saved_responses)
         self.max_workers = min(int(self.max_workers), self.max_saved_responses)    
         self.max_tries_per_url = int(self.max_tries_per_url)
         self.max_redirects_per_url = int(self.max_redirects_per_url)
         self.max_hops = int(self.max_hops)
-        self.q = JoinablePriorityQueue(loop = self.loop)
-        self.seen_urls = set()
+        self.q = JoinablePriorityQueue(loop = self.loop) 
         self.done = []
         self.root_domains = self.handle_root_of_seeds()
         self.t0 = time.time()
         self.t1 = None 
         self.num_saved_responses = 0 
         self.domain = extractDomain(self.seed_urls[0])
-        self.file_storage_place = os.path.join(self.collections_path, self.collection_name)    
-        os.makedirs(self.file_storage_place)
+        self.file_storage_place = os.path.join(self.collections_path, self.collection_name) 
+        delete = False
+        if delete and os.path.isdir(self.file_storage_place): 
+            shutil.rmtree(self.file_storage_place) 
+        if not os.path.isdir(self.file_storage_place): 
+            os.makedirs(self.file_storage_place)
+            
         self.session = aiohttp.ClientSession(headers = self.headers) 
 
     @asyncio.coroutine        
     def login(self):
         resp = yield from self.session.post(self.login_url, data = aiohttp.FormData(self.login_data))
-        print('login')
-        print(dir(resp))
+        LOGGER.info('login in to url %r', self.login_url)
         print(resp.status)
         yield from resp.release()
 
@@ -187,7 +194,7 @@ class Crawler:
                 text = yield from response.text()
 
                 if self.should_save(response.url): 
-                    self.save_response(text, response)
+                    sr = yield from self.save_response(text, response) 
                     self.num_saved_responses += 1
 
                 # Replace href with (?:href|src) to follow image links.
@@ -220,6 +227,7 @@ class Crawler:
         """Fetch one URL."""
         # Using max_workers since they are not being quit
         if self.num_saved_responses >= self.max_saved_responses: 
+            # NOT SURE IF THIS IS NEEDED
             self.q.task_done()
             return
         tries = 0
@@ -281,6 +289,7 @@ class Crawler:
                 bad =  10 * any([x in link for x in self.index_filter_strings])
                 prio = bad - good # lower is better
                 self.q.put_nowait((prio, link, self.max_redirects_per_url))
+                
             self.seen_urls.update(links)
         yield from response.release()
 
@@ -325,3 +334,44 @@ class Crawler:
         self.t1 = time.time()
         for w in workers:
             w.cancel()
+
+    def finish_leftovers(self):
+        return False
+
+class NewsCrawler(Crawler):
+    def __init__(self, config):
+        super(NewsCrawler, self).__init__(config) 
+        self.scraper = Scrape(config) 
+        self.template_complete = False
+        self.trees = {}
+        self.templates_done = 0
+        
+    @asyncio.coroutine
+    def save_response(self, text, response): 
+        # just let the indexer save the files as normal and also create a Template
+        url = response.url
+        tree = makeTree(text, self.scraper.domain) 
+        if self.templates_done < self.scraper.config['max_templates']:
+            self.templates_done += 1
+            self.scraper.domain_nodes_dict.add_template_elements(tree)
+            self.scraper.url_to_headers_mapping[url] = dict(response.headers)
+            self.trees[url] = tree
+        else:
+            # Let's try to do it in a tasked manner to remove existing ones and new ones
+            # new one 
+            self.save_data(self.scraper.process(tree, url, False, []))
+            # old one
+            if self.trees:
+                # could go wrong!?!?
+                url, tree = yield from self.trees.popitem()
+                self.save_data(self.scraper.process(url, tree, False, [])) 
+        return        
+
+    def save_data(self, data):
+        raise NotImplementedError('save_data has to be implemented')
+
+    def finish_leftovers(self):
+        while self.trees:
+            url, tree = self.trees.popitem() 
+            self.save_data(self.scraper.process(url, tree, False, [])) 
+        return dict(self.scraper.domain_nodes_dict)    

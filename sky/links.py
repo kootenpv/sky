@@ -1,3 +1,5 @@
+# Link('http://nu.nl/nieuws', slugified = 'httpnunlnieuws', parent = 'http://nu.nl', hop = 1, refTo, refFrom)
+
 import re
 
 def get_word_set(url): 
