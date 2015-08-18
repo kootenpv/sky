@@ -3,7 +3,7 @@ import json
 import os
 from pkg_resources import resource_filename
 
-from sky.helper import *
+from sky.helper import get_text_and_tail
 
 fname = os.path.abspath(resource_filename('sky.data', 'author_translation_table.json'))
 

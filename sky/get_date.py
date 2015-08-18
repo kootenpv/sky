@@ -4,10 +4,9 @@ import dateutil.parser
 import datetime
 import os
 
+from sky.helper import get_text_and_tail
+
 from pkg_resources import resource_filename
-
-from sky.helper import *
-
 fname = os.path.abspath(resource_filename('sky.data', 'date_translation_table.json'))
 
 with open(fname) as f:

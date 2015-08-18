@@ -1,14 +1,12 @@
-# Very important in the next step to merge the scraper and the crawler
-# How will it work:
-# It will only keep in memory the (url,htmls) that should be indexed
-# Whenever there are the maximum number of templates (now 1000) reached in memory, it will create a template object
+# For the body:
+# - Use and strip HTML 5 elements
+# - Cut-off text when we see a clear "share elements" thing
+
+# Really use templates/content things, for example to detect "sharing", "comments", "relevant links"
 # 
 
 # logging all actions
 # simplify
-
-# author! :)
-# date removal
 
 import re
 import os
@@ -16,36 +14,27 @@ import json
 import lxml.html
 import justext
 
-# try:    
-#     from .dbpedia import load_dbpedia
-#     from .dbpedia import get_dbpedia_from_words 
-#     from .money import MoneyMatcher 
-# except SystemError:
-#     from dbpedia import load_dbpedia
-#     from dbpedia import get_dbpedia_from_words 
-#     from money import MoneyMatcher
+# from sky.dbpedia import load_dbpedia
+# from sky.dbpedia import get_dbpedia_from_words 
+# from sky.money import MoneyMatcher 
     
 # dbpedia = load_dbpedia()
 # money = MoneyMatcher()
 
-try: 
-    from .helper import *
-    from .remove_boilerplate import DomainNodesDict
-    from .findTitle import getRuleTitle
-    from .get_date import get_dates
-    from .get_author import get_author
-    from .links import get_sorted_links
-    from .language import get_language
-    from .images import get_images
-except SystemError: 
-    from helper import * 
-    from remove_boilerplate import DomainNodesDict
-    from findTitle import getRuleTitle 
-    from get_date import get_dates
-    from get_author import get_author
-    from links import get_sorted_links
-    from language import get_language
-    from images import get_images
+from sky.helper import get_text_and_tail
+from sky.helper import makeTree
+from sky.helper import extractDomain
+from sky.helper import get_last_text_non_a_node
+from sky.helper import normalize
+
+
+from sky.remove_boilerplate import DomainNodesDict
+from sky.findTitle import getRuleTitle
+from sky.get_date import get_dates
+from sky.get_author import get_author
+from sky.links import get_sorted_links
+from sky.language import get_language
+from sky.images import get_images
 
 class Scrape():
     # todo is finextr date
@@ -286,8 +275,7 @@ class Scrape():
                         if not x.is_boilerplate and not x.is_heading]
         return body_content
 
-# from configs import DEFAULT_CRAWL_CONFIG
-# from helper import *
+# from sky.configs import DEFAULT_CRAWL_CONFIG
 
 # SCRAPE_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
 

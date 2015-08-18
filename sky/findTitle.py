@@ -1,10 +1,4 @@
-import lxml.html
-import justext
-
-try:
-    from .helper import *
-except SystemError:
-    from helper import *
+from sky.helper import fscore
 
 ############## Multi
 

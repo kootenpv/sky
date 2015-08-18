@@ -1,12 +1,5 @@
-try:
-    from .configs import DEFAULT_CRAWL_CONFIG
-    from .scraper import Scrape
-    from .helper import *
-except:
-    from configs import DEFAULT_CRAWL_CONFIG
-    from scraper import Scrape 
-    from helper import *
-        
+from sky.configs import DEFAULT_CRAWL_CONFIG
+from sky.scraper import Scrape
 
 # Crawling 
 CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG

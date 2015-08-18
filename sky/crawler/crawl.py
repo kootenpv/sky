@@ -5,10 +5,10 @@
 import asyncio
 import logging
 import sys
-
-from .crawling import Crawler
-from .reporting import report
 import os
+
+from sky.crawler.crawling import Crawler
+from sky.crawler.reporting import report
 
 def get_loop(select = False):
     if os.name == 'nt':

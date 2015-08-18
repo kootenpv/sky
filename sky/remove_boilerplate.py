@@ -1,11 +1,7 @@
 import re
 
-try: 
-    from .helper import normalize
-    from .helper import get_text_and_tail
-except SystemError: 
-    from helper import normalize
-    from helper import get_text_and_tail
+from sky.helper import normalize
+from sky.helper import get_text_and_tail
 
 class DomainNodesDict(dict):
     def __init__(self, domain, min_templates = None, max_templates = None, template_proportion = None):
