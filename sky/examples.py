@@ -1,6 +1,6 @@
 from sky.configs import DEFAULT_CRAWL_CONFIG
 
-##########################################################
+########## 1. Setup ##################################################
         
 PROJECT_NAME = 'testproj'
 
@@ -10,11 +10,10 @@ bbc_config = {
     'seed_urls' : ['http://www.bbc.com/news/world/europe'],
     'crawl_required_strings' : 'europe',
     'index_required_strings' : 'news/world-europe-',
-    'max_workers' : 1,
-    'max_saved_responses' : 10
 }
 
-######### File      ##############################################
+######### 2a. File      ##############################################
+
 from sky.crawler_services import CrawlFileService
 from sky.crawler_plugins import CrawlFilePluginNews
 
@@ -22,7 +21,8 @@ storage_object = {'path' : '/Users/pascal/sky_collections/'}
 
 cs = CrawlFileService(PROJECT_NAME, storage_object, CrawlFilePluginNews)
 
-######### Cloudant  ##############################################
+######### 2b. Cloudant  ##############################################
+
 import cloudant
 from sky.crawler_services import CrawlCloudantService
 from sky.crawler_plugins import CrawlCloudantPluginNews
@@ -36,7 +36,8 @@ account.login(USERNAME, PASSWORD)
 
 cs = CrawlCloudantService(PROJECT_NAME, account, CrawlCloudantPluginNews)
 
-######### ElasticSearch ##########################################
+######### 2c. ElasticSearch ##########################################
+
 import elasticsearch
 
 from sky.crawler_services import CrawlElasticSearchService
@@ -46,25 +47,24 @@ es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 cs = CrawlElasticSearchService(PROJECT_NAME, es, CrawlElasticSearchPluginNews)
 
-######### ZODB ###################################################
+######### 2d. ZODB ###################################################
+
 import ZODB.FileStorage
 from sky.crawler_services import CrawlZODBService
 from sky.crawler_plugins import CrawlZODBPluginNews
 
-fname = '/Users/pascal/GDrive/sky_collections/zodbtest/{}.fs'.format(PROJECT_NAME)
+fname = '/Users/pascal/sky_collections/zodb/{}.fs'.format(PROJECT_NAME)
 storage = ZODB.FileStorage.FileStorage(fname)
 
 cs = CrawlZODBService(PROJECT_NAME, storage, CrawlZODBPluginNews)
 
-##################################################################
+######### 3. Add config files to the database ########################
 
-# Add config files to the database
 default = cs.get_crawl_plugin('default')
-bbc = cs.get_crawl_plugin('bbc.com')
-
 default.save_config(default_config)
+
+bbc = cs.get_crawl_plugin('bbc.com')
 bbc.save_config(bbc_config)
 
-
-# Start crawling
+######## 4. Start crawling ###########################################
 cs.run('bbc.com')

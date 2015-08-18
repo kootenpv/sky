@@ -51,7 +51,7 @@ class CrawlFileService(CrawlService):
     def get_crawl_plugins(self):
         self.plugins = {}
         for fn in os.listdir(self.server['plugins']):
-            if fn.endswith('.plugin') and fn != 'default.plugin':
+            if fn != 'default':
                 with open(os.path.join(self.server['plugins'], fn)) as f:
                     # not yet parsed config, not sure if that is a problem
                     self.plugins[fn] = f.read()

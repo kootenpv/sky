@@ -87,7 +87,7 @@ class CrawlPlugin():
 class CrawlFilePlugin(CrawlPlugin):
 
     def get_default_plugin(self): 
-        with open(os.path.join(self.server['plugins'], 'default.plugin')) as f:
+        with open(os.path.join(self.server['plugins'], 'default')) as f:
             return json.load(f)
         
     def apply_specific_plugin(self):
@@ -121,7 +121,7 @@ class CrawlFilePlugin(CrawlPlugin):
         return seen_urls
 
     def save_config(self, config): 
-        with open(os.path.join(self.server['documents'], self.plugin_name), 'w') as f:
+        with open(os.path.join(self.server['plugins'], self.plugin_name), 'w') as f:
             json.dump(config, f)
             
 class CrawlCloudantPlugin(CrawlPlugin):
