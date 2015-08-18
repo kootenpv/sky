@@ -2,7 +2,6 @@
 
 Installation summary (note: sky/sky/ is different from sky/):
 
-- if it is the first time using tldextract, run: `python3 -c "import tldextract; tldextract.extract('http://google.nl')"` to load Top Level Domain extracts
 - Create cloudant.username (in /path/to/clone/sky/sky/)
 - Create cloudant.password (in /path/to/clone/sky/sky/)
 - Go to the [document "default"](https://835ea05b-d4b0-4210-a9f7-f838266e65d0-bluemix.cloudant.com/dashboard.html#database/crawler-plugins/default), and change `collections_path` to the path where you want to store HTML locally. Make sure this is an existing directory (e.g. /Users/taco/rabo_collections)
@@ -16,8 +15,6 @@ pip3 install sky
 ```
 
 This will install some lovely packages.
-
-If it is the first time using tldextract, run: `python3 -c "import tldextract; tldextract.extract('http://google.nl')"` to load Top Level Domain extracts.CC
 
 To make a connection with Cloudant, put `cloudant.password` and `cloudant.username` single line files in `..../sky/sky/.` 
 

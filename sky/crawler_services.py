@@ -1,3 +1,16 @@
+import os
+
+try:
+    from ZODB.serialize import referencesf
+    from ZODB.DB import DB
+    import transaction
+    from BTrees.OOBTree import OOBTree
+    import time
+except NameError:
+    msg = 'ZODB not properly installed and cannot be used as data backend.\n'
+    msg += 'Use `pip3 install ZODB zodbpickle` to install, or use a different backend.' 
+    print(msg)    
+
 class CrawlService():
     def __init__(self, project_name, storage_object, crawl_plugin_class): 
         self.project_name = project_name 
@@ -25,11 +38,25 @@ class CrawlService():
         for plugin in self.plugins: 
             self.run(plugin)
 
-class CrawlCloudantService(CrawlService):
-    def __init__(self, project_name, storage_object, crawl_plugin_class): 
-        super(CrawlCloudantService, self).__init__(project_name, storage_object, crawl_plugin_class) 
-        self.crawler_plugins_db = None
+class CrawlFileService(CrawlService): 
+    def get_server(self):
+        root = self.storage_object['path']
+        tps = ['plugins', 'documents', 'template_dict']
+        self.server = {tp : os.path.join(root, self.project_name + '-crawler-' + tp) 
+                       for tp in tps}
+        # create paths if they don't exist
+        for paths in self.server.values(): 
+            os.makedirs(paths, exist_ok = True)
 
+    def get_crawl_plugins(self):
+        self.plugins = {}
+        for fn in os.listdir(self.server['plugins']):
+            if fn.endswith('.plugin') and fn != 'default.plugin':
+                with open(os.path.join(self.server['plugins'], fn)) as f:
+                    # not yet parsed config, not sure if that is a problem
+                    self.plugins[fn] = f.read()
+                
+class CrawlCloudantService(CrawlService):
     def get_server(self):
         account = self.storage_object 
 
@@ -49,18 +76,10 @@ class CrawlCloudantService(CrawlService):
 
 
 class CrawlZODBService(CrawlService): 
-    from ZODB.serialize import referencesf
-    from ZODB.DB import DB
-    import transaction
-    from BTrees.OOBTree import OOBTree
-    import time
     
-    def __init__(self, project_name, storage_object, crawl_plugin_class): 
-        super(CrawlZODBService, self).__init__(project_name, storage_object, crawl_plugin_class) 
-
     def get_server(self):
         # In services, a FileStorage (or perhaps other backend) object has to be provided 
-        db = self.DB(self.storage_object)
+        db = DB(self.storage_object)
         connection = db.open()
         self.server = connection.root()
 
@@ -68,19 +87,17 @@ class CrawlZODBService(CrawlService):
         tables = ['plugins', 'documents', 'template-dict']
         for table in tables:
             if table not in self.server:
-                self.server[table] = self.OOBTree() 
-                self.transaction.commit()
+                self.server[table] = OOBTree() 
+                transaction.commit()
 
     def pack(self):
-        self.storage_object.pack(self.time.time(), self.referencesf) 
+        self.storage_object.pack(time.time(), referencesf) 
         
     def get_crawl_plugins(self): 
         return {k : doc for k, doc in self.server['plugins'].items()
                 if k != 'default'}
 
 class CrawlElasticSearchService(CrawlService):
-    def __init__(self, project_name, storage_object, crawl_plugin_class): 
-        super(CrawlElasticSearchService, self).__init__(project_name, storage_object, crawl_plugin_class) 
 
     def create_index_if_not_existent(self, name, request_body = None): 
         if not self.server.indices.exists(name):

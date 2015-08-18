@@ -14,6 +14,14 @@ bbc_config = {
     'max_saved_responses' : 10
 }
 
+######### File      ##############################################
+from sky.crawler_services import CrawlFileService
+from sky.crawler_plugins import CrawlFilePluginNews
+
+storage_object = {'path' : '/Users/pascal/sky_collections/'}
+
+cs = CrawlFileService(PROJECT_NAME, storage_object, CrawlFilePluginNews)
+
 ######### Cloudant  ##############################################
 import cloudant
 from sky.crawler_services import CrawlCloudantService
@@ -60,5 +68,3 @@ bbc.save_config(bbc_config)
 
 # Start crawling
 cs.run('bbc.com')
-
-

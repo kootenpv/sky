@@ -7,11 +7,18 @@
 # Create the design document        
 
 import json
-from sky.configs import DEFAULT_CRAWL_CONFIG
+import os
 from sky.scraper import Scrape
 from sky.crawler import crawl
 from sky.crawler.crawling import NewsCrawler
 from sky.helper import slugify
+
+# ZODB specific
+try:
+    import transaction
+    from BTrees.OOBTree import OOBTree
+except NameError:
+    print('ZODB not properly installed, and will thus not be able to be ran. Use `pip3 install ZODB zodbpickle`')    
 
 class CrawlPlugin():
     def __init__(self, project_name, server = None, plugin_name = None):
@@ -78,27 +85,47 @@ class CrawlPlugin():
                                           [title_sort, body_sort, date_sort, url_sort])}
 
 class CrawlFilePlugin(CrawlPlugin):
-    def __init__(self, plugin_name): 
-        super(CrawlFilePlugin, self).__init__(plugin_name)
 
     def get_default_plugin(self): 
-        return DEFAULT_CRAWL_CONFIG
+        with open(os.path.join(self.server['plugins'], 'default.plugin')) as f:
+            return json.load(f)
         
     def apply_specific_plugin(self):
-        with open(self.plugin_name) as f:
+        with open(os.path.join(self.server['plugins'], self.plugin_name)) as f: 
             specific_config = json.load(f)
-        self.crawl_config.update(specific_config)        
+        self.crawl_config.update(specific_config)
         
     def handle_results(self, to = "file"):
-        with open('results_{}.json'.format(self.plugin_name), 'w') as f:
-            json.dump(self.data, f)
+        for res in self.data:
+            with open(os.path.join(self.server['documents'], slugify(res['url'])), 'w') as f:
+                json.dump(res, f)
 
+    def get_documents(self, maximum_number_of_documents = 1000000):
+        slugged_url = slugify(self.plugin_name)
+        results = []
+        for num, fn in enumerate(os.listdir(self.server['documents'])):
+            if num == maximum_number_of_documents:
+                break
+            if slugged_url in fn:
+                with open(os.path.join(self.server['documents'], fn)) as f:
+                    results.append(json.load(f))
+        return results
+
+    def get_seen_urls(self):
+        slugged_url = slugify(self.plugin_name)
+        seen_urls = set()
+        for fn in os.listdir(self.server['documents']):
+            if slugged_url in fn:
+                with open(os.path.join(self.server['documents'], fn)) as f:
+                    seen_urls.add(json.load(f)['url'])
+        return seen_urls
+
+    def save_config(self, config): 
+        with open(os.path.join(self.server['documents'], self.plugin_name), 'w') as f:
+            json.dump(config, f)
+            
 class CrawlCloudantPlugin(CrawlPlugin):
-    ### 
-    # Make it so that the service can do the login once, and that this receives the databases 
-    ### 
-    # Class import
-    import cloudant
+
     def __init__(self, project_name, server, plugin_name): 
         super(CrawlCloudantPlugin, self).__init__(project_name, server, plugin_name) 
         self.dbs = {x : self.server.database(self.project_name + '-crawler-' + x) for x in 
@@ -139,12 +166,7 @@ class CrawlCloudantPlugin(CrawlPlugin):
         self.dbs['plugins'][self.plugin_name] = doc
 
 class CrawlElasticSearchPlugin(CrawlPlugin):
-    ### 
-    # Make it so that the service can do the login once, and that this receives the databases 
-    ###
-    ### Class import
-    from elasticsearch import Elasticsearch
-    import elasticsearch
+
     def __init__(self, project_name, server, plugin_name): 
         super(CrawlElasticSearchPlugin, self).__init__(project_name, server, plugin_name)
         self.es = server
@@ -184,11 +206,6 @@ class CrawlElasticSearchPlugin(CrawlPlugin):
                       index = self.project_name + "-crawler-plugins")
 
 class CrawlZODBPlugin(CrawlPlugin):
-    import transaction
-    from BTrees.OOBTree import OOBTree
-    
-    def __init__(self, project_name, server, plugin_name): 
-        super(CrawlZODBPlugin, self).__init__(project_name, server, plugin_name) 
 
     def get_default_plugin(self): 
         return self.server['plugins']['default']
@@ -202,7 +219,7 @@ class CrawlZODBPlugin(CrawlPlugin):
     def handle_results(self, to = "cloudant"): 
         for url_id in self.data: 
             self.server['documents'][slugify(url_id)] = self.data[url_id]
-        self.transaction.commit()
+        transaction.commit()
         print(to)    
 
     def get_documents(self, maximum_number_of_documents = 1000000): 
@@ -214,7 +231,7 @@ class CrawlZODBPlugin(CrawlPlugin):
         
     def save_config(self, config):
         self.server['plugins'][self.plugin_name] = config
-        self.transaction.commit()
+        transaction.commit()
 
 class CrawlPluginNews(CrawlPlugin):
     import ast
@@ -236,25 +253,49 @@ class CrawlPluginNews(CrawlPlugin):
         templated_dict = crawl.start(self.scrape_config, NewsCrawler, self.save_data_while_crawling) 
         self.save_template_dict(templated_dict)
     
+
+class CrawlFilePluginNews(CrawlFilePlugin, CrawlPluginNews): 
+    
+    def save_data_while_crawling(self, data): 
+        with open(os.path.join(self.server['documents'], slugify(data['url'])), 'w') as f:
+            json.dump(data, f)
+
+    def get_template_dict(self): 
+        temp_dict_fn = os.path.join(self.server['template_dict'], self.plugin_name)
+        if os.path.isfile(temp_dict_fn): 
+            with open(temp_dict_fn) as f: 
+                template_dict = {self.ast.literal_eval(k) : v for k, v in json.load(f).items() 
+                                 if not k.startswith('_')}
+        else:
+            template_dict = {} 
+            
+        return template_dict
+
+    def save_template_dict(self, templated_dict):
+        if templated_dict:
+            temp_dict_fn = os.path.join(self.server['template_dict'], self.plugin_name)
+            with open(temp_dict_fn, 'w') as f: 
+                json.dump({repr(k) : v for k, v in templated_dict.items()}, f)
+
         
 class CrawlZODBPluginNews(CrawlZODBPlugin, CrawlPluginNews): 
     
     def save_data_while_crawling(self, data): 
         self.server['documents'][slugify(data['url'])] = data
-        self.transaction.commit()
+        transaction.commit()
 
     def get_template_dict(self):
         if ('template-dict' not in self.server or
             self.plugin_name not in self.server['template-dict']): 
-            template_dict = self.OOBTree()
+            template_dict = OOBTree()
         else:
             template_dict = self.server['template-dict'][self.plugin_name]
         return template_dict
 
     def save_template_dict(self, templated_dict):
         if templated_dict:
-            self.server['template-dict'][self.plugin_name] = self.OOBTree(templated_dict)
-            self.transaction.commit()
+            self.server['template-dict'][self.plugin_name] = OOBTree(templated_dict)
+            transaction.commit()
 
 class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews): 
 
@@ -268,7 +309,9 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
                                         doc_type = 'template-dict', 
                                         id = self.plugin_name)['_source']
             template_dict = {self.ast.literal_eval(k) : v for k,v in template_dict.items()}
-        except self.elasticsearch.NotFoundError:
+        # If it is anything except the indexing error, it will be thrown anyway because the update fails    
+        # pylint: disable=bare-except
+        except:
             template_dict = {}
         return template_dict
 
@@ -277,7 +320,9 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
             try:
                 self.es.index(index = self.project_name + "-crawler-template-dict", doc_type = 'template-dict', id = self.plugin_name, 
                                body = json.dumps({repr(k): v for k, v in templated_dict.items()}))
-            except self.elasticsearch.RequestError: 
+            # If it is anything except the indexing error, it will be thrown anyway because the update fails    
+            # pylint: disable=bare-except
+            except:
                 self.es.update(index = self.project_name + "-crawler-template-dict", doc_type = 'template-dict', id = self.plugin_name, 
                                body = json.dumps({"doc" : {repr(k): v for k, v in templated_dict.items()}}))
 
