@@ -14,19 +14,19 @@ CRAWL_CONFIG.update({
 
     # Optional
     
-    'crawl_filter_strings' : [ 
+    'crawl_filter_regexps' : [ 
         
     ],
 
-    'crawl_required_strings' : [
+    'crawl_required_regexps' : [
         '2015', '2014'
     ],        
             
-    'index_filter_strings' : [
+    'index_filter_regexps' : [
         
     ],
     
-    'index_required_strings' : [ 
+    'index_required_regexps' : [ 
         '2015', '2014'
     ], 
 

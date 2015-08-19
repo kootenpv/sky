@@ -40,8 +40,8 @@ class Scrape():
     # todo is finextr date
     def __init__(self, config): 
         self.config = config
-        self.index_required_strings = []
-        self.index_filter_strings = []
+        self.index_required_regexps = []
+        self.index_filter_regexps = []
         self.detected_language = None
         self.seed_urls = None 
         self.domain = None
@@ -65,8 +65,8 @@ class Scrape():
         self.add_template_elements() 
 
     def should_save(self, url):
-        if not self.index_required_strings or any([re.search(condition, url) for condition in self.index_required_strings]):
-            if all([not re.search(x, url) for x in self.index_filter_strings]): 
+        if not self.index_required_regexps or any([re.search(condition, url) for condition in self.index_required_regexps]):
+            if all([not re.search(x, url) for x in self.index_filter_regexps]): 
                 return True
         return False       
         

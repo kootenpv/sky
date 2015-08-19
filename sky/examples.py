@@ -55,8 +55,8 @@ default.save_config(DEFAULT_CRAWL_CONFIG)
 
 bbc_config = {
     'seed_urls' : ['http://www.bbc.com/news/world/europe'],
-    'crawl_required_strings' : ['europe'],
-    'index_required_strings' : ['news/world-europe-'],
+    'crawl_required_regexps' : ['europe'],
+    'index_required_regexps' : ['news/world-europe-'],
 }
 
 bbc = cs.get_crawl_plugin('bbc.com')

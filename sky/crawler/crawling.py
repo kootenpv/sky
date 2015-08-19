@@ -76,10 +76,10 @@ class Crawler:
         self.max_saved_responses = 10000000
         self.max_tries_per_url = None
         self.max_workers = None
-        self.crawl_required_strings = [] 
-        self.crawl_filter_strings = [] 
-        self.index_required_strings = [] 
-        self.index_filter_strings = [] 
+        self.crawl_required_regexps = [] 
+        self.crawl_filter_regexps = [] 
+        self.index_required_regexps = [] 
+        self.index_filter_regexps = [] 
         self.login_data = {}
         self.login_url = None
         self.seen_urls = set()
@@ -164,14 +164,14 @@ class Crawler:
 
 
     def should_crawl(self, url):
-        if all([not re.search(x, url) for x in self.crawl_filter_strings]): 
-            if not self.crawl_required_strings or any([re.search(x, url) for x in self.crawl_required_strings]):
+        if all([not re.search(x, url) for x in self.crawl_filter_regexps]): 
+            if not self.crawl_required_regexps or any([re.search(x, url) for x in self.crawl_required_regexps]):
                 return True
         return False    
 
     def should_save(self, url):
-        if not self.index_required_strings or any([re.search(condition, url) for condition in self.index_required_strings]):
-            if all([not re.search(x, url) for x in self.index_filter_strings]): 
+        if not self.index_required_regexps or any([re.search(condition, url) for condition in self.index_required_regexps]):
+            if all([not re.search(x, url) for x in self.index_filter_regexps]): 
                 return True
         return False           
             
@@ -285,8 +285,8 @@ class Crawler:
             stat, links = yield from self.handle_response(response)
             self.record_statistic(stat)
             for link in links.difference(self.seen_urls):
-                good = sum([x in link for x in self.index_required_strings])
-                bad =  10 * any([x in link for x in self.index_filter_strings])
+                good = sum([x in link for x in self.index_required_regexps])
+                bad =  10 * any([x in link for x in self.index_filter_regexps])
                 prio = bad - good # lower is better
                 self.q.put_nowait((prio, link, self.max_redirects_per_url))
                 

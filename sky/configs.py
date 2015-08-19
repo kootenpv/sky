@@ -10,18 +10,18 @@ DEFAULT_CRAWL_CONFIG = {
 
     # Optional
     
-    'crawl_filter_strings' : [
+    'crawl_filter_regexps' : [
                         
     ],
 
-    'crawl_required_strings' : [
+    'crawl_required_regexps' : [
     ],        
             
-    'index_filter_strings' : [
+    'index_filter_regexps' : [
         
     ],
     
-    'index_required_strings' : [
+    'index_required_regexps' : [
                           
     ], 
 

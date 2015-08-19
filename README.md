@@ -89,8 +89,8 @@ If we want to for example crawl *europe* related news from bbc.com (http://www.b
 ```python
 bbc_config = {
     'seed_urls' : ['http://www.bbc.com/news/world/europe'],
-    'crawl_required_strings' : ['europe'],
-    'index_required_strings' : ['news/world-europe-'],
+    'crawl_required_regexps' : ['europe'],
+    'index_required_regexps' : ['news/world-europe-'],
     'max_saved_responses' : 100, 
 }
 bbc = cs.get_crawl_plugin('bbc.com')
@@ -100,8 +100,8 @@ bbc.save_config(bbc_config)
 Options explained:
 
 - `'seed_urls' : ['http://www.bbc.com/news/world/europe']` is from where the crawl starts.
-- `'crawl_required_strings' : ['europe']` will ensure we only visit URLs containing the word `europe`.
-- `'index_required_strings' : ['news/world-europe-']` will only save/use pages with URLs that contain `news/world-europe-`.
+- `'crawl_required_regexps' : ['europe']` will ensure we only visit URLs containing the word `europe`.
+- `'index_required_regexps' : ['news/world-europe-']` will only save/use pages with URLs that contain `news/world-europe-`.
 
 This time, save_config saves the `bbc.com` specific configuration.
 
