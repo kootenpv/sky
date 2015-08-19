@@ -16,6 +16,9 @@ cleaner.style = True
 def slugify(value):
     return re.sub(r'[^\w\s-]', '', re.sub(r'[-\s]+', '-', value)).strip().lower() 
 
+def view_url(url):
+    view_html(getQuickTree(url)) 
+
 def view_html(x):
     import time
     import webbrowser

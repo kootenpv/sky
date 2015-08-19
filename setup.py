@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '106'
+MICRO_VERSION = '109'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name = 'sky',
@@ -15,8 +15,7 @@ setup(name = 'sky',
       packages = ['sky', 'sky/crawler'],
       install_requires = [ 
           'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect', 
-          'python-dateutil', 'sh', 'beautifulsoup4', 'aiohttp', 'ZODB', 'zodbpickle', 'cloudant',
-          'elasticsearch'
+          'python-dateutil', 'sh', 'beautifulsoup4', 'aiohttp'
       ], 
       # optional: ZODB, zodbpickle, cloudant, elasticsearch, selenium, asciitree, nltk
       classifiers = [ 

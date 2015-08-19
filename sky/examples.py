@@ -1,16 +1,5 @@
-from sky.configs import DEFAULT_CRAWL_CONFIG
-
 ########## 1. Setup ##################################################
-        
 PROJECT_NAME = 'testproj'
-
-default_config = DEFAULT_CRAWL_CONFIG
-
-bbc_config = {
-    'seed_urls' : ['http://www.bbc.com/news/world/europe'],
-    'crawl_required_strings' : 'europe',
-    'index_required_strings' : 'news/world-europe-',
-}
 
 ######### 2a. File      ##############################################
 
@@ -59,9 +48,16 @@ storage = ZODB.FileStorage.FileStorage(fname)
 cs = CrawlZODBService(PROJECT_NAME, storage, CrawlZODBPluginNews)
 
 ######### 3. Add config files to the database ########################
+from sky.configs import DEFAULT_CRAWL_CONFIG
 
 default = cs.get_crawl_plugin('default')
-default.save_config(default_config)
+default.save_config(DEFAULT_CRAWL_CONFIG)
+
+bbc_config = {
+    'seed_urls' : ['http://www.bbc.com/news/world/europe'],
+    'crawl_required_strings' : ['europe'],
+    'index_required_strings' : ['news/world-europe-'],
+}
 
 bbc = cs.get_crawl_plugin('bbc.com')
 bbc.save_config(bbc_config)
