@@ -1,0 +1,19 @@
+<html>
+
+   {% include "head.html" %}
+
+   <body>
+<div class="overlay"></div>
+     {% include "menu.html" %}
+
+     <div class="mycontainer" style="margin-top:70px">
+
+         {% for num_item, item in enumerate(items) %}
+            {% include "result.html" %}
+         {% end %}
+
+     </div>
+     
+   </body>
+   
+ </html>

@@ -34,7 +34,7 @@ class CrawlPlugin():
     def get_default_plugin(self):
         pass
 
-    def apply_specific_plugin(self):
+    def get_specific_plugin(self):
         pass
 
     def get_scrape_config(self):    
@@ -65,8 +65,12 @@ class CrawlPlugin():
         pass
 
     def run(self, use_cache = False):
+        # get default plugin
         self.crawl_config = self.get_default_plugin()
-        self.apply_specific_plugin()
+
+        # apply this specific plugin
+        self.crawl_config.update(self.get_specific_plugin()) 
+                
         self.scrape_config = self.get_scrape_config()
         if not use_cache:
             self.start_crawl()
@@ -90,10 +94,10 @@ class CrawlFilePlugin(CrawlPlugin):
         with open(os.path.join(self.server['plugins'], 'default')) as f:
             return json.load(f)
         
-    def apply_specific_plugin(self):
+    def get_specific_plugin(self):
         with open(os.path.join(self.server['plugins'], self.plugin_name)) as f: 
-            specific_config = json.load(f)
-        self.crawl_config.update(specific_config)
+            specific_config = json.load(f) 
+        return specific_config
         
     def handle_results(self, to = "file"):
         for res in self.data:
@@ -134,12 +138,9 @@ class CrawlCloudantPlugin(CrawlPlugin):
     def get_default_plugin(self): 
         return self.dbs['plugins'].get('default').json()
         
-    def apply_specific_plugin(self): 
-        plugin = self.dbs['plugins'].get(self.plugin_name).json()
-        self.crawl_config.update(plugin)
-        seen_urls = self.get_seen_urls()
-        self.crawl_config['seen_urls'] = seen_urls
-        
+    def get_specific_plugin(self): 
+        return self.dbs['plugins'].get(self.plugin_name).json()
+                
     def handle_results(self, to = "cloudant"): 
         if to == "cloudant":
             for url_id in self.data: 
@@ -175,12 +176,9 @@ class CrawlElasticSearchPlugin(CrawlPlugin):
         return self.es.get(id = 'default', doc_type = 'plugin', 
                            index = self.project_name + "-crawler-plugins")['_source']
         
-    def apply_specific_plugin(self): 
-        conf = self.es.get(id = self.plugin_name, doc_type = 'plugin', 
-                           index = self.project_name + "-crawler-plugins")['_source']
-        self.crawl_config.update(conf)        
-        seen_urls = self.get_seen_urls()
-        self.crawl_config['seen_urls'] = seen_urls
+    def get_specific_plugin(self): 
+        return self.es.get(id = self.plugin_name, doc_type = 'plugin', 
+                           index = self.project_name + "-crawler-plugins")['_source'] 
         
     def handle_results(self, to = "cloudant"): 
         for url_id in self.data: 
@@ -210,11 +208,8 @@ class CrawlZODBPlugin(CrawlPlugin):
     def get_default_plugin(self): 
         return self.server['plugins']['default']
         
-    def apply_specific_plugin(self): 
-        conf = self.server['plugins'][self.plugin_name]
-        self.crawl_config.update(conf)        
-        seen_urls = self.get_seen_urls()
-        self.crawl_config['seen_urls'] = seen_urls
+    def get_specific_plugin(self): 
+        return self.server['plugins'][self.plugin_name] 
         
     def handle_results(self, to = "cloudant"): 
         for url_id in self.data: 
@@ -243,12 +238,27 @@ class CrawlPluginNews(CrawlPlugin):
 
     def save_template_dict(self, templated_dict):
         raise NotImplementedError('save_template_dict required')
+
+    def get_seen_urls(self):
+        raise NotImplementedError('seen_urls required')
         
     def run(self, use_cache = False):
+        # get default plugin
         self.crawl_config = self.get_default_plugin()
-        self.apply_specific_plugin()
+
+        # apply this specific plugin
+        self.crawl_config.update(self.get_specific_plugin()) 
+        
+        # add the already visited urls to the config
+        seen_urls = self.get_seen_urls()
+        self.crawl_config['seen_urls'] = seen_urls
+
+        # inherits from crawl_config
         self.scrape_config = self.get_scrape_config() 
+
+        # add the template for this crawl_plugin to the scraping config
         self.scrape_config['template_dict'] = self.get_template_dict()
+        
         # separate out the save data while crawling and the newscraler
         templated_dict = crawl.start(self.scrape_config, NewsCrawler, self.save_data_while_crawling) 
         self.save_template_dict(templated_dict)

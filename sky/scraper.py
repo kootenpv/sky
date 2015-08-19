@@ -16,10 +16,10 @@ import justext
 
 # from sky.dbpedia import load_dbpedia
 # from sky.dbpedia import get_dbpedia_from_words 
-# from sky.money import MoneyMatcher 
+from sky.money import MoneyMatcher 
     
 # dbpedia = load_dbpedia()
-# money = MoneyMatcher()
+money = MoneyMatcher()
 
 from sky.helper import get_text_and_tail
 from sky.helper import makeTree
@@ -236,7 +236,7 @@ class Scrape():
 
         links = [x.attrib['href'] for x in tree.xpath('//a') if 'href' in x.attrib and x.attrib['href'].startswith(self.domain) and self.should_save(x.attrib['href'])]
 
-        # money_amounts = money.find('\n'.join(body_content), 1000) + money.find(title, 1000)
+        money_amounts = money.find('\n'.join(body_content), 1000) + money.find(title, 1000)
 
         data = {'title' : title, 
                 'body' : body_content, 
@@ -247,7 +247,7 @@ class Scrape():
                 'language' : self.detected_language,
                 'url' : url, 
                 'domain' : self.domain,
-                # 'money': money_amounts,
+                'money': money_amounts,
                 'summary' : '',
                 'related' : get_sorted_links(links, url)[:5] }
 

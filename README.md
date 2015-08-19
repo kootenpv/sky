@@ -7,26 +7,26 @@ Most importantly, it aims for **next generation** web crawling where machine int
 It mainly does this by considering the user to be interested in content from *domains*, not just a collection of *single pages*.
 
 It would allow it to:
-- Drop duplicate content (menus, texts, images)
+- ✓ Drop duplicate content (menus, texts, images)
+- ✓ Provide error checking tools (making sure no bad documents slip by)
 - Detect whether a website changed the layout (causing other scrapers to fail)
 - Understand sections of a website, such as comments, forum posts, related links etc
 - Consider which pages are linked to which (star graph)
 - Figure out the content pages by just pointing at the domain
 - Relate pages (page A is related by content to page B)
 - Consider an optimal re-crawling path
-- Provide error checking tools (making sure no bad documents slip by)
 
 Extending the project with Natural Language Processing is a next step. For example, there are steps to automatically detect acquisitions; `Company A acquires Company B`, and investments: `Company A invests B millions in Company C`.
 
 #### Features/Goals
 
-- **Really fast**, due to Python 3.4+ new asyncio/aiohttp libraries
-- **Smart**, due to considering crawling of *websites* instead of single *pages*
+- ✓ **Really fast**, due to Python 3.4+ new asyncio/aiohttp libraries, based on [500lines/crawler](https://github.com/aosabook/500lines/tree/master/crawler)
+- ✓ **Smart**, due to considering crawling of *websites* instead of single *pages*
+- ✓ **Boilerplate FREE**, removes crappy content (images, text, etc) that does not belong on pages
+- ✓ **Nice API**, carefully crafted, easily extendible
+- ✓ **Open-source**, democracy driven, with actual support
+- ✓ **Free**, versus enormous costs for even medium scale projects using (worse) online services
 - **Link-graph-analysis**, find out how a domain "looks" like
-- **Boilerplate FREE**, removes crappy content (images, text, etc) that does not belong on pages
-- **Nice API**, carefully crafted, easily extendible
-- **Open-source**, democracy driven, with actual support
-- **Free**, versus enormous costs for even medium scale projects using (worse) online services
 
 See it live in action with a news website you propose!
 

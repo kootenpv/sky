@@ -1,0 +1,14 @@
+<form class="navbar-form form-search ng-pristine ng-valid" method="post"> 
+    <div class="input-append">
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#crawl-options">> Options</button>
+        <input id="searchbox" type="text" class="span8 search-query" placeholder="Sample crawl domain and view" name="url"><button type="submit" class="btn btn-success" ng-click="newSearch()">>>></button>
+        <ul id="crawl-options" class="collapse">
+            <li><label class="span3">Regexp preventing crawling</label> <input id="crawl_filter" type="text" class="span5 search-query" placeholder="Do not visit pages containing e.g. 'logout' or 'contact'" name="crawl_filter_regexps"></li> 
+            <li><label class="span3">Regexp required to crawl</label> <input id="crawl_required" type="text" class="span5 search-query" placeholder="Only visit pages containing e.g. 'news/' " name="crawl_required_regexps"></li>
+            <li><label class="span3">Regexp prohibits indexing</label><input id="index_filter" type="text" class="span5 search-query" placeholder="Do not save pages containing e.g. 'page' or 'page=\d'" name="index_filter_regexps"></li>
+            <li><label class="span3">Regexp required to be indexed</label><input id="index_required" type="text" class="span5 search-query" placeholder="Only save pages containing e.g. 'article' or '\d{8}'" name="index_required_regexps"></li> 
+            <li><label class="span3">Maximum number of results</label> <input id="searchbox2" type="number" min="1" max="100" class="span5 search-query" placeholder="Maximum number of displayed documents" name="max_saved_responses"></li>
+            <li><label class="span3">Use cache</label> <input id="checkboxcache" type="checkbox" class="span5 search-query" name="checkboxcache"></li>
+        </ul>
+    </div>
+</form><!--/.nav-collapse -->
