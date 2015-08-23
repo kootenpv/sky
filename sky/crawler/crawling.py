@@ -24,6 +24,7 @@ except ImportError:
 
 from asyncio import PriorityQueue
 
+
 class JoinablePriorityQueue(Queue, PriorityQueue):
     pass
 
@@ -31,19 +32,23 @@ import aiohttp  # Install with "pip install aiohttp".
 
 LOGGER = logging.getLogger(__name__)
 
+
 def lenient_host(host):
     parts = host.split('.')[-2:]
     return ''.join(parts)
 
+
 def is_redirect(response):
     return response.status in (300, 301, 302, 303, 307)
 
+
 def slugify(value):
-    url = re.sub(r'[^\w\s-]', '', re.sub(r'[-\s]+', '-', value)).strip().lower() 
+    url = re.sub(r'[^\w\s-]', '', re.sub(r'[-\s]+', '-', value)).strip().lower()
     return url[:-1] if url.endswith('/') else url
 
-def extractDomain(url): 
-    tld = ".".join([x for x in tldextract.extract(url) if x ])
+
+def extractDomain(url):
+    tld = ".".join([x for x in tldextract.extract(url) if x])
     protocol = url.split('//', 1)[0]
     if 'file:' == protocol:
         protocol += '///'
@@ -61,12 +66,15 @@ FetchStatistic = namedtuple('FetchStatistic',
                              'encoding',
                              'num_urls',
                              'num_new_urls'])
+
+
 class Crawler:
     """Crawl a set of URLs.
 
     This manages two sets of URLs: 'urls' and 'done'.  'urls' is a set of
     URLs seen, and 'done' is a list of FetchStatistics.
     """
+
     def __init__(self, config):
         self.loop = None
         self.seed_urls = None
@@ -76,48 +84,48 @@ class Crawler:
         self.max_saved_responses = 10000000
         self.max_tries_per_url = None
         self.max_workers = None
-        self.crawl_required_regexps = [] 
-        self.crawl_filter_regexps = [] 
-        self.index_required_regexps = [] 
-        self.index_filter_regexps = [] 
+        self.crawl_required_regexps = []
+        self.crawl_filter_regexps = []
+        self.index_required_regexps = []
+        self.index_filter_regexps = []
         self.login_data = {}
         self.login_url = None
         self.seen_urls = set()
-        self.headers = {'User-Agent': 'My User Agent 1.0', 
-                        'From': 'youremail@domain.com' }
-        for k,v in config.items():
+        self.headers = {'User-Agent': 'My User Agent 1.0',
+                        'From': 'youremail@domain.com'}
+        for k, v in config.items():
             setattr(self, k, v)
         self.seen_urls = set(self.seen_urls)
         self.max_saved_responses = int(self.max_saved_responses)
-        self.max_workers = min(int(self.max_workers), self.max_saved_responses)    
+        self.max_workers = min(int(self.max_workers), self.max_saved_responses)
         self.max_tries_per_url = int(self.max_tries_per_url)
         self.max_redirects_per_url = int(self.max_redirects_per_url)
         self.max_hops = int(self.max_hops)
-        self.q = JoinablePriorityQueue(loop = self.loop) 
+        self.q = JoinablePriorityQueue(loop=self.loop)
         self.done = []
         self.root_domains = self.handle_root_of_seeds()
         self.t0 = time.time()
-        self.t1 = None 
-        self.num_saved_responses = 0 
+        self.t1 = None
+        self.num_saved_responses = 0
         self.domain = extractDomain(self.seed_urls[0])
-        self.file_storage_place = os.path.join(self.collections_path, self.collection_name) 
+        self.file_storage_place = os.path.join(self.collections_path, self.collection_name)
         delete = False
-        if delete and os.path.isdir(self.file_storage_place): 
-            shutil.rmtree(self.file_storage_place) 
-        if self.file_storage_place and not os.path.isdir(self.file_storage_place): 
+        if delete and os.path.isdir(self.file_storage_place):
+            shutil.rmtree(self.file_storage_place)
+        if self.file_storage_place and not os.path.isdir(self.file_storage_place):
             os.makedirs(self.file_storage_place)
-            
-        self.session = aiohttp.ClientSession(headers = self.headers) 
 
-    @asyncio.coroutine        
+        self.session = aiohttp.ClientSession(headers=self.headers)
+
+    @asyncio.coroutine
     def login(self):
-        resp = yield from self.session.post(self.login_url, data = aiohttp.FormData(self.login_data))
+        resp = yield from self.session.post(self.login_url, data=aiohttp.FormData(self.login_data))
         LOGGER.info('login in to url %r', self.login_url)
         print(resp.status)
         yield from resp.release()
 
     def handle_root_of_seeds(self):
-        root_domains = set() 
+        root_domains = set()
         for root in self.seed_urls:
             parts = urllib.parse.urlparse(root)
             host, _ = urllib.parse.splitport(parts.netloc)
@@ -127,7 +135,7 @@ class Crawler:
                 else:
                     host = host.lower()
                     root_domains.add(lenient_host(host))
-                self.add_url(0, root) 
+                self.add_url(0, root)
         if len(root_domains) > 1:
             raise Exception('Multiple Domains')
         return root_domains
@@ -158,23 +166,24 @@ class Crawler:
         self.done.append(fetch_statistic)
 
     @asyncio.coroutine
-    def save_response(self, text, response): 
+    def save_response(self, text, response):
         with open(os.path.join(self.file_storage_place, slugify(response.url)), 'w') as f:
-            json.dump({'url' : response.url, 'html' : text, 'headers' : dict(response.headers)}, f) 
-
+            json.dump({'url': response.url, 'html': text, 'headers': dict(response.headers)}, f)
 
     def should_crawl(self, url):
-        if all([not re.search(x, url) for x in self.crawl_filter_regexps]): 
-            if not self.crawl_required_regexps or any([re.search(x, url) for x in self.crawl_required_regexps]):
+        if all([not re.search(x, url) for x in self.crawl_filter_regexps]):
+            if (not self.crawl_required_regexps or
+                    any([re.search(x, url) for x in self.crawl_required_regexps])):
                 return True
-        return False    
+        return False
 
     def should_save(self, url):
-        if not self.index_required_regexps or any([re.search(condition, url) for condition in self.index_required_regexps]):
-            if all([not re.search(x, url) for x in self.index_filter_regexps]): 
+        if (not self.index_required_regexps or
+                any([re.search(condition, url) for condition in self.index_required_regexps])):
+            if all([not re.search(x, url) for x in self.index_filter_regexps]):
                 return True
-        return False           
-            
+        return False
+
     @asyncio.coroutine
     def handle_response(self, response):
         """Return a FetchStatistic and list of links."""
@@ -194,8 +203,8 @@ class Crawler:
             if content_type in ('text/html', 'application/xml'):
                 text = yield from response.text()
 
-                if self.should_save(response.url): 
-                    sr = yield from self.save_response(text, response) 
+                if self.should_save(response.url):
+                    _ = yield from self.save_response(text, response)
                     self.num_saved_responses += 1
 
                 # Replace href with (?:href|src) to follow image links.
@@ -224,11 +233,11 @@ class Crawler:
         return stat, links
 
     @asyncio.coroutine
-    def fetch(self, prio, url, max_redirects_per_url): 
+    def fetch(self, prio, url, max_redirects_per_url):
         """Fetch one URL."""
         # Using max_workers since they are not being quit
-        if self.num_saved_responses >= self.max_saved_responses: 
-            # NOT SURE IF THIS IS NEEDED 
+        if self.num_saved_responses >= self.max_saved_responses:
+            # NOT SURE IF THIS IS NEEDED
             return
         tries = 0
         exception = None
@@ -286,10 +295,10 @@ class Crawler:
             self.record_statistic(stat)
             for link in links.difference(self.seen_urls):
                 good = sum([x in link for x in self.index_required_regexps])
-                bad =  10 * any([x in link for x in self.index_filter_regexps])
-                prio = bad - good # lower is better
+                bad = 10 * any([x in link for x in self.index_filter_regexps])
+                prio = bad - good  # lower is better
                 self.q.put_nowait((prio, link, self.max_redirects_per_url))
-                
+
             self.seen_urls.update(links)
         yield from response.release()
 
@@ -302,7 +311,7 @@ class Crawler:
             yield from self.fetch(prio, url, max_redirects_per_url)
             self.q.task_done()
 
-    def url_allowed(self, url): 
+    def url_allowed(self, url):
         if url.endswith('.jpg') or url.endswith('.png'):
             return False
         parts = urllib.parse.urlparse(url)
@@ -315,7 +324,7 @@ class Crawler:
             return False
         return True
 
-    def add_url(self, prio, url, max_redirects_per_url = None):
+    def add_url(self, prio, url, max_redirects_per_url=None):
         """Add a URL to the queue if not seen before."""
         if max_redirects_per_url is None:
             max_redirects_per_url = self.max_redirects_per_url
@@ -338,19 +347,21 @@ class Crawler:
     def finish_leftovers(self):
         return False
 
+
 class NewsCrawler(Crawler):
+
     def __init__(self, config):
-        super(NewsCrawler, self).__init__(config) 
-        self.scraper = Scrape(config) 
+        super(NewsCrawler, self).__init__(config)
+        self.scraper = Scrape(config)
         self.template_complete = False
         self.trees = {}
         self.templates_done = 0
-        
+
     @asyncio.coroutine
-    def save_response(self, text, response): 
+    def save_response(self, text, response):
         # just let the indexer save the files as normal and also create a Template
         url = response.url
-        tree = makeTree(text, self.scraper.domain) 
+        tree = makeTree(text, self.scraper.domain)
         if self.templates_done < self.scraper.config['max_templates']:
             self.templates_done += 1
             self.scraper.domain_nodes_dict.add_template_elements(tree)
@@ -358,20 +369,20 @@ class NewsCrawler(Crawler):
             self.trees[url] = tree
         else:
             # Let's try to do it in a tasked manner to remove existing ones and new ones
-            # new one 
+            # new one
             self.save_data(self.scraper.process(tree, url, False, []))
             # old one
             if self.trees:
                 # could go wrong!?!?
                 url, tree = yield from self.trees.popitem()
-                self.save_data(self.scraper.process(url, tree, False, [])) 
-        return        
+                self.save_data(self.scraper.process(url, tree, False, []))
+        return
 
     def save_data(self, data):
         raise NotImplementedError('save_data has to be implemented')
 
     def finish_leftovers(self):
         while self.trees:
-            url, tree = self.trees.popitem() 
-            self.save_data(self.scraper.process(url, tree, False, [])) 
-        return dict(self.scraper.domain_nodes_dict)    
+            url, tree = self.trees.popitem()
+            self.save_data(self.scraper.process(url, tree, False, []))
+        return dict(self.scraper.domain_nodes_dict)

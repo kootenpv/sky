@@ -1,3 +1,5 @@
+# Add the skyViewer documentation, and make relative skyView path for user
+
 ### sky
 
 sky is a web scraping framework, implemented with the latest python versions in mind (3.4+). It uses the asynchronous `asyncio` framework, as well as many popular modules and extensions.
@@ -130,9 +132,13 @@ Each document will be stored with a slugified file name, with JSON content:
 - Related links "related" (sorted on usefulness)
 - Summary "summary"
 
+### Run a Demo locally
+
+Run 'sky view' to see the news viewer capabilities. Enter a URL (and possibly other parameters) and see the results after clicking "OK".
+
 ### Scheduling
 
-When using well defined crawling boundaries, recrawling can be done frequently, as it does not burden the target. 
+When using well defined crawling boundaries, recrawling can be done frequently, as it does not burden the targeted domain. 
 
 Use this to update all the existing crawls:
 

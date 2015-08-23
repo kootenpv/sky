@@ -6,7 +6,7 @@ PROJECT_NAME = 'testproj'
 from sky.crawler_services import CrawlFileService
 from sky.crawler_plugins import CrawlFilePluginNews
 
-storage_object = {'path' : '/Users/pascal/sky_collections/'}
+storage_object = {'path': '/Users/pascal/sky_collections/'}
 
 cs = CrawlFileService(PROJECT_NAME, storage_object, CrawlFilePluginNews)
 
@@ -17,9 +17,9 @@ from sky.crawler_services import CrawlCloudantService
 from sky.crawler_plugins import CrawlCloudantPluginNews
 
 with open('cloudant.username') as f:
-    USERNAME = f.read()    
+    USERNAME = f.read()
 with open('cloudant.password') as f:
-    PASSWORD = f.read() 
+    PASSWORD = f.read()
 account = cloudant.Account(USERNAME)
 account.login(USERNAME, PASSWORD)
 
@@ -54,9 +54,9 @@ default = cs.get_crawl_plugin('default')
 default.save_config(DEFAULT_CRAWL_CONFIG)
 
 bbc_config = {
-    'seed_urls' : ['http://www.bbc.com/news/world/europe'],
-    'crawl_required_regexps' : ['europe'],
-    'index_required_regexps' : ['news/world-europe-'],
+    'seed_urls': ['http://www.bbc.com/news/world/europe'],
+    'crawl_required_regexps': ['europe'],
+    'index_required_regexps': ['news/world-europe-'],
 }
 
 bbc = cs.get_crawl_plugin('bbc.com')
