@@ -38,7 +38,7 @@ from sky.language import get_language
 from sky.images import get_images
 
 
-class Scrape():
+class Scrape:
     # todo is finextr date
 
     def __init__(self, config):

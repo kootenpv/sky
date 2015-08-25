@@ -2,23 +2,31 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '112'
+MICRO_VERSION = '114'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
-setup(name = 'sky',
-      version = VERSION,
-      description = 'AI powered scraping in Python 3',
-      url = 'https://github.com/kootenpv/sky',
-      author = 'Pascal van Kooten',
-      author_email = 'kootenpv@gmail.com',
-      license = 'MIT',
-      packages = ['sky', 'sky/crawler'],
-      install_requires = [ 
-          'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect', 
+setup(name='sky',
+      version=VERSION,
+      description='AI powered scraping in Python 3',
+      url='https://github.com/kootenpv/sky',
+      author='Pascal van Kooten',
+      author_email='kootenpv@gmail.com',
+      license='MIT',
+      packages=['sky', 'sky/crawler', 'sky/view'],
+      package_data={
+          # If any package contains *.txt or *.rst files, include them:
+          # '': ['*.txt', '*.rst'],
+          'sky/view': ['templates/*.html', 'static/js/*.js', 'static/images/*.png']
+      },
+      install_requires=[
+          'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect',
           'python-dateutil', 'sh', 'beautifulsoup4', 'aiohttp', 'tornado'
-      ], 
+      ],
+      entry_points={
+          'console_scripts': ['sky = sky.sky:main']
+      },
       # optional: ZODB, zodbpickle, cloudant, elasticsearch, selenium, asciitree, nltk
-      classifiers = [ 
+      classifiers=[
           'Environment :: Console',
           'Intended Audience :: Developers',
           'Intended Audience :: Customer Service',
@@ -28,18 +36,18 @@ setup(name = 'sky',
           'Operating System :: MacOS :: MacOS X',
           'Operating System :: Unix',
           'Operating System :: POSIX',
-          'Programming Language :: Python', 
+          'Programming Language :: Python',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
-          'Topic :: Software Development', 
+          'Topic :: Software Development',
           'Topic :: Software Development :: Build Tools',
-          'Topic :: Software Development :: Debuggers', 
+          'Topic :: Software Development :: Debuggers',
           'Topic :: Software Development :: Libraries',
           'Topic :: Software Development :: Libraries :: Python Modules',
-          'Topic :: System :: Software Distribution', 
+          'Topic :: System :: Software Distribution',
           'Topic :: System :: Systems Administration',
           'Topic :: Utilities'
-    ], 
-    include_package_data = True,
-    zip_safe = False,
-    platforms='any')
+      ],
+      include_package_data=True,
+      zip_safe=False,
+      platforms='any')

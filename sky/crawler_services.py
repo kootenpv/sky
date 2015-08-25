@@ -100,8 +100,7 @@ class CrawlZODBService(CrawlService):
         self.storage_object.pack(time.time(), referencesf)
 
     def get_crawl_plugins(self):
-        return {k: doc for k, doc in self.server['plugins'].items()
-                if k != 'default'}
+        return {k: doc for k, doc in self.server['plugins'].items() if k != 'default'}
 
 
 class CrawlElasticSearchService(CrawlService):
