@@ -24,13 +24,14 @@ def is_numeric(x):
 
 
 class MainHandler(tornado.web.RequestHandler):
+
     def get(self):
         self.render('page_template.html', items=[], cached=False)
 
     def post(self):
         CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG
         CRAWL_CONFIG.update({
-            'collections_path': '/Users/pascal/GDrive/sky/sky/view/collections',
+            'collections_path': os.path.join(os.path.expanduser('~'), 'sky_collections/'),
             # 'max_workers': 10,
         })
         args = self.request.arguments
@@ -94,7 +95,7 @@ class MainHandler(tornado.web.RequestHandler):
 settings = {
     'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
     'static_path': os.path.join(os.path.dirname(__file__), 'static')
-    }
+}
 
 if __name__ == '__main__':
     # to run the server, type-in $ python view.py
@@ -108,6 +109,8 @@ if __name__ == '__main__':
     application.listen(PORT, HOST)
 
     ioloop = tornado.ioloop.IOLoop().instance()
+
+    print('serving skyViewer at {}:{} from file: {}'.format(HOST, PORT, __file__))
 
     # if on localhost, update when file change
     # if HOST == 'localhost':
