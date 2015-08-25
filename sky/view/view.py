@@ -98,7 +98,7 @@ settings = {
 }
 
 
-def main():
+def main(port=7900):
     # to run the server, type-in $ python view.py
 
     application = tornado.web.Application([
@@ -106,7 +106,7 @@ def main():
     ], **settings)
 
     HOST = 'localhost'
-    PORT = 7900
+    PORT = int(port)
     application.listen(PORT, HOST)
 
     ioloop = tornado.ioloop.IOLoop().instance()
