@@ -93,11 +93,12 @@ class MainHandler(tornado.web.RequestHandler):
         self.render('page_template.html', items=items, cached=False)
 
 settings = {
-    'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
-    'static_path': os.path.join(os.path.dirname(__file__), 'static')
+    'template_path': os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates')),
+    'static_path': os.path.abspath(os.path.join(os.path.dirname(__file__), 'static'))
 }
 
-if __name__ == '__main__':
+
+def main():
     # to run the server, type-in $ python view.py
 
     application = tornado.web.Application([
@@ -124,3 +125,7 @@ if __name__ == '__main__':
     #     tornado.autoreload.start(ioloop)
 
     ioloop.start()
+
+
+if __name__ == '__main__':
+    main()

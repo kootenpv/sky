@@ -11,52 +11,58 @@ fname = os.path.abspath(resource_filename('sky.data', 'date_translation_table.js
 
 with open(fname) as f:
     date_translation_table = json.load(f)
-    uppered = {x.title() : date_translation_table[x] for x in date_translation_table}
+    uppered = {x.title(): date_translation_table[x] for x in date_translation_table}
     date_translation_table.update(uppered)
-        
 
-class NoDefaultDate(object): 
+
+class NoDefaultDate(object):
     """ Credits http://stackoverflow.com/a/18242643/1575066 """
+
     def replace(self, **fields):
         if any(f not in fields for f in ('year', 'month', 'day')):
             return None
         return datetime.datetime(2000, 1, 1).replace(**fields)
-        
+
+
 def patched_dateutil_parse(v, fuzzy):
-    _actual = dateutil.parser.parse(v, default=NoDefaultDate(), fuzzy = fuzzy)
+    _actual = dateutil.parser.parse(v, default=NoDefaultDate(), fuzzy=fuzzy)
     if _actual is not None:
         # pylint: disable=E1101
         return _actual.date()
     else:
         return False
-    
-def date_translation(txt, lang): 
+
+
+def date_translation(txt, lang):
     if lang in date_translation_table:
         for month in date_translation_table[lang]:
             txt = txt.replace(month, date_translation_table[lang][month])
-    return txt        
+    return txt
 
-def get_text_date(v, fuzzy = False): 
+
+def get_text_date(v, fuzzy=False):
     try:
         d = patched_dateutil_parse(v, fuzzy)
         return d
     except (ValueError, OverflowError, TypeError, AttributeError):
         return False
 
+
 def within_years(d):
     return re.search(r'\b(19[89][0-9]|20[0-4][0-9])\b', d)
 
-def get_dates(tree, lang = 'en'): 
-    # make this faster, its friggin slow (stupid fuzzy matching) 
-    hard_dates = [] 
-    soft_dates = [] 
+
+def get_dates(tree, lang='en'):
+    # make this faster, its friggin slow (stupid fuzzy matching)
+    hard_dates = []
+    soft_dates = []
     fuzzy_hard_dates = []
-    fuzzy_soft_dates = [] 
+    fuzzy_soft_dates = []
     meta_nodes = tree.xpath('//head/meta')
 
     goods = ['ublish', 'ublicat', 'date', 'time']
 
-    for option in goods: 
+    for option in goods:
 
         for meta in meta_nodes:
             if not any([option in a for a in meta.values()]):
@@ -66,31 +72,31 @@ def get_dates(tree, lang = 'en'):
                 soft_dates.append(get_text_date(date_translation(meta.attrib[attr], lang)))
 
     for num, node in enumerate(tree.iter()):
-        candi_dates = [v for k,v in node.items() if v and any([x in k for x in goods])] 
-        for v in candi_dates: 
+        candi_dates = [v for k, v in node.items() if v and any([x in k for x in goods])]
+        for v in candi_dates:
             if within_years(v):
                 if lang != 'en':
                     v = date_translation(v, lang)
                 d = get_text_date(v)
                 if d:
                     soft_dates.append(d)
-                else: 
-                    fuzzy_soft_dates.append(get_text_date(v, fuzzy = True)) 
+                else:
+                    fuzzy_soft_dates.append(get_text_date(v, fuzzy=True))
 
-        # hard date    
-        tailtext = get_text_and_tail(node).strip() 
+        # hard date
+        tailtext = get_text_and_tail(node).strip()
         if tailtext and within_years(tailtext):
             if lang != 'en':
                 tailtext = date_translation(tailtext, lang)
             hard_date = get_text_date(tailtext)
-            if hard_date: 
+            if hard_date:
                 hard_dates.append((num, hard_date))
             else:
-                fuzzy_hard_dates.append((num, get_text_date(tailtext, fuzzy = True)))
+                fuzzy_hard_dates.append((num, get_text_date(tailtext, fuzzy=True)))
 
     soft_dates = set(soft_dates)
     fuzzy_soft_dates = set(x for x in fuzzy_soft_dates if x)
-    fuzzy_hard_dates = [x for x in fuzzy_hard_dates if x] 
+    fuzzy_hard_dates = [x for x in fuzzy_hard_dates if x]
 
     # Note that num and hd get switched here
     hardest_dates = []
@@ -99,28 +105,27 @@ def get_dates(tree, lang = 'en'):
         if hd in soft_dates:
             hardest_dates.append((hd, num))
         else:
-            not_hardest_dates.append((hd, num))                
+            not_hardest_dates.append((hd, num))
 
     fuzzy_hardest_dates = []
     for num, hd in fuzzy_hard_dates:
         if hd in fuzzy_soft_dates:
-            fuzzy_hardest_dates.append((hd, num))        
+            fuzzy_hardest_dates.append((hd, num))
         else:
             not_hardest_dates.append((hd, num))
 
-    # if nothing, then try simply fuzzy on each node, and otherwise non fuzzy        
-    non_fuzzy_any = []        
-    fuzzy_any = [] 
-    if not any([hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates]): 
-        # no leads, try to parse everything non fuzzy 
+    # if nothing, then try simply fuzzy on each node, and otherwise non fuzzy
+    non_fuzzy_any = []
+    fuzzy_any = []
+    if not any([hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates]):
+        # no leads, try to parse everything non fuzzy
         for num, node in enumerate(tree.iter()):
-            non_fuzzy_text = get_text_date(node, fuzzy = False)
+            non_fuzzy_text = get_text_date(node, fuzzy=False)
             if non_fuzzy_text:
                 non_fuzzy_any.append((non_fuzzy_text, num))
             else:
-                fuzzy_text = get_text_date(node, fuzzy = True)
+                fuzzy_text = get_text_date(node, fuzzy=True)
                 if fuzzy_text:
-                    fuzzy_any.append((fuzzy_text, num)) 
-            
-    return hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates, non_fuzzy_any, fuzzy_any
+                    fuzzy_any.append((fuzzy_text, num))
 
+    return hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates, non_fuzzy_any, fuzzy_any
