@@ -59,7 +59,7 @@ from sky.crawler_services import CrawlFileService
 from sky.crawler_plugins import CrawlFilePluginNews
 PROJECT_NAME = 'testproj'
 storage_object = {'path' : '/Users/pascal/sky_collections/'}
-cs = CrawlFileService(PROJECT_NAME, storage_object, CrawlFilePluginNews)
+crawler_service = CrawlFileService(PROJECT_NAME, storage_object, CrawlFilePluginNews)
 ```
 
 By creating this Service, the file paths will be initialized on the local system:
@@ -76,7 +76,7 @@ Let's first define the default project config:
 
 ```python
 from sky.configs import DEFAULT_CRAWL_CONFIG
-default = cs.get_crawl_plugin('default')
+default = crawler_service.get_crawl_plugin('default')
 default.save_config(DEFAULT_CRAWL_CONFIG)
 ```
 
@@ -93,9 +93,9 @@ bbc_config = {
     'seed_urls' : ['http://www.bbc.com/news/world/europe'],
     'crawl_required_regexps' : ['europe'],
     'index_required_regexps' : ['news/world-europe-'],
-    'max_saved_responses' : 100, 
+    'max_saved_responses' : 100,
 }
-bbc = cs.get_crawl_plugin('bbc.com')
+bbc = crawler_service.get_crawl_plugin('bbc.com')
 bbc.save_config(bbc_config)
 ```
 
@@ -112,7 +112,7 @@ This time, save_config saves the `bbc.com` specific configuration.
 Finally, run a config by its plugin_name (crawler-plugin "id"):
 
 ```python
-cs.run('bbc.com')
+crawler_service.run('bbc.com')
 ```
 
 #### Results
@@ -134,15 +134,15 @@ Each document will be stored with a slugified file name, with JSON content:
 
 ### Run a Demo locally
 
-Run 'sky view' to see the news viewer capabilities. Enter a URL (and possibly other parameters) and see the results after clicking "OK".
+Run 'python 3 /path/to/sky/sky/view/view.py' to see the news viewer capabilities at `localhost:7900`. Enter a URL (and possibly other parameters) and see the results after clicking "OK".
 
 ### Scheduling
 
-When using well defined crawling boundaries, recrawling can be done frequently, as it does not burden the targeted domain. 
+When using well defined crawling boundaries, recrawling can be done frequently, as it does not burden the targeted domain.
 
 Use this to update all the existing crawls:
 
-    cs.run_all()
+    crawler_service.run_all()
 
 Use a cronjob to automate running a scheduling script, e.g. daily (perhaps more implementation is to follow).
 
@@ -151,8 +151,8 @@ Use a cronjob to automate running a scheduling script, e.g. daily (perhaps more 
 After crawling, it is recommended to check the summary of potential bad paths. For `title`, `body`, `publish_date`, and `url` the shortest (five) values are sorted so it can give a suggestion about which paths might be bad. (reasoning: if a title is really short or non existent, most likely it is a document that should be filtered)
 
 ```python
-ccp = CrawlFilePlugin(plugin_name)
-ccp.get_bad_documents()
+crawler_plugin = CrawlFilePlugin(plugin_name)
+crawler_plugin.get_bad_documents()
 ```
 
 To be extended.
