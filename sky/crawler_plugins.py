@@ -159,8 +159,11 @@ class CrawlCloudantPlugin(CrawlPlugin):
 
     def get_seen_urls(self):
         params = '?query={}'.format(self.plugin_name)
-        udocs = self.dbs['documents'].design('urlview').view('view1').get(params).json()['rows']
-        return set([udoc['key'] for udoc in udocs])
+        udocs = self.dbs['documents'].design('urlview').view('view1').get(params).json()
+        if 'rows' in udocs:
+            return set([udoc['key'] for udoc in udocs['rows']])
+        else:
+            return set()
 
     def save_config(self, config):
         doc = self.dbs['plugins'].get(self.plugin_name).json()
