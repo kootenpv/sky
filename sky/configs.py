@@ -27,7 +27,7 @@ DEFAULT_CRAWL_CONFIG = {
 
     'max_redirects_per_url': 10,
 
-    'max_tries_per_url': 1,
+    'max_tries_per_url': 3,
 
     'max_workers': 5,
 

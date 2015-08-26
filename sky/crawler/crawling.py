@@ -265,7 +265,6 @@ class Crawler:
                                                  encoding=None,
                                                  num_urls=0,
                                                  num_new_urls=0))
-            yield from response.release()
             return
 
         if is_redirect(response):
