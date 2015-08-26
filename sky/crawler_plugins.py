@@ -17,7 +17,7 @@ from sky.helper import slugify
 try:
     import transaction
     from BTrees.OOBTree import OOBTree
-except NameError:
+except ImportError:
     print('Optional ZODB not possible as backend. Use `pip3 install ZODB zodbpickle`')
 
 
