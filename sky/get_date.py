@@ -9,7 +9,7 @@ from sky.helper import get_text_and_tail
 from pkg_resources import resource_filename
 fname = os.path.abspath(resource_filename('sky.data', 'date_translation_table.json'))
 
-with open(fname) as f:
+with open(fname, encoding="utf-8") as f:
     date_translation_table = json.load(f)
     uppered = {x.title(): date_translation_table[x] for x in date_translation_table}
     date_translation_table.update(uppered)
