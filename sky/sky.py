@@ -16,4 +16,4 @@ def main():
     """ This is the function that is run from commandline with `gittyleaks` """
     args = get_args_parser().parse_args()
     if args.command == 'view':
-        view.main(args.port)
+        view.main(args.host, args.port)
