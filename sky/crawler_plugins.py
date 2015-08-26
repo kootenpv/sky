@@ -21,7 +21,7 @@ except ImportError:
     print('Optional ZODB not possible as backend. Use `pip3 install ZODB zodbpickle`')
 
 
-class CrawlPlugin():
+class CrawlPlugin:
 
     def __init__(self, project_name, server=None, plugin_name=None):
         self.project_name = project_name

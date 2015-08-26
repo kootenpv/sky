@@ -77,8 +77,8 @@ class CrawlCloudantService(CrawlService):
         plugin_db = self.server.database(self.project_name + '-crawler-plugins')
         db_uri = '{}/_all_docs?include_docs=true'.format(plugin_db.uri)
         service_rows = plugin_db.get(db_uri).json()['rows']
-        self.plugins = {row['doc']['plugin_name']: row['doc'] for row in service_rows
-                        if 'default' != row['doc']['plugin_name']}
+        self.plugins = {row['doc']['_id']: row['doc'] for row in service_rows
+                        if 'default' != row['doc']['_id']}
 
 
 class CrawlZODBService(CrawlService):
