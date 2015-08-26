@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '126'
+MICRO_VERSION = '127'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name='sky',
@@ -16,7 +16,7 @@ setup(name='sky',
       package_data={
           # If any package contains *.txt or *.rst files, include them:
           # '': ['*.txt', '*.rst'],
-          'sky/view': ['templates/*.html', 'static/js/*.js', 'static/images/*.png']
+          'sky/view': ['templates/*.html', 'static/js/*.js', 'static/css/*.css', 'static/images/*.png']
       },
       install_requires=[
           'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect',
