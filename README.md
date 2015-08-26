@@ -1,5 +1,3 @@
-# Add the skyViewer documentation, and make relative skyView path for user
-
 ### sky
 
 sky is a web scraping framework, implemented with the latest python versions in mind (3.4+). It uses the asynchronous `asyncio` framework, as well as many popular modules and extensions.

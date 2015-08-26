@@ -93,25 +93,23 @@ class MainHandler(tornado.web.RequestHandler):
         self.render('page_template.html', items=items, cached=False)
 
 settings = {
-    'template_path': os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates')),
-    'static_path': os.path.abspath(os.path.join(os.path.dirname(__file__), 'static'))
+    'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
+    'static_path': os.path.join(os.path.dirname(__file__), 'static')
 }
 
 
-def main(port=7900):
+def main(host='localhost', port=7900):
     # to run the server, type-in $ python view.py
 
     application = tornado.web.Application([
         (r"/", MainHandler),
     ], **settings)
 
-    HOST = 'localhost'
-    PORT = int(port)
-    application.listen(PORT, HOST)
+    application.listen(int(port), host)
 
     ioloop = tornado.ioloop.IOLoop().instance()
 
-    print('serving skyViewer at {}:{} from file: {}'.format(HOST, PORT, __file__))
+    print('serving skyViewer at {}:{} from file: {}'.format(host, port, __file__))
 
     # if on localhost, update when file change
     # if HOST == 'localhost':
