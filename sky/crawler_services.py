@@ -6,7 +6,7 @@ try:
     import transaction
     from BTrees.OOBTree import OOBTree
     import time
-except NameError:
+except ImportError:
     msg = 'ZODB not properly installed and cannot be used as data backend.\n'
     msg += 'Use `pip3 install ZODB zodbpickle` to install, or use a different backend.'
     print(msg)
