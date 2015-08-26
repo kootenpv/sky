@@ -306,16 +306,16 @@ class CrawlZODBPluginNews(CrawlZODBPlugin, CrawlPluginNews):
         transaction.commit()
 
     def get_template_dict(self):
-        if ('template-dict' not in self.server or
-                self.plugin_name not in self.server['template-dict']):
+        if ('template_dict' not in self.server or
+                self.plugin_name not in self.server['template_dict']):
             template_dict = OOBTree()
         else:
-            template_dict = self.server['template-dict'][self.plugin_name]
+            template_dict = self.server['template_dict'][self.plugin_name]
         return template_dict
 
     def save_template_dict(self, templated_dict):
         if templated_dict:
-            self.server['template-dict'][self.plugin_name] = OOBTree(templated_dict)
+            self.server['template_dict'][self.plugin_name] = OOBTree(templated_dict)
             transaction.commit()
 
 
@@ -327,8 +327,8 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
 
     def get_template_dict(self):
         try:
-            templ_dict = self.es.get(index=self.project_name + "-crawler-template-dict",
-                                     doc_type='template-dict',
+            templ_dict = self.es.get(index=self.project_name + "-crawler-template_dict",
+                                     doc_type='template_dict',
                                      id=self.plugin_name)['_source']
             templ_dict = {self.ast.literal_eval(k): v for k, v in templ_dict.items()}
         # In acually catching the NotFoundError (for which I do not want to depend
@@ -341,16 +341,16 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
     def save_template_dict(self, templ_dict):
         if templ_dict:
             try:
-                self.es.index(index=self.project_name + "-crawler-template-dict",
-                              doc_type='template-dict', id=self.plugin_name,
+                self.es.index(index=self.project_name + "-crawler-template_dict",
+                              doc_type='template_dict', id=self.plugin_name,
                               body=json.dumps({repr(k): v for k, v in templ_dict.items()}))
             # In acually catching the NotFoundError (for which I do not want to depend
             # on importing the elasticsearch package)
             # pylint: disable=bare-except
             except:
                 self.es.update(
-                    index=self.project_name + "-crawler-template-dict",
-                    doc_type='template-dict', id=self.plugin_name,
+                    index=self.project_name + "-crawler-template_dict",
+                    doc_type='template_dict', id=self.plugin_name,
                     body=json.dumps({"doc": {repr(k): v for k, v in templ_dict.items()}}))
 
 
@@ -360,7 +360,7 @@ class CrawlCloudantPluginNews(CrawlCloudantPlugin, CrawlPluginNews):
         self.dbs['documents'][slugify(data['url'])] = data
 
     def get_template_dict(self):
-        template_dict = self.dbs['template-dict'].get(self.plugin_name).json()
+        template_dict = self.dbs['template_dict'].get(self.plugin_name).json()
         if 'error' in template_dict:
             template_dict = {}
         else:
@@ -370,8 +370,8 @@ class CrawlCloudantPluginNews(CrawlCloudantPlugin, CrawlPluginNews):
 
     def save_template_dict(self, templated_dict):
         if templated_dict:
-            doc = self.dbs['template-dict'].get(self.plugin_name).json()
+            doc = self.dbs['template_dict'].get(self.plugin_name).json()
             if 'error' in doc:
                 doc = {}
             doc.update({repr(k): v for k, v in templated_dict.items()})
-            self.dbs['template-dict'][self.plugin_name] = doc
+            self.dbs['template_dict'][self.plugin_name] = doc
