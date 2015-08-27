@@ -194,6 +194,9 @@ class Scrape:
                 date = sd
                 break
 
+        if not date:
+            date = "1970-01-01"
+
         if not author and meta_authors:
             for ma in meta_authors:
                 author = ma
