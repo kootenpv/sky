@@ -13,6 +13,9 @@ from sky.crawler import crawl
 from sky.crawler.crawling import NewsCrawler
 from sky.helper import slugify
 
+import aiohttp
+import asyncio
+
 # ZODB specific
 try:
     import transaction
@@ -139,10 +142,10 @@ class CrawlCloudantPlugin(CrawlPlugin):
                     ['plugins', 'documents', 'template_dict']}
 
     def get_default_plugin(self):
-        return self.dbs['plugins'].get('default').json()
+        return self.dbs['plugins'].get('default').result().json()
 
     def get_specific_plugin(self):
-        return self.dbs['plugins'].get(self.plugin_name).json()
+        return self.dbs['plugins'].get(self.plugin_name).result().json()
 
     def handle_results(self, to="cloudant"):
         if to == "cloudant":
@@ -154,19 +157,19 @@ class CrawlCloudantPlugin(CrawlPlugin):
         # now just to add the host thing ??????????????
         query = 'query={}'.format(self.plugin_name)
         params = '?include_docs=true&limit={}&{}'.format(maximum_number_of_documents, query)
-        return [x['doc'] for x in self.dbs['documents'].all_docs().get(params).json()['rows']
+        return [x['doc'] for x in self.dbs['documents'].all_docs().get(params).result().json()['rows']
                 if self.plugin_name in x['doc']['url']]
 
     def get_seen_urls(self):
         params = '?query={}'.format(self.plugin_name)
-        udocs = self.dbs['documents'].design('urlview').view('view1').get(params).json()
+        udocs = self.dbs['documents'].design('urlview').view('view1').get(params).result().json()
         if 'rows' in udocs:
             return set([udoc['key'] for udoc in udocs['rows']])
         else:
             return set()
 
     def save_config(self, config):
-        doc = self.dbs['plugins'].get(self.plugin_name).json()
+        doc = self.dbs['plugins'].get(self.plugin_name).result().json()
         if 'error' in doc:
             doc = {}
         doc.update(config)
@@ -356,11 +359,17 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
 
 class CrawlCloudantPluginNews(CrawlCloudantPlugin, CrawlPluginNews):
 
+    @asyncio.coroutine
     def save_data_while_crawling(self, data):
-        self.dbs['documents'][slugify(data['url'])] = data
+        # self.dbs['documents'][doc_id] = data
+        doc_id = self.dbs['documents'].uri + '/' + slugify(data['url'])
+        data['_id'] = doc_id
+        r = yield from aiohttp.post(doc_id, data=json.dumps(data), headers={"Content-Type": "application/json"})
+        print(r)
+        return r
 
     def get_template_dict(self):
-        template_dict = self.dbs['template_dict'].get(self.plugin_name).json()
+        template_dict = self.dbs['template_dict'].get(self.plugin_name).result().json()
         if 'error' in template_dict:
             template_dict = {}
         else:
@@ -370,7 +379,7 @@ class CrawlCloudantPluginNews(CrawlCloudantPlugin, CrawlPluginNews):
 
     def save_template_dict(self, templated_dict):
         if templated_dict:
-            doc = self.dbs['template_dict'].get(self.plugin_name).json()
+            doc = self.dbs['template_dict'].get(self.plugin_name).result().json()
             if 'error' in doc:
                 doc = {}
             doc.update({repr(k): v for k, v in templated_dict.items()})

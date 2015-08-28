@@ -132,7 +132,7 @@ Each document will be stored with a slugified file name, with JSON content:
 
 ### Run a Demo locally
 
-Run `sky -view` to see the news viewer capabilities at `localhost:7900`. Enter a URL (and possibly other parameters) and see the results after clicking "OK".
+Run `sky view` to see the news viewer capabilities at `localhost:7900` (you can use `-port` for a different port). Enter a URL (and possibly other parameters) and see the results after clicking "OK".
 
 ### Scheduling
 

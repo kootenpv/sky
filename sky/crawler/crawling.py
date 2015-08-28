@@ -238,6 +238,7 @@ class Crawler:
         # Using max_workers since they are not being quit
         if self.num_saved_responses >= self.max_saved_responses:
             # NOT SURE IF THIS IS NEEDED
+            self.q.task_done()
             return
         tries = 0
         exception = None
@@ -370,11 +371,6 @@ class NewsCrawler(Crawler):
             # Let's try to do it in a tasked manner to remove existing ones and new ones
             # new one
             self.save_data(self.scraper.process(tree, url, False, []))
-            # old one
-            if self.trees:
-                # could go wrong!?!?
-                url, tree = yield from self.trees.popitem()
-                self.save_data(self.scraper.process(url, tree, False, []))
         return
 
     def save_data(self, data):
