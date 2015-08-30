@@ -359,14 +359,8 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
 
 class CrawlCloudantPluginNews(CrawlCloudantPlugin, CrawlPluginNews):
 
-    @asyncio.coroutine
     def save_data_while_crawling(self, data):
-        # self.dbs['documents'][doc_id] = data
-        doc_id = self.dbs['documents'].uri + '/' + slugify(data['url'])
-        data['_id'] = doc_id
-        r = yield from aiohttp.post(doc_id, data=json.dumps(data), headers={"Content-Type": "application/json"})
-        print(r)
-        return r
+        self.dbs['documents'][slugify(data['url'])] = data
 
     def get_template_dict(self):
         template_dict = self.dbs['template_dict'].get(self.plugin_name).result().json()

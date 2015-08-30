@@ -354,7 +354,7 @@ class NewsCrawler(Crawler):
         super(NewsCrawler, self).__init__(config)
         self.scraper = Scrape(config)
         self.template_complete = False
-        self.trees = {}
+        self.scraped_data = {}
         self.templates_done = 0
 
     @asyncio.coroutine
@@ -366,18 +366,20 @@ class NewsCrawler(Crawler):
             self.templates_done += 1
             self.scraper.domain_nodes_dict.add_template_elements(tree)
             self.scraper.url_to_headers_mapping[url] = dict(response.headers)
-            self.trees[url] = tree
+            self.scraped_data[url] = self.scraper.process(url, tree, False, ['cleaned'])
         else:
             # Let's try to do it in a tasked manner to remove existing ones and new ones
             # new one
-            self.save_data(self.scraper.process(tree, url, False, []))
+            self.scraped_data[url] = self.scraper.process(url, tree, False, ['cleaned'])
         return
 
     def save_data(self, data):
         raise NotImplementedError('save_data has to be implemented')
 
     def finish_leftovers(self):
-        while self.trees:
-            url, tree = self.trees.popitem()
-            self.save_data(self.scraper.process(url, tree, False, []))
+        print('finish leftovers')
+        while self.scraped_data:
+            url, data = self.scraped_data.popitem()
+            print('saving data for url ', url)
+            self.save_data(data)
         return dict(self.scraper.domain_nodes_dict)
