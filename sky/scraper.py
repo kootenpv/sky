@@ -92,7 +92,7 @@ class Scrape:
                 with open(os.path.join(saved_html_dir, name)) as f:
                     try:
                         js = json.load(f)
-                    except (ValueError, UnicodeDecodeError):
+                    except:
                         print('failed to load json {}'.format(name))
                         continue
                     try:
