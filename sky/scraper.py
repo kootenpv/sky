@@ -8,6 +8,8 @@
 # logging all actions
 # simplify
 
+from __future__ import absolute_import
+
 import re
 import os
 import json
@@ -92,6 +94,7 @@ class Scrape:
                         js = json.load(f)
                     except (ValueError, UnicodeDecodeError):
                         print('failed to load json {}'.format(name))
+                        continue
                     try:
                         self.url_to_tree_mapping[js['url']] = makeTree(
                             js['html'], self.domain)
