@@ -83,16 +83,19 @@ class Scrape:
     # This might have to be changed into the database variant
     def load_local_pages(self):
         saved_html_dir = os.path.join(self.collections_path, self.collection_name)
-        for _, _, files in os.walk(saved_html_dir):
-            for name in files:
-                if not name.startswith('.DS_'):
+        if os.path.isdir(saved_html_dir):
+            for _, _, files in os.walk(saved_html_dir):
+                for name in files:
+                    if name.startswith('.DS_'):
+                        continue
                     with open(os.path.join(saved_html_dir, name)) as f:
                         try:
                             js = json.load(f)
                         except UnicodeDecodeError:
                             print('failed to load json {}'.format(name))
                         try:
-                            self.url_to_tree_mapping[js['url']] = makeTree(js['html'], self.domain)
+                            self.url_to_tree_mapping[js['url']] = makeTree(
+                                js['html'], self.domain)
                             self.url_to_headers_mapping[js['url']] = js['headers']
                         # pylint: disable=broad-except
                         except Exception as e:
