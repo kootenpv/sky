@@ -13,6 +13,7 @@ from sky.crawler import crawl
 from sky.crawler.crawling import NewsCrawler
 from sky.helper import slugify
 
+import requests
 import aiohttp
 import asyncio
 
@@ -360,7 +361,10 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
 class CrawlCloudantPluginNews(CrawlCloudantPlugin, CrawlPluginNews):
 
     def save_data_while_crawling(self, data):
-        self.dbs['documents'][slugify(data['url'])] = data
+        try:
+            self.dbs['documents'][slugify(data['url'])] = data
+        except requests.exceptions.HTTPError:
+            print('conflict error', slugify(data['url']))
 
     def get_template_dict(self):
         template_dict = self.dbs['template_dict'].get(self.plugin_name).result().json()
