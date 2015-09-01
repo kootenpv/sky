@@ -8,7 +8,7 @@
 
 import json
 import os
-from sky.scraper import Scrape
+from sky.scraper import Scraper
 from sky.crawler import crawl
 from sky.crawler.crawling import NewsCrawler
 from sky.helper import slugify
@@ -58,7 +58,10 @@ class CrawlPlugin:
 
     def scrape_data(self):
         # Create boilerplate recognizer
-        skindex = Scrape(self.scrape_config)
+        skindex = Scraper(self.scrape_config)
+
+        skindex.load_local_pages()
+        skindex.add_template_elements()
 
         # Process all by removing boilerplate and extracting information
         return skindex.process_all(exclude_data=['cleaned', 'author'])

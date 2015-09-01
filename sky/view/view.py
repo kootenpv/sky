@@ -10,7 +10,7 @@ import shutil
 from sky.crawler import crawl
 from sky.configs import DEFAULT_CRAWL_CONFIG
 from sky.helper import extractDomain
-from sky.scraper import Scrape
+from sky.scraper import Scraper
 
 # from textblob import TextBlob
 
@@ -71,7 +71,10 @@ class MainHandler(tornado.web.RequestHandler):
             'max_templates': 100
         })
 
-        skindex = Scrape(SCRAPE_CONFIG)
+        skindex = Scraper(SCRAPE_CONFIG)
+
+        skindex.load_local_pages()
+        skindex.add_template_elements()
 
         res = skindex.process_all(remove_visuals=True,
                                   maxn=CRAWL_CONFIG['max_saved_responses'])

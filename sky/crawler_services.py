@@ -71,7 +71,21 @@ class CrawlCloudantService(CrawlService):
         account.database(self.project_name + '-crawler-documents').put()
         account.database(self.project_name + '-crawler-template_dict').put()
 
+        self.add_url_view()
+
         self.server = account
+
+    def add_url_view(self):
+        url_view_design = {
+            "views": {
+                "view1": {
+                    "map": "function(doc){emit(doc.url)}"
+                }
+            }
+        }
+        doc_db = self.storage_object.database(self.project_name + '-crawler-documents')
+        if doc_db['_design/urlview'].head().result().status_code != 200:
+            doc_db['_design/urlview'] = url_view_design
 
     def get_crawl_plugins(self):
         plugin_db = self.server.database(self.project_name + '-crawler-plugins')

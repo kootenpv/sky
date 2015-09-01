@@ -40,7 +40,7 @@ from sky.language import get_language
 from sky.images import get_images
 
 
-class Scrape:
+class Scraper:
     # todo is finextr date
 
     def __init__(self, config):
@@ -60,7 +60,6 @@ class Scrape:
         self.url_to_tree_mapping = {}
         self.url_to_headers_mapping = {}
 
-        self.load_local_pages()
         # Boilerplate remover class
         self.domain_nodes_dict = DomainNodesDict(
             self.domain, self.min_templates, self.max_templates, self.template_proportion)
@@ -68,7 +67,6 @@ class Scrape:
             self.domain_nodes_dict.update(dict(config['template_dict']))
             vals = self.domain_nodes_dict.values()
             self.domain_nodes_dict.num_urls = max(vals) if vals else 0
-        self.add_template_elements()
 
     def should_save(self, url):
         if (not self.index_required_regexps or
@@ -314,6 +312,8 @@ class Scrape:
 #     'max_templates' : 1000
 # })
 
-# ind = Scrape(SCRAPE_CONFIG)
+# ind = Scraper(SCRAPE_CONFIG)
 
+# ind.load_local_pages()
+# ind.add_template_elements()
 # r = ind.process_all()

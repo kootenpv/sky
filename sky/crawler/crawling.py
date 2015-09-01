@@ -12,7 +12,7 @@ import tldextract
 import json
 import shutil
 
-from sky.scraper import Scrape
+from sky.scraper import Scraper
 from sky.helper import makeTree
 
 try:
@@ -352,7 +352,7 @@ class NewsCrawler(Crawler):
 
     def __init__(self, config):
         super(NewsCrawler, self).__init__(config)
-        self.scraper = Scrape(config)
+        self.scraper = Scraper(config)
         self.template_complete = False
         self.scraped_data = {}
         self.templates_done = 0
