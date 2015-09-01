@@ -162,7 +162,7 @@ class CrawlCloudantPlugin(CrawlPlugin):
         query = 'query={}'.format(self.plugin_name)
         params = '?include_docs=true&limit={}&{}'.format(maximum_number_of_documents, query)
         return [x['doc'] for x in self.dbs['documents'].all_docs().get(params).result().json()['rows']
-                if self.plugin_name in x['doc']['url']]
+                if 'url' in x['doc'] and self.plugin_name in x['doc']['url']]
 
     def get_seen_urls(self):
         params = '?query={}'.format(self.plugin_name)
