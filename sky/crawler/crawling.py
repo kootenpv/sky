@@ -91,8 +91,9 @@ class Crawler:
         self.login_data = {}
         self.login_url = None
         self.seen_urls = set()
-        self.headers = {'User-Agent': 'My User Agent 1.0',
-                        'From': 'youremail@domain.com'}
+        user_agent = config['user_agent'] if 'user_agent' in config else 'SkyBot v0.1'
+        from_header = config['from'] if 'from' in config else "youremail@domain.com"
+        self.headers = {'User-Agent': user_agent, 'From': from_header}
         for k, v in config.items():
             setattr(self, k, v)
         self.seen_urls = set(self.seen_urls)

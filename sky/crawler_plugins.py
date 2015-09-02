@@ -267,7 +267,7 @@ class CrawlPluginNews(CrawlPlugin):
         print("starting crawl")
         # separate out the save data while crawling and the newscraler
         templated_dict = crawl.start(self.crawl_config, NewsCrawler,
-                                     self.save_data, self.save_bulk_data)
+                                     self.save_data, self.save_bulk_data,)
 
         print('saving template..')
         self.save_template_dict(templated_dict)
