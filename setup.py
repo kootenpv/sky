@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '139'
+MICRO_VERSION = '140'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name='sky',
@@ -20,7 +20,7 @@ setup(name='sky',
       },
       install_requires=[
           'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect',
-          'python-dateutil', 'sh', 'beautifulsoup4', 'aiohttp', 'tornado'
+          'python-dateutil', 'beautifulsoup4', 'aiohttp', 'tornado'
       ],
       entry_points={
           'console_scripts': ['sky = sky.sky:main']
