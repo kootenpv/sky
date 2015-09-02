@@ -193,6 +193,8 @@ class Crawler:
         body = yield from response.read()
 
         if response.status == 200:
+            num_allowed_urls = 0
+
             content_type = response.headers.get('content-type')
             pdict = {}
 
@@ -210,14 +212,18 @@ class Crawler:
                 # Replace href with (?:href|src) to follow image links.
                 urls = set(re.findall(r'''(?i)href=["']?([^\s"'<>]+)''',
                                       text))
-                if urls:
-                    LOGGER.info('got %r distinct urls from %r',
-                                len(urls), response.url)
+
                 for url in urls:
                     normalized = urllib.parse.urljoin(response.url, url)
                     defragmented, _ = urllib.parse.urldefrag(normalized)
                     if self.url_allowed(defragmented) and self.should_crawl(normalized):
-                        links.add(defragmented)
+                        if defragmented not in links and defragmented not in self.seen_urls:
+                            num_allowed_urls += 1
+                            links.add(defragmented)
+
+                # visitable means: "urls that may be visit according to config"
+                LOGGER.info('queue: %r, got ~%r visitable urls from %r, ',
+                            self.q.qsize(), num_allowed_urls, response.url)
 
         stat = FetchStatistic(
             url=response.url,
@@ -244,14 +250,20 @@ class Crawler:
         exception = None
         while tries < self.max_tries_per_url:
             try:
-                response = yield from self.session.get(url, allow_redirects=False)
+                LOGGER.debug('getting url: ' + url)
+                response = yield from asyncio.wait_for(
+                    self.session.get(url, allow_redirects=False), 20)
                 if tries > 1:
                     LOGGER.info('try %r for %r success', tries, url)
+                LOGGER.info('gotten url: ' + url)
                 break
             except aiohttp.ClientError as client_error:
                 LOGGER.info('try %r for %r raised %r', tries, url, client_error)
                 exception = client_error
-
+            except asyncio.TimeoutError as e:
+                LOGGER.error('asyncio.TimeoutError for %r raised %r', url, e)
+            except Exception as e:
+                LOGGER.error('General error for %r raised %r', url, e)
             tries += 1
         else:
             # We never broke out of the loop: all tries failed.
@@ -354,7 +366,7 @@ class NewsCrawler(Crawler):
         super(NewsCrawler, self).__init__(config)
         self.scraper = Scraper(config)
         self.template_complete = False
-        self.scraped_data = {}
+        self.data = {}
         self.templates_done = 0
 
     @asyncio.coroutine
@@ -366,20 +378,24 @@ class NewsCrawler(Crawler):
             self.templates_done += 1
             self.scraper.domain_nodes_dict.add_template_elements(tree)
             self.scraper.url_to_headers_mapping[url] = dict(response.headers)
-            self.scraped_data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+            self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
         else:
             # Let's try to do it in a tasked manner to remove existing ones and new ones
             # new one
-            self.scraped_data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+            self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
         return
 
     def save_data(self, data):
         raise NotImplementedError('save_data has to be implemented')
 
+    def save_bulk_data(self, data):
+        raise NotImplementedError('save_bulk_data has to be implemented')
+
     def finish_leftovers(self):
-        print('finish leftovers')
-        while self.scraped_data:
-            url, data = self.scraped_data.popitem()
-            print('saving data for url ', url)
-            self.save_data(data)
+        LOGGER.info('finish leftovers')
+        if self.data:
+            LOGGER.info('saving: ' + str([url for url in self.data]))
+            self.save_bulk_data(self.data)
+            for url in self.data:
+                LOGGER.info('saved url ' + url)
         return dict(self.scraper.domain_nodes_dict)

@@ -69,7 +69,7 @@ class CrawlPlugin:
     def get_documents(self, maximum_number_of_documents=10000):
         pass
 
-    def handle_results(self, to=None):
+    def save_bulk_data(self, to=None):
         pass
 
     def run(self, use_cache=False):
@@ -83,7 +83,7 @@ class CrawlPlugin:
         if not use_cache:
             self.start_crawl()
         self.data = self.scrape_data()
-        self.handle_results()
+        self.save_bulk_data()
 
     def get_bad_summary(self, force_get_documents=False, n=5):
         if not self.documents or force_get_documents:
@@ -108,7 +108,7 @@ class CrawlFilePlugin(CrawlPlugin):
             specific_config = json.load(f)
         return specific_config
 
-    def handle_results(self, to="file"):
+    def save_bulk_data(self, to="file"):
         for res in self.data:
             with open(os.path.join(self.server['documents'], slugify(res['url'])), 'w') as f:
                 json.dump(res, f)
@@ -151,7 +151,7 @@ class CrawlCloudantPlugin(CrawlPlugin):
     def get_specific_plugin(self):
         return self.dbs['plugins'].get(self.plugin_name).result().json()
 
-    def handle_results(self, to="cloudant"):
+    def save_bulk_data(self, to="cloudant"):
         if to == "cloudant":
             for url_id in self.data:
                 self.data[url_id]['_id'] = slugify(url_id)
@@ -194,7 +194,7 @@ class CrawlElasticSearchPlugin(CrawlPlugin):
         return self.es.get(id=self.plugin_name, doc_type='plugin',
                            index=self.project_name + "-crawler-plugins")['_source']
 
-    def handle_results(self, to="cloudant"):
+    def save_bulk_data(self, to="cloudant"):
         for url_id in self.data:
             doc_id = slugify(url_id)
             self.es.index(id=doc_id, body=self.data[url_id], doc_type='document',
@@ -226,7 +226,7 @@ class CrawlZODBPlugin(CrawlPlugin):
     def get_specific_plugin(self):
         return self.server['plugins'][self.plugin_name]
 
-    def handle_results(self, to="cloudant"):
+    def save_bulk_data(self, to="cloudant"):
         for url_id in self.data:
             self.server['documents'][slugify(url_id)] = self.data[url_id]
         transaction.commit()
@@ -247,8 +247,8 @@ class CrawlZODBPlugin(CrawlPlugin):
 class CrawlPluginNews(CrawlPlugin):
     import ast
 
-    def save_data_while_crawling(self, data):
-        raise NotImplementedError('save_data_while_crawling required')
+    def save_data(self, data):
+        raise NotImplementedError('save_data required')
 
     def get_template_dict(self):
         raise NotImplementedError('get_template_dict required')
@@ -261,30 +261,38 @@ class CrawlPluginNews(CrawlPlugin):
 
     def run(self, use_cache=False):
         # get default plugin
+        print("getting crawl plugin info")
         self.crawl_config = self.get_default_plugin()
 
         # apply this specific plugin
         self.crawl_config.update(self.get_specific_plugin())
 
         # add the already visited urls to the config
+        print("getting seen urls")
         seen_urls = self.get_seen_urls()
+
         self.crawl_config['seen_urls'] = seen_urls
 
         # inherits from crawl_config
         self.scrape_config = self.get_scrape_config()
 
+        print("getting template dict")
         # add the template for this crawl_plugin to the scraping config
         self.scrape_config['template_dict'] = self.get_template_dict()
 
+        print("starting crawl")
         # separate out the save data while crawling and the newscraler
         templated_dict = crawl.start(self.scrape_config, NewsCrawler,
-                                     self.save_data_while_crawling)
+                                     self.save_data, self.save_bulk_data)
+
+        print('saving template..')
         self.save_template_dict(templated_dict)
+        print('crawling/scraping', self.project_name, self.plugin_name, "DONE")
 
 
 class CrawlFilePluginNews(CrawlFilePlugin, CrawlPluginNews):
 
-    def save_data_while_crawling(self, data):
+    def save_data(self, data):
         with open(os.path.join(self.server['documents'], slugify(data['url'])), 'w') as f:
             json.dump(data, f)
 
@@ -308,7 +316,7 @@ class CrawlFilePluginNews(CrawlFilePlugin, CrawlPluginNews):
 
 class CrawlZODBPluginNews(CrawlZODBPlugin, CrawlPluginNews):
 
-    def save_data_while_crawling(self, data):
+    def save_data(self, data):
         self.server['documents'][slugify(data['url'])] = data
         transaction.commit()
 
@@ -328,7 +336,7 @@ class CrawlZODBPluginNews(CrawlZODBPlugin, CrawlPluginNews):
 
 class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
 
-    def save_data_while_crawling(self, data):
+    def save_data(self, data):
         self.es.index(index=self.project_name + "-crawler-documents", doc_type='document',
                       id=slugify(data['url']), body=data)
 
@@ -363,7 +371,7 @@ class CrawlElasticSearchPluginNews(CrawlElasticSearchPlugin, CrawlPluginNews):
 
 class CrawlCloudantPluginNews(CrawlCloudantPlugin, CrawlPluginNews):
 
-    def save_data_while_crawling(self, data):
+    def save_data(self, data):
         try:
             self.dbs['documents'][slugify(data['url'])] = data
         except requests.exceptions.HTTPError:

@@ -32,7 +32,8 @@ def get_config(config, loop):
     return config
 
 
-def start(config, crawler_class=Crawler, save_data_fn=None, logging_level=2):
+def start(config, crawler_class=Crawler, save_data_result_fn=None, save_bulk_data_fn=None,
+          logging_level=2):
     """Main program.
 
     Parse arguments, set up event loop, run crawler, print report.
@@ -48,8 +49,11 @@ def start(config, crawler_class=Crawler, save_data_fn=None, logging_level=2):
 
     crawler = crawler_class(conf)
 
-    if save_data_fn is not None:
-        crawler.save_data = save_data_fn
+    if save_data_result_fn is not None:
+        crawler.save_data = save_data_result_fn
+
+    if save_bulk_data_fn is not None:
+        crawler.save_bulk_data = save_bulk_data_fn
 
     if crawler.login_url:
         loop.run_until_complete(crawler.login())
