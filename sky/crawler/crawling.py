@@ -255,7 +255,6 @@ class Crawler:
                     self.session.get(url, allow_redirects=False), 20)
                 if tries > 1:
                     LOGGER.info('try %r for %r success', tries, url)
-                LOGGER.info('gotten url: ' + url)
                 break
             except aiohttp.ClientError as client_error:
                 LOGGER.info('try %r for %r raised %r', tries, url, client_error)
