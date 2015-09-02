@@ -207,6 +207,7 @@ class Crawler:
 
                 if self.should_save(response.url):
                     _ = yield from self.save_response(text, response)
+                    LOGGER.info('url %r will be converted to document, ', response.url)
                     self.num_saved_responses += 1
 
                 # Replace href with (?:href|src) to follow image links.
@@ -266,8 +267,9 @@ class Crawler:
             tries += 1
         else:
             # We never broke out of the loop: all tries failed.
-            LOGGER.error('%r failed after %r tries',
-                         url, self.max_tries_per_url)
+            if self.max_tries_per_url > 1:
+                LOGGER.error('%r failed after %r tries', url, self.max_tries_per_url)
+
             self.record_statistic(FetchStatistic(url=url,
                                                  next_url=None,
                                                  status=None,
