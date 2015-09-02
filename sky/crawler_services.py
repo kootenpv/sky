@@ -1,5 +1,7 @@
 import os
 
+from sky.helper import slugify
+
 try:
     from ZODB.serialize import referencesf
     from ZODB.DB import DB
@@ -62,6 +64,14 @@ class CrawlFileService(CrawlService):
 
 
 class CrawlCloudantService(CrawlService):
+
+    def delete_doc_id(self, doc_id):
+        doc = self.server[self.project_name + '-crawler-documents'].document(doc_id)
+        rev = doc.get().result().json()['_rev']
+        doc.delete(rev)
+
+    def delete_doc_url(self, url=None):
+        self.delete_doc_id(slugify(url))
 
     def get_server(self):
         account = self.storage_object

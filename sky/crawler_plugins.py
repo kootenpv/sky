@@ -165,11 +165,13 @@ class CrawlCloudantPlugin(CrawlPlugin):
                 if 'url' in x['doc'] and self.plugin_name in x['doc']['url']]
 
     def get_seen_urls(self):
-        params = '?query={}'.format(self.plugin_name)
+        # params = '?query={}'.format(self.plugin_name) # werkt niet
+        params = ''
         udocs = self.dbs['documents'].design('urlview').view('view1').get(params).result().json()
         if 'rows' in udocs:
-            return set([udoc['key'] for udoc in udocs['rows']])
+            return set([udoc['key'] for udoc in udocs['rows'] if self.plugin_name in udoc['key']])
         else:
+            print("no seen urls for plugin", self.plugin_name)
             return set()
 
     def save_config(self, config):
