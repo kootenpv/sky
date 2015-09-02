@@ -68,6 +68,12 @@ class Scraper:
             vals = self.domain_nodes_dict.values()
             self.domain_nodes_dict.num_urls = max(vals) if vals else 0
 
+    def remove_bad_xpath_from_tree(self, tree, bad_xpath):
+        bad_element = tree.find('.' + bad_xpath)
+        while bad_element is not None:
+            bad_element.getparent().remove(bad_element)
+            bad_element = tree.find('.' + bad_xpath)
+
     def should_save(self, url):
         if (not self.index_required_regexps or
                 any([re.search(condition, url) for condition in self.index_required_regexps])):
@@ -105,7 +111,14 @@ class Scraper:
         for url in self.url_to_tree_mapping:
             self.domain_nodes_dict.add_template_elements(self.url_to_tree_mapping[url])
 
+    def remove_bad_xpaths_from_tree(self, tree):
+        if 'bad_xpaths' in self.config:
+            for bad_xpath in self.config['bad_xpaths']:
+                self.remove_bad_xpath_from_tree(tree, bad_xpath)
+
     def process(self, url, tree, remove_visuals, exclude_data):
+        self.remove_bad_xpaths_from_tree(tree)
+
         if self.detected_language is None:
             self.detected_language = get_language(
                 tree, self.url_to_headers_mapping[url], self.domain)
@@ -299,21 +312,3 @@ class Scraper:
         body_content = [x.text for x in justext.justext(html, justext.get_stoplist(lang))
                         if not x.is_boilerplate and not x.is_heading]
         return body_content
-
-# from sky.configs import DEFAULT_CRAWL_CONFIG
-
-# SCRAPE_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
-
-# SCRAPE_CONFIG.update({
-#     'collections_path' : '/Users/pascal/GDrive/sky_collections/',
-#     'seed_urls' : ['http://www.adformatie.nl'],
-#     'collection_name' : 'adformatie.nl',
-#     'template_proportion' : 0.09,
-#     'max_templates' : 1000
-# })
-
-# ind = Scraper(SCRAPE_CONFIG)
-
-# ind.load_local_pages()
-# ind.add_template_elements()
-# r = ind.process_all()

@@ -102,6 +102,9 @@ class Crawler:
         self.max_redirects_per_url = int(self.max_redirects_per_url)
         self.max_hops = int(self.max_hops)
         self.q = JoinablePriorityQueue(loop=self.loop)
+        if 'queue' in config:
+            for url in config['queue']:
+                self.q.put_nowait((-1000, url, self.max_redirects_per_url))
         self.done = []
         self.root_domains = self.handle_root_of_seeds()
         self.t0 = time.time()

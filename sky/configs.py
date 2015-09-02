@@ -37,7 +37,11 @@ DEFAULT_CRAWL_CONFIG = {
     'login_data': {},
 
     # Unimplemented
-    'max_hops': 10
+    'max_hops': 10,
+
+    # Scrape stuff"
+    'template_proportion': 0.09,
+    'max_templates': 1000
 }
 
 PRODUCTION_CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG.copy()

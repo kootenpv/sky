@@ -31,7 +31,6 @@ class CrawlPlugin:
         self.project_name = project_name
         self.plugin_name = plugin_name
         self.crawl_config = None
-        self.scrape_config = None
         self.data = {}
         self.documents = []
         self.template_dict = None
@@ -43,22 +42,12 @@ class CrawlPlugin:
     def get_specific_plugin(self):
         pass
 
-    def get_scrape_config(self):
-        scrape_config = self.crawl_config.copy()
-
-        scrape_config.update({
-            'template_proportion': 0.09,
-            'max_templates': 1000
-        })
-
-        return scrape_config
-
     def start_crawl(self):
         crawl.start(self.crawl_config)
 
     def scrape_data(self):
         # Create boilerplate recognizer
-        skindex = Scraper(self.scrape_config)
+        skindex = Scraper(self.crawl_config)
 
         skindex.load_local_pages()
         skindex.add_template_elements()
@@ -76,10 +65,6 @@ class CrawlPlugin:
         # get default plugin
         self.crawl_config = self.get_default_plugin()
 
-        # apply this specific plugin
-        self.crawl_config.update(self.get_specific_plugin())
-
-        self.scrape_config = self.get_scrape_config()
         if not use_cache:
             self.start_crawl()
         self.data = self.scrape_data()
@@ -275,16 +260,13 @@ class CrawlPluginNews(CrawlPlugin):
 
         self.crawl_config['seen_urls'] = seen_urls
 
-        # inherits from crawl_config
-        self.scrape_config = self.get_scrape_config()
-
         print("getting template dict")
         # add the template for this crawl_plugin to the scraping config
-        self.scrape_config['template_dict'] = self.get_template_dict()
+        self.crawl_config['template_dict'] = self.get_template_dict()
 
         print("starting crawl")
         # separate out the save data while crawling and the newscraler
-        templated_dict = crawl.start(self.scrape_config, NewsCrawler,
+        templated_dict = crawl.start(self.crawl_config, NewsCrawler,
                                      self.save_data, self.save_bulk_data)
 
         print('saving template..')
