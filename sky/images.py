@@ -6,6 +6,7 @@ import re
 
 
 def general_ok_img(img_candidate, wrong_imgs):
+    link = None
     if img_candidate.tag == 'img':
         if 'src' not in img_candidate.attrib:
             return False
@@ -14,9 +15,12 @@ def general_ok_img(img_candidate, wrong_imgs):
         if 'content' in img_candidate.attrib:
             link = img_candidate.attrib['content']
         elif 'style' in img_candidate.attrib:
-            link = img_candidate.attrib['content']
-        else:
-            return False
+            tmp = re.findall(
+                r'background-image:[ ]*url\((http[^)]+)', img_candidate.attrib['style'])
+            if tmp[0]:
+                link = tmp[0]
+    if link is None:
+        return False
     # if link longer than 1000 chars, drop it
     if len(link) > 1000:
         return False
