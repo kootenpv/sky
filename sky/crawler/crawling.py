@@ -227,7 +227,7 @@ class Crawler:
                             links.add(defragmented)
 
                 # visitable means: "urls that may be visit according to config"
-                LOGGER.info('queue: %r, got ~%r visitable urls from %r, ',
+                LOGGER.info('queue: %r, FOUND ~%r visitable urls from %r, ',
                             self.q.qsize(), num_allowed_urls, response.url)
 
         stat = FetchStatistic(
@@ -255,24 +255,24 @@ class Crawler:
         exception = None
         while tries < self.max_tries_per_url:
             try:
-                LOGGER.debug('getting url: ' + url)
+                LOGGER.debug('GET url: ' + url)
                 response = yield from asyncio.wait_for(
                     self.session.get(url, allow_redirects=False), 20)
                 if tries > 1:
-                    LOGGER.info('try %r for %r success', tries, url)
+                    LOGGER.info('try %r for %r SUCCESS', tries, url)
                 break
             except aiohttp.ClientError as client_error:
-                LOGGER.info('try %r for %r raised %r', tries, url, client_error)
+                LOGGER.info('try %r for %r RAISED %r', tries, url, client_error)
                 exception = client_error
             except asyncio.TimeoutError as e:
-                LOGGER.error('asyncio.TimeoutError for %r raised %r', url, e)
+                LOGGER.error('asyncio.TimeoutError for %r RAISED %r', url, e)
             except Exception as e:
-                LOGGER.error('General error for %r raised %r', url, e)
+                LOGGER.error('General error for %r RAISED %r', url, e)
             tries += 1
         else:
             # We never broke out of the loop: all tries failed.
             if self.max_tries_per_url > 1:
-                LOGGER.error('%r failed after %r tries', url, self.max_tries_per_url)
+                LOGGER.error('%r FAILED after %r tries', url, self.max_tries_per_url)
 
             self.record_statistic(FetchStatistic(url=url,
                                                  next_url=None,
@@ -302,10 +302,10 @@ class Crawler:
                 yield from response.release()
                 return
             if max_redirects_per_url > 0:
-                LOGGER.info('redirect to %r from %r', next_url, url)
+                LOGGER.info('REDIRECT to %r from %r', next_url, url)
                 self.add_url(prio, next_url, max_redirects_per_url - 1)
             else:
-                LOGGER.error('redirect limit reached for %r from %r',
+                LOGGER.error('REDIRECT limit reached for %r from %r',
                              next_url, url)
         else:
             stat, links = yield from self.handle_response(response)
@@ -333,11 +333,11 @@ class Crawler:
             return False
         parts = urllib.parse.urlparse(url)
         if parts.scheme not in ('http', 'https'):
-            LOGGER.debug('skipping non-http scheme in %r', url)
+            LOGGER.debug('SKIPPING non-http scheme in %r', url)
             return False
         host, _ = urllib.parse.splitport(parts.netloc)
         if not self.host_okay(host):
-            LOGGER.debug('skipping non-root host in %r', url)
+            LOGGER.debug('SKIPPING non-root host in %r', url)
             return False
         return True
 
@@ -403,5 +403,4 @@ class NewsCrawler(Crawler):
             self.save_bulk_data(self.data)
             for url in self.data:
                 LOGGER.info('saved url ' + url + ' chars ' + str(len(str(self.data[url]))))
-                LOGGER.info(str(self.data[url]))
         return dict(self.scraper.domain_nodes_dict)

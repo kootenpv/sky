@@ -138,7 +138,6 @@ class CrawlCloudantPlugin(CrawlPlugin):
 
     def save_bulk_data(self, data):
         for url_id in data:
-            print("bulksaver")
             data[url_id]['_id'] = slugify(url_id)
         self.dbs['documents'].bulk_docs(*list(data.values()))
 
@@ -212,7 +211,7 @@ class CrawlZODBPlugin(CrawlPlugin):
     def get_specific_plugin(self):
         return self.server['plugins'][self.plugin_name]
 
-    def save_bulk_data(self):
+    def save_bulk_data(self, data):
         for url_id in data:
             self.server['documents'][slugify(url_id)] = data[url_id]
         transaction.commit()

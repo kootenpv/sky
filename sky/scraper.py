@@ -147,10 +147,8 @@ class Scraper:
 
         linkinds = []
         for num, node in enumerate(tree.iter()):
-            if node.tag == 'img':
-                if node in ok_imgs:
-                    imginds.append((node, num))
-                node.set('alt', '')
+            if node in ok_imgs:
+                imginds.append((node, num))
             elif normalize(get_text_and_tail(node)) == title:
                 titleind = (node, num)
             elif get_text_and_tail(node).strip():
@@ -164,6 +162,8 @@ class Scraper:
                 elif node.tag == 'a' and not get_text_and_tail(node).strip():
                     for att in node.attrib:
                         node.set(att, '')
+                if node.tag == 'img':
+                    node.set('alt', '')
                 if node.attrib and 'background-image' in node.attrib:
                     node.set('background-image', '')
         if not titleind:
@@ -185,9 +185,17 @@ class Scraper:
             tree, self.detected_language)
         images = []
         for x in sortedimgs:
-            src = x[0].attrib['src']
-            if src not in images:
-                images.append(src)
+            val = None
+            if 'src' in x[0].attrib:
+                val = x[0].attrib['src']
+            elif 'content' in x[0].attrib:
+                val = x[0].attrib['content']
+            elif 'style' in x[0].attrib:
+                tmp = re.findall(r'background-image:[ ]*url\((http[^)]+)', x[0].attrib['style'])
+                if tmp:
+                    val = tmp[0]
+            if val is not None and val not in images:
+                images.append(val)
 
         date = ''
         date_node_index = None
