@@ -264,8 +264,12 @@ class CrawlPluginNews(CrawlPlugin):
 
         print("starting crawl")
         # separate out the save data while crawling and the newscraler
+        if 'logging_level' in self.crawl_config:
+            logging_level = int(self.crawl_config['logging_level'])
+        else:
+            logging_level = 3
         templated_dict = crawl.start(self.crawl_config, NewsCrawler,
-                                     self.save_data, self.save_bulk_data, logging_level=3)
+                                     self.save_data, self.save_bulk_data, logging_level=logging_level)
 
         print('saving template..')
         self.save_template_dict(templated_dict)

@@ -36,6 +36,7 @@ DEFAULT_CRAWL_CONFIG = {
     'login_url': '',
     'login_data': {},
 
+    "logging_level": 2,
     # Unimplemented
     'max_hops': 10,
 
