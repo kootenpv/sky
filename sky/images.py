@@ -1,4 +1,4 @@
-# <figure> should also be considered
+# <figure> should maybe use some weighting
 # background-url should also be allowed
 
 # Also return most likely logo (logo, favicon??, first image?, icon)
