@@ -11,6 +11,8 @@ It mainly does this by considering the user to be interested in content from *do
 - Locally  ([view demo](#demo))!
 - Remotely (needs hosting)
 
+Similar data will be very easy to use in your own applications.
+
 #### Features/Goals
 
 These are the features/goals of `sky`. Checkmarks have been accomplished:
@@ -59,6 +61,8 @@ Run a demo locally:
 Possibly tweak the crawl with a few parameters after clicking `>Options`
 
 The demo uses a standard configuration that could easily be improved on when setting up a project.
+
+<img src="https://github.com/kootenpv/sky/blob/master/resources/skyview.png" />
 
 #### Using the package
 
