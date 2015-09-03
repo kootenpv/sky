@@ -1,22 +1,22 @@
 
 <div class="card pin" id="card_div">
-  
+
   <div class="card-heading image ">
     <div class="card-heading-header ">
       <h3 style=" font-weight: bold; ">
         <a href="{{item['url']}}" target="_blank" style=" color: black; font-size: 16px;">{{item['title']}}</a>
       </h3>
       <span style=" font-weight: lighter; ">
-        NIEUWS via {{ item['source_name']}}
-        
-        {% if item['publish_date'] %}
-           op {{ item['publish_date'] }}
+        NEWS via {{ item['source_name']}}
+
+        {% if item['publish_date'] and item['publish_date'] != '1970-01-01' %}
+           on {{ item['publish_date'] }}
         {% end %}
 
         {% if item['author'] %}
-           door {{ str(item['author']) }}
-        {% end %}  
-        
+           by {{ str(item['author']) }}
+        {% end %}
+
       </span>
     </div>
     {% for img in item['images'] %}
@@ -26,21 +26,21 @@
 
   <div>
   <button style="margin-left:20px" type="button" class="btn btn-info" onclick="toggle_src({{num_item}}, '{{item['url']}}')">Expand iframe</button>
-  <button style="margin-left:20px" type="button" class="btn btn-info" onclick="toggle_body({{num_item}})">Expand content</button> 
+  <button style="margin-left:20px" type="button" class="btn btn-info" onclick="toggle_body({{num_item}})">Expand content</button>
   </div>
 
   <div style="float:right; margin-right: 30px">
       {% for num, link in enumerate(item['related']) %}
          <a href="{{ link }}" >Related {{num}}</a>
-      {% end %} 
+      {% end %}
   </div>
 
 
-  
+
   <iframe width="50%" height="800px" style="float:left; box-sizing:border-box; display: none" id="pre_iframe_{{num_item}}" class="closed"> </iframe>
   <iframe width="50%" height="800px" style="float:left; box-sizing:border-box; display: none" id="post_iframe_{{num_item}}" class="open" srcdoc="{{item['cleaned']}}"> </iframe>
   <div style="clear:both"></div>
-  
+
   <div class="card-body" id="card-body-{{num_item}}" style="min-height: 63px">
     <p>{{ '\n'.join(item['body']) }} </p>
   </div>
@@ -50,9 +50,9 @@
       {% for m in item['money'] %}
       <span class="label label-primary"> {{ m[0] }} </span>
       {% end %}
-      {% end %} 
+      {% end %}
   </div>
 
-  
-  
+
+
 </div>
