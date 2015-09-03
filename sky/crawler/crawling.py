@@ -399,8 +399,9 @@ class NewsCrawler(Crawler):
     def finish_leftovers(self):
         LOGGER.info('finish leftovers')
         if self.data:
-            LOGGER.info('saving: ' + str([url for url in self.data]))
+            LOGGER.info('saving number of documents: ' + str(len(self.data)))
             self.save_bulk_data(self.data)
             for url in self.data:
-                LOGGER.info('saved url ' + url)
+                LOGGER.info('saved url ' + url + ' chars ' + str(len(str(self.data[url]))))
+                LOGGER.info(str(self.data[url]))
         return dict(self.scraper.domain_nodes_dict)

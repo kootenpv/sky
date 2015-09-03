@@ -58,7 +58,7 @@ class CrawlPlugin:
     def get_documents(self, maximum_number_of_documents=10000):
         pass
 
-    def save_bulk_data(self, to=None):
+    def save_bulk_data(self, data):
         pass
 
     def run(self, use_cache=False):
@@ -68,7 +68,7 @@ class CrawlPlugin:
         if not use_cache:
             self.start_crawl()
         self.data = self.scrape_data()
-        self.save_bulk_data()
+        self.save_bulk_data(self.data)
 
     def get_bad_summary(self, force_get_documents=False, n=5):
         if not self.documents or force_get_documents:
@@ -93,8 +93,8 @@ class CrawlFilePlugin(CrawlPlugin):
             specific_config = json.load(f)
         return specific_config
 
-    def save_bulk_data(self, to="file"):
-        for res in self.data:
+    def save_bulk_data(self, data):
+        for res in data:
             with open(os.path.join(self.server['documents'], slugify(res['url'])), 'w') as f:
                 json.dump(res, f)
 
@@ -136,11 +136,11 @@ class CrawlCloudantPlugin(CrawlPlugin):
     def get_specific_plugin(self):
         return self.dbs['plugins'].get(self.plugin_name).result().json()
 
-    def save_bulk_data(self, to="cloudant"):
-        if to == "cloudant":
-            for url_id in self.data:
-                self.data[url_id]['_id'] = slugify(url_id)
-            self.dbs['documents'].bulk_docs(*list(self.data.values()))
+    def save_bulk_data(self, data):
+        for url_id in data:
+            print("bulksaver")
+            data[url_id]['_id'] = slugify(url_id)
+        self.dbs['documents'].bulk_docs(*list(data.values()))
 
     def get_documents(self, maximum_number_of_documents=1000000):
         # now just to add the host thing ??????????????
@@ -181,12 +181,11 @@ class CrawlElasticSearchPlugin(CrawlPlugin):
         return self.es.get(id=self.plugin_name, doc_type='plugin',
                            index=self.project_name + "-crawler-plugins")['_source']
 
-    def save_bulk_data(self, to="cloudant"):
-        for url_id in self.data:
+    def save_bulk_data(self, data):
+        for url_id in data:
             doc_id = slugify(url_id)
-            self.es.index(id=doc_id, body=self.data[url_id], doc_type='document',
+            self.es.index(id=doc_id, body=data[url_id], doc_type='document',
                           index=self.project_name + "-crawler-documents")
-        print(to)
 
     def get_documents(self, maximum_number_of_documents=1000000):
         query = {"query": {"wildcard": {"url": "*{}*".format(self.plugin_name)}}}
@@ -213,11 +212,10 @@ class CrawlZODBPlugin(CrawlPlugin):
     def get_specific_plugin(self):
         return self.server['plugins'][self.plugin_name]
 
-    def save_bulk_data(self, to="cloudant"):
-        for url_id in self.data:
-            self.server['documents'][slugify(url_id)] = self.data[url_id]
+    def save_bulk_data(self):
+        for url_id in data:
+            self.server['documents'][slugify(url_id)] = data[url_id]
         transaction.commit()
-        print(to)
 
     def get_documents(self, maximum_number_of_documents=1000000):
         return self.server['documents']
@@ -267,7 +265,7 @@ class CrawlPluginNews(CrawlPlugin):
         print("starting crawl")
         # separate out the save data while crawling and the newscraler
         templated_dict = crawl.start(self.crawl_config, NewsCrawler,
-                                     self.save_data, self.save_bulk_data,)
+                                     self.save_data, self.save_bulk_data, logging_level=3)
 
         print('saving template..')
         self.save_template_dict(templated_dict)
