@@ -266,8 +266,7 @@ class Crawler:
                 exception = client_error
             except asyncio.TimeoutError as e:
                 LOGGER.error('asyncio.TimeoutError for %r RAISED %r', url, e)
-            except Exception as e:
-                LOGGER.error('General error for %r RAISED %r', url, e)
+                exception = e
             tries += 1
         else:
             # We never broke out of the loop: all tries failed.
@@ -283,6 +282,7 @@ class Crawler:
                                                  encoding=None,
                                                  num_urls=0,
                                                  num_new_urls=0))
+            yield from response.release()
             return
 
         if is_redirect(response):

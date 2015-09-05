@@ -44,7 +44,7 @@ By considering crawl content to originate from a *domain*, rather than *individu
 Use pip to install sky:
 
 ```python
-pip3 install sky
+pip3 install -U sky
 ```
 
 This will install only the required packages. Optional packages are for backends, such as elasticsearch, cloudant and ZODB. Storing data on the local system does not require any packages.
@@ -53,9 +53,9 @@ This will install only the required packages. Optional packages are for backends
 
 Run a demo locally:
 
-- Install `sky`
+- [Install](#installation) `sky`
 - Run `sky view` at the command line
-- Visit [localhost:7900](http://localhost:7900) (use `-port <PORT>` to change).
+- Visit [localhost:7900](http://localhost:7900) (use `-port <PORT>` to change port).
 - Enter a URL and see the results after clicking `>>>`.
 
 Possibly tweak the crawl with a few parameters after clicking `>Options`
