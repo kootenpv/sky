@@ -1,5 +1,5 @@
 """A simple web crawler -- class implementing crawling logic."""
-
+import traceback
 import asyncio
 import cgi
 import os
@@ -215,7 +215,7 @@ class Crawler:
                     self.num_saved_responses += 1
 
                 # Replace href with (?:href|src) to follow image links.
-                urls = set(re.findall(r'''(?i)href=["']?([^\s"'<>]+)''',
+                urls = set(re.findall(r'''(?i)href=["']([^\s"'<>]+)''',
                                       text))
 
                 for url in urls:
@@ -376,18 +376,22 @@ class NewsCrawler(Crawler):
 
     @asyncio.coroutine
     def save_response(self, text, response):
-        # just let the indexer save the files as normal and also create a Template
-        url = response.url
-        tree = makeTree(text, self.scraper.domain)
-        if self.templates_done < self.scraper.config['max_templates']:
-            self.templates_done += 1
-            self.scraper.domain_nodes_dict.add_template_elements(tree)
-            self.scraper.url_to_headers_mapping[url] = dict(response.headers)
-            self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
-        else:
-            # Let's try to do it in a tasked manner to remove existing ones and new ones
-            # new one
-            self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+        try:
+            # just let the indexer save the files as normal and also create a Template
+            url = response.url
+            tree = makeTree(text, self.scraper.domain)
+            if self.templates_done < self.scraper.config['max_templates']:
+                self.templates_done += 1
+                self.scraper.domain_nodes_dict.add_template_elements(tree)
+                self.scraper.url_to_headers_mapping[url] = dict(response.headers)
+                self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+            else:
+                # Let's try to do it in a tasked manner to remove existing ones and new ones
+                # new one
+                self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+        except Exception as e:
+            LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r",
+                         url, str(e), traceback.format_exc())
         return
 
     def save_data(self, data):
