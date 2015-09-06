@@ -15,8 +15,6 @@ import shutil
 from sky.scraper import Scraper
 from sky.helper import makeTree
 
-import lxml.html
-
 try:
     # Python 3.4.
     from asyncio import JoinableQueue as Queue
@@ -269,6 +267,9 @@ class Crawler:
             except asyncio.TimeoutError as e:
                 LOGGER.error('asyncio.TimeoutError for %r RAISED %r', url, e)
                 exception = e
+            except Exception as e:
+                LOGGER.error('General error for %r RAISED %r', url, e)
+                exception = e
             tries += 1
         else:
             # We never broke out of the loop: all tries failed.
@@ -324,9 +325,21 @@ class Crawler:
     def work(self):
         """Process queue items forever."""
         while True:
-            prio, url, max_redirects_per_url = yield from self.q.get()
-            yield from self.fetch(prio, url, max_redirects_per_url)
-            self.q.task_done()
+            try:
+                LOGGER.info('get')
+                prio, url, max_redirects_per_url = yield from self.q.get()
+            except Exception as e:
+                LOGGER.error('CRITICAL GET %r: stack %r', str(e), traceback.format_exc())
+            try:
+                LOGGER.info('fetch')
+                yield from self.fetch(prio, url, max_redirects_per_url)
+            except Exception as e:
+                LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
+            try:
+                LOGGER.info('done')
+                self.q.task_done()
+            except Exception as e:
+                LOGGER.error('CRITICAL DONE %r: stack %r', str(e), traceback.format_exc())
 
     def url_allowed(self, url):
         if url.endswith('.jpg') or url.endswith('.png'):
@@ -419,7 +432,5 @@ class NewsCrawler(Crawler):
         LOGGER.info('finish leftovers')
         if self.data:
             LOGGER.info('saving number of documents: ' + str(len(self.data)))
-            self.save_bulk_data(self.data)
-            for url in self.data:
-                LOGGER.info('saved url ' + url + ' chars ' + str(len(str(self.data[url]))))
+            LOGGER.info('saving status code: %r', self.save_bulk_data(self.data).result())
         return dict(self.scraper.domain_nodes_dict)

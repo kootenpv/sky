@@ -139,7 +139,7 @@ class CrawlCloudantPlugin(CrawlPlugin):
     def save_bulk_data(self, data):
         for url_id in data:
             data[url_id]['_id'] = slugify(url_id)
-        self.dbs['documents'].bulk_docs(*list(data.values()))
+        return self.dbs['documents'].bulk_docs(*list(data.values()))
 
     def get_documents(self, maximum_number_of_documents=1000000):
         # now just to add the host thing ??????????????
