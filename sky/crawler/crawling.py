@@ -391,10 +391,7 @@ class NewsCrawler(Crawler):
                 # new one
                 self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
         except Exception as e:
-            LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r, headers %r",
-                         url, str(e), traceback.format_exc(), response.headers)
             try:
-                LOGGER.info("RETRY")
                 fck = yield from response.text(encoding="cp1252")
                 tree = makeTree(fck, self.scraper.domain)
                 if self.templates_done < self.scraper.config['max_templates']:
@@ -406,7 +403,7 @@ class NewsCrawler(Crawler):
                     # Let's try to do it in a tasked manner to remove existing ones and new ones
                     # new one
                     self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
-                LOGGER.info("NOW PASSED!")
+                LOGGER.warn("Solved UTF error with cp1252!")
             except Exception as e:
                 LOGGER.error("RETRY CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r, headers %r",
                              url, str(e), traceback.format_exc(), response.headers)
