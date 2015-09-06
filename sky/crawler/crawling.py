@@ -206,6 +206,7 @@ class Crawler:
                 content_type, pdict = cgi.parse_header(content_type)
 
             encoding = pdict.get('charset', 'utf-8')
+
             if content_type in ('text/html', 'application/xml'):
                 text = yield from response.text()
 
@@ -249,7 +250,6 @@ class Crawler:
         # Using max_workers since they are not being quit
         if self.num_saved_responses >= self.max_saved_responses:
             # NOT SURE IF THIS IS NEEDED
-            self.q.task_done()
             return
         tries = 0
         exception = None
@@ -282,7 +282,6 @@ class Crawler:
                                                  encoding=None,
                                                  num_urls=0,
                                                  num_new_urls=0))
-            yield from response.release()
             return
 
         if is_redirect(response):
@@ -324,7 +323,6 @@ class Crawler:
         """Process queue items forever."""
         while True:
             prio, url, max_redirects_per_url = yield from self.q.get()
-            assert url in self.seen_urls
             yield from self.fetch(prio, url, max_redirects_per_url)
             self.q.task_done()
 
@@ -390,7 +388,7 @@ class NewsCrawler(Crawler):
                 # new one
                 self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
         except Exception as e:
-            LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r",
+            LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r",
                          url, str(e), traceback.format_exc())
         return
 
