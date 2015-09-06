@@ -15,6 +15,8 @@ import shutil
 from sky.scraper import Scraper
 from sky.helper import makeTree
 
+import lxml.html
+
 try:
     # Python 3.4.
     from asyncio import JoinableQueue as Queue
@@ -374,6 +376,7 @@ class NewsCrawler(Crawler):
 
     @asyncio.coroutine
     def save_response(self, text, response):
+        # fucking mess
         try:
             # just let the indexer save the files as normal and also create a Template
             url = response.url
@@ -388,8 +391,25 @@ class NewsCrawler(Crawler):
                 # new one
                 self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
         except Exception as e:
-            LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r",
-                         url, str(e), traceback.format_exc())
+            LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r, headers %r",
+                         url, str(e), traceback.format_exc(), response.headers)
+            try:
+                LOGGER.info("RETRY")
+                fck = yield from response.text(encoding="cp1252")
+                tree = makeTree(fck, self.scraper.domain)
+                if self.templates_done < self.scraper.config['max_templates']:
+                    self.templates_done += 1
+                    self.scraper.domain_nodes_dict.add_template_elements(tree)
+                    self.scraper.url_to_headers_mapping[url] = dict(response.headers)
+                    self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+                else:
+                    # Let's try to do it in a tasked manner to remove existing ones and new ones
+                    # new one
+                    self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+                LOGGER.info("NOW PASSED!")
+            except Exception as e:
+                LOGGER.error("RETRY CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r, headers %r",
+                             url, str(e), traceback.format_exc(), response.headers)
         return
 
     def save_data(self, data):
