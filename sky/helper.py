@@ -108,14 +108,9 @@ def doesThisElementContain(text='pagination', nodeStr=''):
 def makeTree(html, domain=None):
 
     ud = UnicodeDammit(html, is_html=True)
-    if ud.original_encoding != 'utf-8':
-        print('encoding switch')
-        content = html.encode('utf-8')
-    else:
-        content = ud.unicode_markup
     # tree = lxml.html.fromstring(cleaner.clean_html(ud.unicode_markup),
     #                             base_url = extractDomain(url))
-    tree = lxml.html.fromstring(content)
+    tree = lxml.html.fromstring(ud.unicode_markup)
 
     if domain is not None:
         tree.make_links_absolute(domain)
