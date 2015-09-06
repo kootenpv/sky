@@ -4,7 +4,7 @@ sky is a web scraping framework, implemented with the latest python versions in 
 
 Most importantly, it aims for **next generation** web crawling where machine intelligence is used to speed up the development/maintainance/reliability of crawling.
 
-It mainly does this by considering the user to be interested in content from *domains*, not just a collection of *single pages*.
+It mainly does this by considering the user to be interested in content from *domains*, not just a collection of *single pages* ([templating approach](#templating-approach)).
 
 **See it live in action with a news website YOU propose**:
 
@@ -25,19 +25,6 @@ These are the features/goals of `sky`. Checkmarks have been accomplished:
 - ✓ **Free**, versus enormous costs for even medium scale projects using (worse) online services
 - **Link-graph-analysis**, find out how a domain "looks" like
 - **Automatic Natural Language Processing**, there have been steps to automatically detect acquisitions (`Company A acquires Company B`) and investments: `Company A invests B millions in Company C`.
-
-#### Templating approach
-
-By considering crawl content to originate from a *domain*, rather than *individual pages*, the following willl be possible:
-
-- ✓ Drop duplicate content (menus, texts, images)
-- ✓ Provide error checking tools (making sure no bad documents slip by)
-- Detect whether a website changed the layout (causing other scrapers to fail)
-- Understand sections of a website, such as comments, forum posts, related links etc
-- Consider which pages are linked to which (star graph)
-- Figure out the content pages by just pointing at the domain
-- Relate pages (page A is related by content to page B)
-- Consider an optimal re-crawling path
 
 #### Installation
 
@@ -76,3 +63,16 @@ It is very much appreciated if you'd like to contribute in one or more of the fo
 - Documentations/tests
 - Improvement of detection
 - NLP
+
+#### Templating approach
+
+By considering crawl content to originate from a *domain*, rather than *individual pages*, the following willl be possible:
+
+- ✓ Drop duplicate content (menus, texts, images)
+- ✓ Provide error checking tools (making sure no bad documents slip by)
+- Detect whether a website changed the layout (causing other scrapers to fail)
+- Understand sections of a website, such as comments, forum posts, related links etc
+- Consider which pages are linked to which (star graph)
+- Figure out the content pages by just pointing at the domain
+- Relate pages (page A is related by content to page B)
+- Consider an optimal re-crawling path
