@@ -212,7 +212,7 @@ class Crawler:
 
                 if self.should_save(response.url):
                     _ = yield from self.save_response(text, response)
-                    LOGGER.info('url %r will be converted to document, ', response.url)
+                    LOGGER.info('CONVERTED url %r, ', response.url)
                     self.num_saved_responses += 1
 
                 # Replace href with (?:href|src) to follow image links.
@@ -326,17 +326,14 @@ class Crawler:
         """Process queue items forever."""
         while True:
             try:
-                LOGGER.info('get')
                 prio, url, max_redirects_per_url = yield from self.q.get()
             except Exception as e:
                 LOGGER.error('CRITICAL GET %r: stack %r', str(e), traceback.format_exc())
             try:
-                LOGGER.info('fetch')
                 yield from self.fetch(prio, url, max_redirects_per_url)
             except Exception as e:
                 LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
             try:
-                LOGGER.info('done')
                 self.q.task_done()
             except Exception as e:
                 LOGGER.error('CRITICAL DONE %r: stack %r', str(e), traceback.format_exc())
