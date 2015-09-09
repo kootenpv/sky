@@ -94,9 +94,9 @@ class CrawlFilePlugin(CrawlPlugin):
         return specific_config
 
     def save_bulk_data(self, data):
-        for res in data:
-            with open(os.path.join(self.server['documents'], slugify(res['url'])), 'w') as f:
-                json.dump(res, f)
+        for row in data:
+            with open(os.path.join(self.server['documents'], slugify(data[row]['url'])), 'w') as f:
+                json.dump(data[row], f)
 
     def get_documents(self, maximum_number_of_documents=1000000):
         slugged_url = slugify(self.plugin_name)
@@ -139,7 +139,7 @@ class CrawlCloudantPlugin(CrawlPlugin):
     def save_bulk_data(self, data):
         for url_id in data:
             data[url_id]['_id'] = slugify(url_id)
-        return self.dbs['documents'].bulk_docs(*list(data.values()))
+        return self.dbs['documents'].bulk_docs(*list(data.values())).result()
 
     def get_documents(self, maximum_number_of_documents=1000000):
         # now just to add the host thing ??????????????

@@ -112,21 +112,9 @@ def main(host='localhost', port=7900):
 
     ioloop = tornado.ioloop.IOLoop().instance()
 
-    print('serving skyViewer at {}:{} from file: {}'.format(host, port, __file__))
-
-    # if on localhost, update when file change
-    # if HOST == 'localhost':
-    #     for root, dirs, files in os.walk('.', topdown=False):
-    #         for name in files:
-    #             if ('#' not in name and
-    #                 'DS_S' not in name and
-    #                 'flymake' not in name and
-    #                 'pyc' not in name):
-    #                 tornado.autoreload.watch(root+'/'+name)
-    #     tornado.autoreload.start(ioloop)
+    print('serving skyViewer at "{}:{}" from file: {}'.format(host, port, __file__))
 
     ioloop.start()
-
 
 if __name__ == '__main__':
     main()

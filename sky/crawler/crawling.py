@@ -210,17 +210,19 @@ class Crawler:
             if content_type in ('text/html', 'application/xml'):
                 text = yield from response.text()
 
-                if self.should_save(response.url):
+                current_url = response.url
+                if self.should_save(current_url):
                     _ = yield from self.save_response(text, response)
-                    LOGGER.info('CONVERTED url %r, ', response.url)
                     self.num_saved_responses += 1
+                    LOGGER.info('results: %r, CONVERTED url %r, ',
+                                self.num_saved_responses, current_url)
 
                 # Replace href with (?:href|src) to follow image links.
                 urls = set(re.findall(r'''(?i)href=["']([^\s"'<>]+)''',
                                       text))
 
                 for url in urls:
-                    normalized = urllib.parse.urljoin(response.url, url)
+                    normalized = urllib.parse.urljoin(current_url, url)
                     defragmented, _ = urllib.parse.urldefrag(normalized)
                     if self.url_allowed(defragmented) and self.should_crawl(normalized):
                         if defragmented not in links and defragmented not in self.seen_urls:
@@ -228,8 +230,8 @@ class Crawler:
                             links.add(defragmented)
 
                 # visitable means: "urls that may be visit according to config"
-                LOGGER.info('queue: %r, FOUND ~%r visitable urls from %r, ',
-                            self.q.qsize(), num_allowed_urls, response.url)
+                LOGGER.info('Queue: %r, FOUND ~%r visitable urls from %r, ',
+                            self.q.qsize(), num_allowed_urls, current_url)
 
         stat = FetchStatistic(
             url=response.url,
@@ -326,10 +328,12 @@ class Crawler:
         """Process queue items forever."""
         while True:
             try:
-                prio, url, max_redirects_per_url = yield from self.q.get()
+                LOGGER.debug('get')
+                prio, url, max_redirects_per_url = yield from asyncio.wait_for(self.q.get(), 30)
             except Exception as e:
                 LOGGER.error('CRITICAL GET %r: stack %r', str(e), traceback.format_exc())
             try:
+                LOGGER.debug('fetch')
                 yield from self.fetch(prio, url, max_redirects_per_url)
             except Exception as e:
                 LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
@@ -415,8 +419,8 @@ class NewsCrawler(Crawler):
                     self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
                 LOGGER.warn("Solved UTF error with cp1252!")
             except Exception as e:
-                LOGGER.error("RETRY CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r, headers %r",
-                             url, str(e), traceback.format_exc(), response.headers)
+                LOGGER.error("RETRY CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r",
+                             url, str(e), traceback.format_exc())
         return
 
     def save_data(self, data):
@@ -429,5 +433,5 @@ class NewsCrawler(Crawler):
         LOGGER.info('finish leftovers')
         if self.data:
             LOGGER.info('saving number of documents: ' + str(len(self.data)))
-            LOGGER.info('saving status code: %r', self.save_bulk_data(self.data).result())
+            LOGGER.info('saving status code: %r', self.save_bulk_data(self.data))
         return dict(self.scraper.domain_nodes_dict)

@@ -25,6 +25,12 @@ class CrawlService():
         self.get_server()
         self.get_crawl_plugins()
 
+    def __getitem__(self, plugin_name):
+        if not isinstance(plugin_name, str):
+            m = "To subset CrawlService, a string referring to the CrawlPlugin has to be provided"
+            raise TypeError(m)
+        return self.get_crawl_plugin(plugin_name)
+
     def get_server(self):
         raise NotImplementedError("get_server not implemented")
 

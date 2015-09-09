@@ -6,10 +6,32 @@ Most importantly, it aims for **next generation** web crawling where machine int
 
 It mainly does this by considering the user to be interested in content from *domains*, not just a collection of *single pages* ([templating approach](#templating-approach)).
 
-**See it live in action with a news website YOU propose**:
+See it live in action with a news website YOU propose:
 
-- Locally  ([view demo](#demo))!
-- Remotely (needs hosting)
+- Locally ([view demo](#demo))
+- Remotely (needs online hosting)
+
+#### Demo
+
+Note that the following is only meant as a demo of some kind of app that could be built upon the scraping framework.
+
+Make no mistake: the goal is to provide a smart-scraper, not some ugly UI.
+
+Run:
+
+- [Install](#installation) using pip: `pip3 install -U sky`
+- Run `sky view` at the command line (use `-port PORT` to change port)
+- Visit [localhost:7900](http://localhost:7900)
+- Enter a Domain/URL and see the result after clicking `[>>>]`.
+
+The demo uses a *standard configuration* that can **easily** be improved on when setting up a project.
+
+
+---
+
+<img src="https://github.com/kootenpv/sky/blob/master/resources/skyview.png" />
+
+---
 
 Similar data will be very easy to use in your own applications.
 
@@ -24,6 +46,7 @@ These are the features/goals of `sky`. Checkmarks have been accomplished:
 - ✓ **Open-source**, democracy driven, with actual support
 - ✓ **Free**, versus enormous costs for even medium scale projects using (worse) online services
 - **Link-graph-analysis**, find out how a domain "looks" like
+- **Include Batteries**, Crawl any news website without any configuration
 - **Automatic Natural Language Processing**, there have been steps to automatically detect acquisitions (`Company A acquires Company B`) and investments: `Company A invests B millions in Company C`.
 
 #### Installation
@@ -34,22 +57,9 @@ Use pip to install sky:
 pip3 install -U sky
 ```
 
-This will install only the required packages. Optional packages are for backends, such as elasticsearch, cloudant and ZODB. Storing data on the local system does not require any packages.
+This will install only the required packages. Storing data on the local system does not require any other packages.
 
-#### Demo
-
-Run a demo locally:
-
-- [Install](#installation) `sky`
-- Run `sky view` at the command line
-- Visit [localhost:7900](http://localhost:7900) (use `-port <PORT>` to change port).
-- Enter a URL and see the results after clicking `>>>`.
-
-Possibly tweak the crawl with a few parameters after clicking `>Options`
-
-The demo uses a standard configuration that could easily be improved on when setting up a project.
-
-<img src="https://github.com/kootenpv/sky/blob/master/resources/skyview.png" />
+To store data, the following optional backends are currently available: *elasticsearch*, *cloudant* and *ZODB*.
 
 #### Using the package
 
@@ -70,7 +80,7 @@ By considering crawl content to originate from a *domain*, rather than *individu
 
 - ✓ Drop duplicate content (menus, texts, images)
 - ✓ Provide error checking tools (making sure no bad documents slip by)
-- Detect whether a website changed the layout (causing other scrapers to fail)
+- Detect whether a website changed the layout (causing non-sky scrapers to fail)
 - Understand sections of a website, such as comments, forum posts, related links etc
 - Consider which pages are linked to which (star graph)
 - Figure out the content pages by just pointing at the domain

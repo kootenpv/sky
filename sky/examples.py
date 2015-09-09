@@ -48,10 +48,10 @@ storage = ZODB.FileStorage.FileStorage(fname)
 cs = CrawlZODBService(PROJECT_NAME, storage, CrawlZODBPluginNews)
 
 ######### 3. Add config files to the database ########################
-from sky.configs import DEFAULT_CRAWL_CONFIG
+from sky.configs import PRODUCTION_CRAWL_CONFIG
 
 default = cs.get_crawl_plugin('default')
-default.save_config(DEFAULT_CRAWL_CONFIG)
+default.save_config(PRODUCTION_CRAWL_CONFIG)
 
 bbc_config = {
     'seed_urls': ['http://www.bbc.com/news/world/europe'],
@@ -63,4 +63,27 @@ bbc = cs.get_crawl_plugin('bbc.com')
 bbc.save_config(bbc_config)
 
 ######## 4. Start crawling ###########################################
+cs['bbc.com']
+
 cs.run('bbc.com')
+
+techcrunch_config = {
+    "seed_urls": ["http://www.techcrunch.com"],
+    "crawl_required_regexps": [
+        "http://techcrunch.com/",
+        "http://www.techcrunch.com/"],
+    "crawl_filter_regexps": [
+        '/video/',
+        '/event',
+        '.xml',
+        'rssfeeds',
+        '/contact/'],
+    "index_required_regexps": [r"\d{4}/\d{2}/\d{2}/[^/]+/?$"],
+    "max_workers": 100,
+    "max_saved_responses": 250000
+}
+
+
+techcrunch = cs['techcrunch.com']
+techcrunch.save_config(techcrunch_config)
+techcrunch.run()
