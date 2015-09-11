@@ -1,4 +1,5 @@
 import os
+import json
 
 from sky.helper import slugify
 
@@ -37,6 +38,9 @@ class CrawlService():
     def get_crawl_plugins(self):
         raise NotImplementedError("get_crawl_plugins not implemented")
 
+    def get_documents(self):
+        raise NotImplementedError("get_documents not implemented")
+
     def get_crawl_plugin(self, plugin_name):
         return self.crawl_plugin_class(self.project_name, self.server, plugin_name)
 
@@ -67,6 +71,13 @@ class CrawlFileService(CrawlService):
                 with open(os.path.join(self.server['plugins'], fn)) as f:
                     # not yet parsed config, not sure if that is a problem
                     self.plugins[fn] = f.read()
+
+    def get_documents(self):
+        documents = {}
+        for fn in os.listdir(self.server['documents']):
+            with open(os.path.join(self.server['plugins'], fn)) as f:
+                # not yet parsed config, not sure if that is a problem
+                documents[fn] = json.load(f)
 
 
 class CrawlCloudantService(CrawlService):
@@ -110,6 +121,13 @@ class CrawlCloudantService(CrawlService):
         self.plugins = {row['doc']['_id']: row['doc'] for row in service_rows
                         if 'default' != row['doc']['_id']}
 
+    def get_documents(self):
+        document_db = self.server.database(self.project_name + '-crawler-documents')
+        db_uri = '{}/_all_docs?include_docs=true'.format(document_db.uri)
+        service_rows = document_db.get(db_uri).result().json()['rows']
+        return {row['doc']['_id']: row['doc'] for row in service_rows
+                if not row['doc']['_id'].startswith('_')}
+
 
 class CrawlZODBService(CrawlService):
 
@@ -131,6 +149,9 @@ class CrawlZODBService(CrawlService):
 
     def get_crawl_plugins(self):
         return {k: doc for k, doc in self.server['plugins'].items() if k != 'default'}
+
+    def get_documents(self):
+        return {k: doc for k, doc in self.server['documents'].items()}
 
 
 class CrawlElasticSearchService(CrawlService):
@@ -159,3 +180,9 @@ class CrawlElasticSearchService(CrawlService):
                                  index=self.project_name + "-crawler-plugins")
         return {doc['_id']: doc for doc in res['hits']['hits']
                 if doc['_id'] != 'default'}
+
+    def get_documents(self):
+        query = {"query": {"match_all": {}}}
+        res = self.server.search(body=query, doc_type='document',
+                                 index=self.project_name + "-crawler-documents")
+        return {doc['_id']: doc for doc in res['hits']['hits']}

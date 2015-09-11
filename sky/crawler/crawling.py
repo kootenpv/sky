@@ -329,7 +329,7 @@ class Crawler:
         while True:
             try:
                 LOGGER.debug('get')
-                prio, url, max_redirects_per_url = yield from asyncio.wait_for(self.q.get(), 30)
+                prio, url, max_redirects_per_url = self.q.get()
             except Exception as e:
                 LOGGER.error('CRITICAL GET %r: stack %r', str(e), traceback.format_exc())
             try:
@@ -337,10 +337,7 @@ class Crawler:
                 yield from self.fetch(prio, url, max_redirects_per_url)
             except Exception as e:
                 LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
-            try:
-                self.q.task_done()
-            except Exception as e:
-                LOGGER.error('CRITICAL DONE %r: stack %r', str(e), traceback.format_exc())
+            self.q.task_done()
 
     def url_allowed(self, url):
         if url.endswith('.jpg') or url.endswith('.png'):
