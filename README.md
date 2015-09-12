@@ -33,7 +33,7 @@ The demo uses a *standard configuration* that can **easily** be improved on when
 
 ---
 
-Similar data will be very easy to use in your own applications.
+Similar data (title, body, publish_date, images etc) will be very easy to use in your own applications.
 
 #### Features/Goals
 

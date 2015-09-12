@@ -16,4 +16,4 @@ sky/legacy/tests/
 sky/gener
 dist/
 sky.egg-info/
-sky/legacy/theneeds-test/
+sky/legacy/theneeds-test/*
