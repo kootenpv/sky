@@ -1,5 +1,5 @@
 """A simple web crawler -- class implementing crawling logic."""
-import concurrent
+import io
 import traceback
 import asyncio
 import cgi
@@ -32,6 +32,14 @@ class JoinablePriorityQueue(Queue, PriorityQueue):
     pass
 
 LOGGER = logging.getLogger(__name__)
+
+
+def get_image_set(data):
+    images = set()
+    for x in data:
+        for y in data[x]['images']:
+            images.add(y)
+    return images
 
 
 def lenient_host(host):
@@ -438,6 +446,8 @@ class NewsCrawler(Crawler):
     def finish_leftovers(self):
         LOGGER.info('finish leftovers')
         if self.data:
-            LOGGER.info('saving number of documents: ' + str(len(self.data)))
+            image_set = get_image_set(self.data)
+            LOGGER.info('saving number of documents: %r', len(self.data))
+            LOGGER.info('found num unique images: %r', len(image_set))
             LOGGER.info('saving status code: %r', self.save_bulk_data(self.data))
         return dict(self.scraper.domain_nodes_dict)

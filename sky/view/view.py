@@ -9,6 +9,7 @@ import os
 import shutil
 
 from sky.crawler import crawl
+from sky.crawler.crawling import get_image_set
 from sky.configs import DEFAULT_CRAWL_CONFIG
 from sky.helper import extractDomain
 from sky.scraper import Scraper
@@ -90,6 +91,9 @@ class MainHandler(tornado.web.RequestHandler):
             dc['images'] = [x for x in reversed(dc['images'][:5])]
             # dc['blobs'] = [TextBlob(x) for x in dc['body'] if dc['body']]
             items.append(dc)
+
+        # this is quite out of place like this
+        print('num unique images', len(get_image_set({x['url']: x for x in items})))
 
         if items and 'money' in items[0]:
             items = sorted(items, key=lambda x: len(x['money']), reverse=True)
