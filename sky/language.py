@@ -1,8 +1,9 @@
 import langdetect
 
-def get_language(tree, headers, domain = None):
+
+def get_language(tree, headers, domain=None):
     lang = None
-    
+
     if headers and 'content-language' in headers:
         lang = headers['content-language']
 
@@ -15,10 +16,11 @@ def get_language(tree, headers, domain = None):
             page_txt = tree.text_content()
         lang = langdetect.detect(page_txt)
 
-    # Note that this won't work with weird domain names. A mapping is needed from domain names to languages.
+    # Note that this won't work with weird domain names. A mapping is needed
+    # from domain names to languages.
     if lang is None and domain is not None:
-        lang = domain.split('.')[-1]    
+        lang = domain.split('.')[-1]
         if lang == 'com':
-            return 'en' 
+            return 'en'
 
     return lang[:2] or 'en'

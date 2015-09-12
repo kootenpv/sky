@@ -1,11 +1,3 @@
-# adformatie.nl
-#   File "/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/sky/images.py", line 57, in get_images
-#     if general_ok_img(img_candidate, wrong_atts):
-#   File "/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/sky/images.py", line 20, in general_ok_img
-#     if tmp[0]:
-# IndexError: list index out of range
-
-
 # <figure> should maybe use some weighting
 # background-url should also be allowed
 

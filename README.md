@@ -1,4 +1,4 @@
-### sky
+<img src="https://raw.githubusercontent.com/kootenpv/sky/master/resources/skylogo.png" />
 
 sky is a web scraping framework, implemented with the latest python versions in mind (3.4+). It uses the asynchronous `asyncio` framework, as well as many popular modules and extensions.
 
@@ -29,7 +29,7 @@ The demo uses a *standard configuration* that can **easily** be improved on when
 
 ---
 
-<img src="https://github.com/kootenpv/sky/blob/master/resources/skyview.png" />
+<img src="https://raw.githubusercontent.com/kootenpv/sky/master/resources/skyview.png" />
 
 ---
 

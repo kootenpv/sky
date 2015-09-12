@@ -10,18 +10,18 @@ setup = re.sub("MICRO_VERSION = '[0-9]+'", "MICRO_VERSION = '{}'".format(commit_
 
 major = re.search("MAJOR_VERSION = '([0-9]+)'", setup).groups()[0]
 minor = re.search("MINOR_VERSION = '([0-9]+)'", setup).groups()[0]
-micro = re.search("MICRO_VERSION = '([0-9]+)'", setup).groups()[0] 
+micro = re.search("MICRO_VERSION = '([0-9]+)'", setup).groups()[0]
 version = '{}.{}.{}'.format(major, minor, micro)
 
 with open('setup.py', 'w') as f:
-    f.write(setup)    
+    f.write(setup)
 
-with open('sky/__init__.py') as f: 
+with open('sky/__init__.py') as f:
     init = f.read()
-    
-with open('sky/__init__.py', 'w') as f: 
+
+with open('sky/__init__.py', 'w') as f:
     f.write(re.sub('__version__ = "[0-9.]+"', '__version__ = "{}"'.format(version), init))
-    
+
 print(sh.python3('setup.py', ['sdist', 'bdist_wheel', 'upload']))
 
 sh.cd('../')

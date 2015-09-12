@@ -10,8 +10,8 @@ from lxml.html.clean import Cleaner
 cleaner = Cleaner()
 cleaner.javascript = True
 cleaner.style = True
-#cleaner.kill_tags = ['a', 'h1']
-#cleaner.remove_tags = ['p']
+# cleaner.kill_tags = ['a', 'h1']
+# cleaner.remove_tags = ['p']
 
 
 def slugify(value):
@@ -101,7 +101,10 @@ def extractDomain(url):
 
 
 def doesThisElementContain(text='pagination', nodeStr=''):
-    templ = '<div style="border:2px solid lightgreen"><div style="background-color:lightgreen">Does this element contain <b>{}</b>?</div>{}</div>'
+    templ = '<div style="border:2px solid lightgreen">'
+    templ += '<div style="background-color:lightgreen">'
+    templ += 'Does this element contain <b>{}</b>?'
+    templ += '</div>{}</div>'
     return templ.format(text, nodeStr)
 
 
@@ -131,7 +134,7 @@ def makeTree(html, domain=None):
 
 def getQuickTree(url, domain=None):
     r = requests.get(url, headers={
-        'User-Agent': 'Mozilla/5.0 (Windows NT 7.0; Win64; x64; rv:3.0b2pre) Gecko/20110203 Firefox/4.0b12pre'})
+        'User-Agent': 'Mozilla/5.0 ;Windows NT 6.1; WOW64; Trident/7.0; rv:11.0; like Gecko'})
     if domain is None:
         domain = extractDomain(url)
     return makeTree(r.text, domain)
@@ -160,7 +163,7 @@ def fscore(x, y):
         z = sum([w in y for w in x]) / len(x)
         z2 = sum([w in x for w in y]) / len(y)
         return (2 * z * z2) / (z + z2)
-    except:
+    except ZeroDivisionError:
         return 0
 
 
@@ -172,7 +175,8 @@ def get_pagination(tree):
             if len(x) == len(y) == len(z):
                 for i, j, k in zip(x, y, z):
                     if int(i) + 1 == int(j) and int(i) < int(k) and int(j) < int(k):
-                        return (link[0], find_common_ancestor(links[num][0], links[num + 1][0]), link[1].replace(i, '{}'))
+                        common_anc = find_common_ancestor(links[num][0], links[num + 1][0])
+                        return (link[0], common_anc, link[1].replace(i, '{}'))
 
 
 def find_common_ancestor(n1, n2):
@@ -195,7 +199,8 @@ def urlmatcher(url1, url2):
 
 
 def get_sorted_similar_urls(tree, url):
-    return sorted(tree.xpath('//a/@href'), key=lambda x: (url != x, urlmatcher(url, x)), reverse=True)
+    return sorted(tree.xpath('//a/@href'), key=lambda x: (url != x, urlmatcher(url, x)),
+                  reverse=True)
 
 
 def get_last_text_non_a_node(tree):

@@ -1,11 +1,12 @@
 from sky.configs import DEFAULT_CRAWL_CONFIG
 from sky.scraper import Scraper
+from sky.crawler import crawl
 
 # Crawling
 CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG
 CRAWL_CONFIG.update({
     'seed_urls': [
-        'http://www.techcrunch.com/2015/05/21/chromebook-sales-predicted-to-grow-by-27-this-year-to-7-3m-units/'
+        'http://www.techcrunch.com/'
     ],
 
     'collections_path': '/Users/pascal/GDrive/sky_collections',
@@ -35,7 +36,6 @@ CRAWL_CONFIG.update({
     'max_workers': 10,
 })
 
-from sky.crawler import crawl
 crawl.start(CRAWL_CONFIG)
 
 # Indexing

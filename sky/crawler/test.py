@@ -20,6 +20,7 @@ def capture_logging():
     logger.addHandler(handler)
 
     class Messages:
+
         def __contains__(self, item):
             return item in handler.stream.getvalue()
 
@@ -116,28 +117,28 @@ class TestCrawler(unittest.TestCase):
         self.loop.run_until_complete(self.crawler.crawl())
 
     def test_link(self):
-        # "/" links to foo, which is missing.
-        self.add_page('/', ['/foo'])
+        # "/" links to fooo, which is missing.
+        self.add_page('/', ['/fooo'])
         self.crawl()
         self.assertDoneCount(2)
         self.assertStat(url=self.app_url,
                         num_urls=1,
                         num_new_urls=1)
 
-        self.assertStat(1, url=self.app_url + '/foo', status=404)
+        self.assertStat(1, url=self.app_url + '/fooo', status=404)
 
     def test_link_cycle(self):
-        # foo and bar link to each other.
-        url = self.add_page('/foo', ['/bar'])
-        self.add_page('/bar', ['/foo'])
+        # fooo and barz link to each other.
+        url = self.add_page('/fooo', ['/barz'])
+        self.add_page('/barz', ['/fooo'])
         self.crawl([url])
         self.assertDoneCount(2)
-        self.assertStat(url=self.app_url + '/foo',
+        self.assertStat(url=self.app_url + '/fooo',
                         num_urls=1,
                         num_new_urls=1)
 
         self.assertStat(1,
-                        url=self.app_url + '/bar',
+                        url=self.app_url + '/barz',
                         num_urls=1,
                         num_new_urls=0)
 
@@ -150,13 +151,13 @@ class TestCrawler(unittest.TestCase):
     def test_strict_host_checking(self):
         crawler = crawling.Crawler(['http://example.com'], loop=self.loop)
         self.assertTrue(crawler.url_allowed("http://www.example.com"))
-        self.assertFalse(crawler.url_allowed("http://foo.example.com"))
+        self.assertFalse(crawler.url_allowed("http://fooo.example.com"))
 
     def test_lenient_host_checking(self):
         crawler = crawling.Crawler(['http://example.com'], strict=False,
                                    loop=self.loop)
         self.assertTrue(crawler.url_allowed("http://www.example.com"))
-        self.assertTrue(crawler.url_allowed("http://foo.example.com"))
+        self.assertTrue(crawler.url_allowed("http://fooo.example.com"))
 
     def test_exclude(self):
         crawler = crawling.Crawler(['http://example.com'],
@@ -178,57 +179,57 @@ class TestCrawler(unittest.TestCase):
         self.assertTrue(crawler.url_allowed("http://a/b"))
 
     def test_redirect(self):
-        # "/" redirects to "/foo", and "/foo" redirects to "/bar".
-        foo = self.app_url + '/foo'
-        bar = self.app_url + '/bar'
+        # "/" redirects to "/fooo", and "/fooo" redirects to "/barz".
+        fooo = self.app_url + '/fooo'
+        barz = self.app_url + '/barz'
 
-        url = self.add_redirect('/', foo)
-        self.add_redirect('/foo', bar)
+        url = self.add_redirect('/', fooo)
+        self.add_redirect('/fooo', barz)
         self.crawl([url])
-        self.assertStat(0, status=302, next_url=foo)
-        self.assertStat(1, status=302, next_url=bar)
+        self.assertStat(0, status=302, next_url=fooo)
+        self.assertStat(1, status=302, next_url=barz)
         self.assertStat(2, status=404)
 
         with capture_logging() as messages:
             self.crawl([url], max_redirect=1)
             self.assertDoneCount(2)
-            self.assertStat(status=302, next_url=foo)
+            self.assertStat(status=302, next_url=fooo)
 
         self.assertIn('redirect limit reached', messages)
 
     def test_redirect_cycle(self):
-        foo = self.app_url + '/foo'
-        bar = self.app_url + '/bar'
+        fooo = self.app_url + '/fooo'
+        barz = self.app_url + '/barz'
 
-        url = self.add_redirect('/bar', foo)
-        self.add_redirect('/foo', bar)
+        url = self.add_redirect('/barz', fooo)
+        self.add_redirect('/fooo', barz)
         self.crawl([url])
-        self.assertStat(0, status=302, next_url=foo)
-        self.assertStat(1, status=302, next_url=bar)
+        self.assertStat(0, status=302, next_url=fooo)
+        self.assertStat(1, status=302, next_url=barz)
         self.assertDoneCount(2)
 
     def test_redirect_join(self):
         # Set up redirects:
-        #   foo -> baz
-        #   bar -> baz -> quux
-        foo = self.app_url + '/foo'
-        bar = self.app_url + '/bar'
+        #   fooo -> baz
+        #   barz -> baz -> quux
+        fooo = self.app_url + '/fooo'
+        barz = self.app_url + '/barz'
         baz = self.app_url + '/baz'
         quux = self.app_url + '/quux'
 
-        self.add_redirect('/foo', baz)
-        self.add_redirect('/bar', baz)
+        self.add_redirect('/fooo', baz)
+        self.add_redirect('/barz', baz)
         self.add_redirect('/baz', quux)
 
-        # Start crawling foo and bar. We follow the foo -> baz redirect but
-        # not bar -> baz, since by then baz is already seen.
-        self.crawl([foo, bar])
+        # Start crawling fooo and barz. We follow the fooo -> baz redirect but
+        # not barz -> baz, since by then baz is already seen.
+        self.crawl([fooo, barz])
         import pprint
         pprint.pprint(self.crawler.done)
-        self.assertStat(0, url=foo, status=302, next_url=baz)
+        self.assertStat(0, url=fooo, status=302, next_url=baz)
 
-        # We fetched bar and saw it redirected to baz.
-        self.assertStat(1, url=bar, status=302, next_url=baz)
+        # We fetched barz and saw it redirected to baz.
+        self.assertStat(1, url=barz, status=302, next_url=baz)
 
         # But we only fetched baz once.
         self.assertStat(2, url=baz, status=302, next_url=quux)
@@ -300,9 +301,9 @@ class TestCrawler(unittest.TestCase):
         test_charset('ascii', 'ascii')
 
     def test_content_type(self):
-        self.add_page(content_type='foo')
+        self.add_page(content_type='fooo')
         self.crawl([self.app_url])
-        self.assertStat(content_type='foo')
+        self.assertStat(content_type='fooo')
 
     def test_non_html(self):
         # Should search only XML and HTML for links, not other content types.

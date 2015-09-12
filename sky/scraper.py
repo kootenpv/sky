@@ -16,13 +16,6 @@ import json
 import lxml.html
 import justext
 
-# from sky.dbpedia import load_dbpedia
-# from sky.dbpedia import get_dbpedia_from_words
-from sky.money import MoneyMatcher
-
-# dbpedia = load_dbpedia()
-money = MoneyMatcher()
-
 from sky.helper import get_text_and_tail
 from sky.helper import fscore
 from sky.helper import makeTree
@@ -38,6 +31,13 @@ from sky.get_author import get_author
 from sky.links import get_sorted_links
 from sky.language import get_language
 from sky.images import get_images
+
+# from sky.dbpedia import load_dbpedia
+# from sky.dbpedia import get_dbpedia_from_words
+from sky.money import MoneyMatcher
+
+# dbpedia = load_dbpedia()
+money = MoneyMatcher()
 
 
 class Scraper:

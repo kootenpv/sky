@@ -1,4 +1,5 @@
 """A simple web crawler -- class implementing crawling logic."""
+import concurrent
 import traceback
 import asyncio
 import cgi
@@ -11,6 +12,8 @@ import urllib.parse
 import tldextract
 import json
 import shutil
+
+import aiohttp  # Install with "pip install aiohttp"
 
 from sky.scraper import Scraper
 from sky.helper import makeTree
@@ -27,8 +30,6 @@ from asyncio import PriorityQueue
 
 class JoinablePriorityQueue(Queue, PriorityQueue):
     pass
-
-import aiohttp  # Install with "pip install aiohttp".
 
 LOGGER = logging.getLogger(__name__)
 
@@ -250,8 +251,9 @@ class Crawler:
     def fetch(self, prio, url, max_redirects_per_url):
         """Fetch one URL."""
         # Using max_workers since they are not being quit
+        if prio is None:
+            return
         if self.num_saved_responses >= self.max_saved_responses:
-            # NOT SURE IF THIS IS NEEDED
             return
         tries = 0
         exception = None
@@ -269,6 +271,10 @@ class Crawler:
             except asyncio.TimeoutError as e:
                 LOGGER.error('asyncio.TimeoutError for %r RAISED %r', url, e)
                 exception = e
+            except asyncio.CancelledError as e:
+                LOGGER.error('asyncio.CancelledError for %r RAISED %r', url, e)
+                self.q.task_done()
+                return
             except Exception as e:
                 LOGGER.error('General error for %r RAISED %r', url, e)
                 exception = e
@@ -327,17 +333,20 @@ class Crawler:
     def work(self):
         """Process queue items forever."""
         while True:
+            LOGGER.debug('get')
             try:
-                LOGGER.debug('get')
-                prio, url, max_redirects_per_url = self.q.get()
-            except Exception as e:
-                LOGGER.error('CRITICAL GET %r: stack %r', str(e), traceback.format_exc())
+                prio, url, max_redirects_per_url = yield from asyncio.wait_for(self.q.get(), 20)
+            except asyncio.CancelledError:
+                return
+            LOGGER.debug('fetch')
             try:
-                LOGGER.debug('fetch')
                 yield from self.fetch(prio, url, max_redirects_per_url)
             except Exception as e:
                 LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
-            self.q.task_done()
+            try:
+                self.q.task_done()
+            except ValueError:
+                return
 
     def url_allowed(self, url):
         if url.endswith('.jpg') or url.endswith('.png'):
