@@ -281,7 +281,6 @@ class Crawler:
                 exception = e
             except asyncio.CancelledError as e:
                 LOGGER.error('asyncio.CancelledError for %r RAISED %r', url, e)
-                self.q.task_done()
                 return
             except Exception as e:
                 LOGGER.error('General error for %r RAISED %r', url, e)
@@ -303,58 +302,62 @@ class Crawler:
                                                  num_new_urls=0))
             return
 
-        if is_redirect(response):
-            location = response.headers['location']
-            next_url = urllib.parse.urljoin(url, location)
-            self.record_statistic(FetchStatistic(url=url,
-                                                 next_url=next_url,
-                                                 status=response.status,
-                                                 exception=None,
-                                                 size=0,
-                                                 content_type=None,
-                                                 encoding=None,
-                                                 num_urls=0,
-                                                 num_new_urls=0))
+        try:
+            if is_redirect(response):
+                location = response.headers['location']
+                next_url = urllib.parse.urljoin(url, location)
+                self.record_statistic(FetchStatistic(url=url,
+                                                     next_url=next_url,
+                                                     status=response.status,
+                                                     exception=None,
+                                                     size=0,
+                                                     content_type=None,
+                                                     encoding=None,
+                                                     num_urls=0,
+                                                     num_new_urls=0))
 
-            if next_url in self.seen_urls:
-                yield from response.release()
-                return
-            if max_redirects_per_url > 0:
-                LOGGER.info('REDIRECT to %r from %r', next_url, url)
-                self.add_url(prio, next_url, max_redirects_per_url - 1)
+                if next_url in self.seen_urls:
+                    return
+                if max_redirects_per_url > 0:
+                    LOGGER.info('REDIRECT to %r from %r', next_url, url)
+                    self.add_url(prio, next_url, max_redirects_per_url - 1)
+                else:
+                    LOGGER.error('REDIRECT limit reached for %r from %r',
+                                 next_url, url)
             else:
-                LOGGER.error('REDIRECT limit reached for %r from %r',
-                             next_url, url)
-        else:
-            stat, links = yield from self.handle_response(response)
-            self.record_statistic(stat)
-            for link in links.difference(self.seen_urls):
-                good = sum([x in link for x in self.index_required_regexps])
-                bad = 10 * any([x in link for x in self.index_filter_regexps])
-                prio = bad - good  # lower is better
-                self.q.put_nowait((prio, link, self.max_redirects_per_url))
+                stat, links = yield from self.handle_response(response)
+                self.record_statistic(stat)
+                for link in links.difference(self.seen_urls):
+                    good = sum([x in link for x in self.index_required_regexps])
+                    bad = 10 * any([x in link for x in self.index_filter_regexps])
+                    prio = bad - good  # lower is better
+                    self.q.put_nowait((prio, link, self.max_redirects_per_url))
 
-            self.seen_urls.update(links)
-        yield from response.release()
+                self.seen_urls.update(links)
+        finally:
+            yield from response.release()
 
     @asyncio.coroutine
     def work(self):
         """Process queue items forever."""
-        while True:
-            LOGGER.debug('get')
-            try:
+        try:
+            while True:
+                LOGGER.debug('get')
+                # try:
                 prio, url, max_redirects_per_url = yield from asyncio.wait_for(self.q.get(), 20)
-            except asyncio.CancelledError:
-                return
-            LOGGER.debug('fetch')
-            try:
+                # except asyncio.CancelledError:
+                #    return
+                LOGGER.debug('fetch')
+                # try:
                 yield from self.fetch(prio, url, max_redirects_per_url)
-            except Exception as e:
-                LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
-            try:
+                # except Exception as e:
+                #    LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
+                # try:
                 self.q.task_done()
-            except ValueError:
-                return
+                # except ValueError:
+                #    return
+        except asyncio.CancelledError:
+            pass
 
     def url_allowed(self, url):
         if url.endswith('.jpg') or url.endswith('.png'):

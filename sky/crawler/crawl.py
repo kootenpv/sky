@@ -69,5 +69,7 @@ def start(config, crawler_class=Crawler, save_data_result_fn=None, save_bulk_dat
         result = crawler.finish_leftovers()
         report(crawler)
         crawler.close()
+        loop.stop()
+        loop.run_forever()
         loop.close()
     return result
