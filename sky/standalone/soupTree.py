@@ -1,19 +1,23 @@
+#!/usr/bin/env python3
 import bs4
 import asciitree
 
+
 class Node(object):
+
     def __init__(self, name, children):
         self.name = name
         self.children = children
 
     def __str__(self):
         return(self.name)
-    
+
     def lineage(self):
         total = [self.name] + [y.name for y in self.children]
         for x in self.children:
             total += x.lineage()
         return(total)
+
 
 def get_name(x, namedAttrs):
     my_string = "".join(x.name.split())
@@ -21,14 +25,15 @@ def get_name(x, namedAttrs):
         for att in namedAttrs:
             if att in x.attrs:
                 my_string += ', ' + att[0] + '=' + "".join(x.attrs[att])
-    return(my_string)    
-        
+    return(my_string)
+
+
 def traverser(parent, graph, pruning, namedAttrs):
-    graph = []        
+    graph = []
     for x in parent:
-        if isinstance(x, bs4.element.Tag): 
+        if isinstance(x, bs4.element.Tag):
             my_string = get_name(x, namedAttrs)
-            graph.append(Node(my_string, traverser(x, graph, pruning, namedAttrs)))            
+            graph.append(Node(my_string, traverser(x, graph, pruning, namedAttrs)))
     if not pruning:
         return(graph)
     pruned_graph = []
@@ -40,14 +45,15 @@ def traverser(parent, graph, pruning, namedAttrs):
         else:
             watcher[blood] += 1
     new_watcher = []
-    for x in graph:        
+    for x in graph:
         blood = "".join(x.lineage())
         if blood not in new_watcher:
             new_watcher.append(blood)
             pruned_graph.append(Node(x.name + " (" + str(watcher[blood]) + ")", x.children))
     return(pruned_graph)
 
-def soupTree(soups, returning = False, printing = True, pruning = True, namedAttrs = None):
+
+def soupTree(soups, returning=False, printing=True, pruning=True, namedAttrs=None):
     if namedAttrs is None:
         namedAttrs = ['class', 'id']
     outps = []
@@ -61,10 +67,10 @@ def soupTree(soups, returning = False, printing = True, pruning = True, namedAtt
         max_lens = max(max_lens, max([len(x) for x in outp.split('\n')]))
         num += 1
         if num * (max_lens + 10) > 230:
-            print('can only fit', num-1, 'out of', len(soups))
-            break 
+            print('can only fit', num - 1, 'out of', len(soups))
+            break
         outps.append(outp.split('\n'))
-    newoutps = []    
+    newoutps = []
     max_lines = max([len(x) for x in outps])
     for i in range(max_lines):
         tmp = ""

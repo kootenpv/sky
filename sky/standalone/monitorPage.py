@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python3
 import requests
 import sys
 import time
@@ -11,12 +11,13 @@ url = sys.argv[1]
 from helper import *
 
 cleaner = Cleaner()
-cleaner.javascript = True 
-cleaner.style = True   
+cleaner.javascript = True
+cleaner.style = True
 #cleaner.kill_tags = ['a', 'h1']
 #cleaner.remove_tags = ['p']
 
-def viewDiffHtml(tree1, tree2, diffMethod = htmldiff):
+
+def viewDiffHtml(tree1, tree2, diffMethod=htmldiff):
     diffHtml = diffMethod(tree1, tree2)
     diffTree = lxml.html.fromstring(diffHtml)
     insCounts = diffTree.xpath('count(//ins)')
@@ -26,7 +27,7 @@ def viewDiffHtml(tree1, tree2, diffMethod = htmldiff):
         for x in diffTree.xpath('//del'):
             print(lxml.html.tostring(x))
         for x in diffTree.xpath('//ins'):
-            print(lxml.html.tostring(x)) 
+            print(lxml.html.tostring(x))
 
 old_html = requests.get(url).text
 old_tree = lxml.html.fromstring(cleaner.clean_html(old_html))
@@ -38,16 +39,15 @@ while True:
         if html != old_html:
             tree = lxml.html.fromstring(cleaner.clean_html(html))
             content = tree.text_content()
-            if content != old_content: 
-                proportion_chars = sum([x == y for x,y in zip(html, old_html)]) / min(len(html), len(old_html))
-                print('Proportion chars {}', proportion_chars) 
+            if content != old_content:
+                proportion_chars = sum([x == y for x, y in zip(html, old_html)]
+                                       ) / min(len(html), len(old_html))
+                print('Proportion chars {}', proportion_chars)
                 viewDiffHtml(old_tree, tree)
-                old_html = html 
+                old_html = html
                 old_html = tree
-                old_content = content 
-    except requests.exceptions.ConnectionError: 
+                old_content = content
+    except requests.exceptions.ConnectionError:
         print('ConnectionError')
         pass
     time.sleep(5)
-
-    

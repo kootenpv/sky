@@ -1,18 +1,22 @@
+#!/usr/bin/env python3
 import asciitree
 
+
 class Node(object):
+
     def __init__(self, name, children):
         self.name = name
         self.children = children
 
     def __str__(self):
         return(self.name)
-    
+
     def lineage(self):
         total = [self.name] + [y.name for y in self.children]
         for x in self.children:
             total += x.lineage()
         return(total)
+
 
 def lxml_get_name(x, namedAttrs):
     my_string = x.tag
@@ -22,13 +26,14 @@ def lxml_get_name(x, namedAttrs):
         for key, value in x.items():
             if key in namedAttrs:
                 my_string += ', ' + key[0] + '=' + value
-    return(my_string)        
+    return(my_string)
+
 
 def lxml_traverser(parent, graph, simplify, namedAttrs):
-    graph = []        
+    graph = []
     for x in parent:
         my_string = lxml_get_name(x, namedAttrs)
-        graph.append(Node(my_string, lxml_traverser(x, graph, simplify, namedAttrs)))            
+        graph.append(Node(my_string, lxml_traverser(x, graph, simplify, namedAttrs)))
     if not simplify:
         return(graph)
     pruned_graph = []
@@ -40,14 +45,15 @@ def lxml_traverser(parent, graph, simplify, namedAttrs):
         else:
             watcher[blood] += 1
     new_watcher = []
-    for x in graph:        
+    for x in graph:
         blood = "".join(x.lineage())
         if blood not in new_watcher:
             new_watcher.append(blood)
             pruned_graph.append(Node(x.name + " (" + str(watcher[blood]) + ")", x.children))
     return(pruned_graph)
 
-def lxmlTree(lxmls, returning = False, printing = True, simplify = True, namedAttrs = None):
+
+def lxmlTree(lxmls, returning=False, printing=True, simplify=True, namedAttrs=None):
     if namedAttrs is None:
         namedAttrs = ['class', 'id']
     outps = []
@@ -61,17 +67,17 @@ def lxmlTree(lxmls, returning = False, printing = True, simplify = True, namedAt
         max_lens = max(max_lens, max([len(x) for x in outp.split('\n')]))
         num += 1
         if num * (max_lens + 10) > 270:
-            print('can only fit', num-1, 'out of', len(lxmls))
-            break 
+            print('can only fit', num - 1, 'out of', len(lxmls))
+            break
         outps.append(outp.split('\n'))
-    newoutps = []    
+    newoutps = []
     max_lines = max([len(x) for x in outps])
     for i in range(max_lines):
         tmp = ""
         for x in outps:
-            try: 
-                tmp += '{:<{}}'.format(x[i], max_lens + 10) 
-            except IndexError: 
+            try:
+                tmp += '{:<{}}'.format(x[i], max_lens + 10)
+            except IndexError:
                 tmp += '{:<{}}'.format('', max_lens + 10)
         newoutps.append(tmp)
     if printing:
