@@ -17,10 +17,11 @@ except ImportError:
 
 class CrawlService():
 
-    def __init__(self, project_name, storage_object, crawl_plugin_class):
+    def __init__(self, project_name, storage_object, crawl_plugin_class, cache=None):
         self.project_name = project_name
         self.storage_object = storage_object
-        self.plugins = {}
+        self.cache = cache
+        self.plugin_configs = {}
         self.server = None
         self.crawl_plugin_class = crawl_plugin_class
         self.get_server()
@@ -42,14 +43,14 @@ class CrawlService():
         raise NotImplementedError("get_documents not implemented")
 
     def get_crawl_plugin(self, plugin_name):
-        return self.crawl_plugin_class(self.project_name, self.server, plugin_name)
+        return self.crawl_plugin_class(self.project_name, self.server, plugin_name, self.cache)
 
     def run(self, plugin_name):
         cplug = self.get_crawl_plugin(plugin_name)
         cplug.run()
 
     def run_all(self):
-        for plugin in self.plugins:
+        for plugin in self.plugin_configs:
             self.run(plugin)
 
 
@@ -65,12 +66,12 @@ class CrawlFileService(CrawlService):
             os.makedirs(paths, exist_ok=True)
 
     def get_crawl_plugins(self):
-        self.plugins = {}
+        self.plugin_configs = {}
         for fn in os.listdir(self.server['plugins']):
             if fn != 'default':
                 with open(os.path.join(self.server['plugins'], fn)) as f:
                     # not yet parsed config, not sure if that is a problem
-                    self.plugins[fn] = f.read()
+                    self.plugin_configs[fn] = f.read()
 
     def get_documents(self):
         documents = {}
@@ -118,8 +119,8 @@ class CrawlCloudantService(CrawlService):
         plugin_db = self.server.database(self.project_name + '-crawler-plugins')
         db_uri = '{}/_all_docs?include_docs=true'.format(plugin_db.uri)
         service_rows = plugin_db.get(db_uri).result().json()['rows']
-        self.plugins = {row['doc']['_id']: row['doc'] for row in service_rows
-                        if 'default' != row['doc']['_id']}
+        self.plugin_configs = {row['doc']['_id']: row['doc'] for row in service_rows
+                               if 'default' != row['doc']['_id']}
 
     def get_documents(self):
         document_db = self.server.database(self.project_name + '-crawler-documents')

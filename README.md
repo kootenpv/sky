@@ -47,7 +47,7 @@ These are the features/goals of `sky`. Checkmarks have been accomplished:
 - ✓ **Free**, versus enormous costs for even medium scale projects using (worse) online services
 - **Link-graph-analysis**, find out how a domain "looks" like
 - **Include Batteries**, Crawl any news website without any configuration
-- **Automatic Natural Language Processing**, there have been steps to automatically detect acquisitions (`Company A acquires Company B`) and investments: `Company A invests B millions in Company C`.
+- **Automatic Natural Language Processing**, detecting keywords in text automatically
 
 #### Installation
 

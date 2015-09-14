@@ -14,8 +14,6 @@ from sky.crawler.crawling import NewsCrawler
 from sky.helper import slugify
 
 import requests
-import aiohttp
-import asyncio
 
 # ZODB specific
 try:
@@ -27,14 +25,24 @@ except ImportError:
 
 class CrawlPlugin:
 
-    def __init__(self, project_name, server=None, plugin_name=None):
+    def __init__(self, project_name, server=None, plugin_name=None, cache=None):
         self.project_name = project_name
         self.plugin_name = plugin_name
+        self.server = server
+        self.cache = self.prepare_cache(cache)
         self.crawl_config = None
         self.data = {}
         self.documents = []
         self.template_dict = None
-        self.server = server
+
+    def prepare_cache(self, cache):
+        if cache is not None:
+            cache.plugin_name = self.plugin_name
+            cache.project_name = self.project_name
+            if cache.server is None:
+                cache.server = self.server
+            cache.setup()
+        return cache
 
     def get_default_plugin(self):
         pass
