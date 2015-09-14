@@ -221,7 +221,7 @@ class Crawler:
 
                 current_url = response.url
                 if self.should_save(current_url):
-                    _ = yield from self.save_response(text, url, dict(response.headers))
+                    _ = yield from self.save_response(text, response.url, dict(response.headers))
                     # fck = yield from response.text(encoding="cp1252")
                     self.num_saved_responses += 1
                     LOGGER.info('results: %r, CONVERTED url %r, ',
