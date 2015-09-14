@@ -179,9 +179,9 @@ class Crawler:
         self.done.append(fetch_statistic)
 
     @asyncio.coroutine
-    def save_response(self, text, response):
-        with open(os.path.join(self.file_storage_place, slugify(response.url)), 'w') as f:
-            json.dump({'url': response.url, 'html': text, 'headers': dict(response.headers)}, f)
+    def save_response(self, html_code, url, headers):
+        with open(os.path.join(self.file_storage_place, slugify(url)), 'w') as f:
+            json.dump({'url': url, 'html': html_code, 'headers': headers}, f)
 
     def should_crawl(self, url):
         if all([not re.search(x, url) for x in self.crawl_filter_regexps]):
@@ -221,7 +221,8 @@ class Crawler:
 
                 current_url = response.url
                 if self.should_save(current_url):
-                    _ = yield from self.save_response(text, response)
+                    _ = yield from self.save_response(text, url, dict(response.headers))
+                    # fck = yield from response.text(encoding="cp1252")
                     self.num_saved_responses += 1
                     LOGGER.info('results: %r, CONVERTED url %r, ',
                                 self.num_saved_responses, current_url)
@@ -259,8 +260,6 @@ class Crawler:
     def fetch(self, prio, url, max_redirects_per_url):
         """Fetch one URL."""
         # Using max_workers since they are not being quit
-        if prio is None:
-            return
         if self.num_saved_responses >= self.max_saved_responses:
             return
         tries = 0
@@ -340,24 +339,21 @@ class Crawler:
     @asyncio.coroutine
     def work(self):
         """Process queue items forever."""
-        try:
-            while True:
-                LOGGER.debug('get')
-                # try:
+        while True:
+            LOGGER.debug('get')
+            try:
                 prio, url, max_redirects_per_url = yield from asyncio.wait_for(self.q.get(), 20)
-                # except asyncio.CancelledError:
-                #    return
-                LOGGER.debug('fetch')
-                # try:
+            except asyncio.CancelledError:
+                return
+            LOGGER.debug('fetch')
+            try:
                 yield from self.fetch(prio, url, max_redirects_per_url)
-                # except Exception as e:
-                #    LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
-                # try:
+            except Exception as e:
+                LOGGER.error('CRITICAL FETCH %r: stack %r', str(e), traceback.format_exc())
+            try:
                 self.q.task_done()
-                # except ValueError:
-                #    return
-        except asyncio.CancelledError:
-            pass
+            except ValueError:
+                return
 
     def url_allowed(self, url):
         if url.endswith('.jpg') or url.endswith('.png'):
@@ -406,38 +402,25 @@ class NewsCrawler(Crawler):
         self.templates_done = 0
 
     @asyncio.coroutine
-    def save_response(self, text, response):
+    def save_response(self, html_code, url, headers):
         # fucking mess
         try:
             # just let the indexer save the files as normal and also create a Template
-            url = response.url
-            tree = makeTree(text, self.scraper.domain)
+            url = url
+            tree = makeTree(html_code, self.scraper.domain)
             if self.templates_done < self.scraper.config['max_templates']:
                 self.templates_done += 1
                 self.scraper.domain_nodes_dict.add_template_elements(tree)
-                self.scraper.url_to_headers_mapping[url] = dict(response.headers)
-                self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+                self.scraper.url_to_headers_mapping[url] = headers
+            self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+            if 'date' in headers:
+                date = headers['date']
             else:
-                # Let's try to do it in a tasked manner to remove existing ones and new ones
-                # new one
-                self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
+                date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+            self.data[url]['crawl_date'] = date
         except Exception as e:
-            try:
-                fck = yield from response.text(encoding="cp1252")
-                tree = makeTree(fck, self.scraper.domain)
-                if self.templates_done < self.scraper.config['max_templates']:
-                    self.templates_done += 1
-                    self.scraper.domain_nodes_dict.add_template_elements(tree)
-                    self.scraper.url_to_headers_mapping[url] = dict(response.headers)
-                    self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
-                else:
-                    # Let's try to do it in a tasked manner to remove existing ones and new ones
-                    # new one
-                    self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
-                LOGGER.warn("Solved UTF error with cp1252!")
-            except Exception as e:
-                LOGGER.error("RETRY CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r",
-                             url, str(e), traceback.format_exc())
+            LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r",
+                         url, str(e), traceback.format_exc())
         return
 
     def save_data(self, data):

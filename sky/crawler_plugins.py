@@ -1,3 +1,6 @@
+# ccp.dbs['documents'].document(x['_id']).delete(x['_rev'])
+
+
 # split into separate files for DBs, or should I?
 
 # Take care of backend for handle results
@@ -133,8 +136,8 @@ class CrawlFilePlugin(CrawlPlugin):
 
 class CrawlCloudantPlugin(CrawlPlugin):
 
-    def __init__(self, project_name, server, plugin_name):
-        super(CrawlCloudantPlugin, self).__init__(project_name, server, plugin_name)
+    def __init__(self, project_name, server, plugin_name, cache):
+        super(CrawlCloudantPlugin, self).__init__(project_name, server, plugin_name, cache)
         self.dbs = {x: self.server.database(self.project_name + '-crawler-' + x) for x in
                     ['plugins', 'documents', 'template_dict']}
 
@@ -176,8 +179,8 @@ class CrawlCloudantPlugin(CrawlPlugin):
 
 class CrawlElasticSearchPlugin(CrawlPlugin):
 
-    def __init__(self, project_name, server, plugin_name):
-        super(CrawlElasticSearchPlugin, self).__init__(project_name, server, plugin_name)
+    def __init__(self, project_name, server, plugin_name, cache):
+        super(CrawlElasticSearchPlugin, self).__init__(project_name, server, plugin_name, cache)
         self.es = server
 
     def get_default_plugin(self):
