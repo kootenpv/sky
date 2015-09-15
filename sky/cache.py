@@ -6,20 +6,23 @@ from sky.helper import slugify
 
 class BareCache():
 
-    def __init__(self, server=None, load_on_init=True, flush_cache=False):
+    def __init__(self, storage_object=None, load_on_init=True, flush_cache=False):
         self.project_name = None
         self.plugin_name = None
         self.load_on_init = load_on_init
         self.flush_cache = flush_cache
-        self.server = server
+        self.server = None
+        self.storage_object = storage_object
         self.dict = {}
 
-    def setup(self):
-        if self.server is None:
-            raise ValueError("No server object given; it is unclear where to store data.")
+    def init_cache_storage(self):
+        raise NotImplementedError('init_cache_storage is not implemented for Cache')
 
-        if self.flush_cache:
-            self.delete_cache()
+    def setup(self):
+        if self.storage_object is None:
+            raise ValueError("No storage_object given; it is unclear where to store data.")
+
+        self.init_cache_storage()
 
         self.load_index()
 
@@ -40,18 +43,29 @@ class BareCache():
 
     def load_index(self):
         """
-        This will load all the available slugified URLs, so it is known which html data is available
+        This will load all the available slugified URLs, so it is known which data is available
         """
         raise NotImplementedError("'load_index' is not implemented for Cache")
 
     def load_all(self):
         """
-        This will load the html_data for all known slugified URLs
+        This will load the data for all known slugified URLs
         """
         raise NotImplementedError("'load_all' is not implemented for Cache")
 
 
 class FileCache(BareCache):
+
+    def init_cache_storage(self):
+        root = self.storage_object['path']
+
+        self.server = {'cache': os.path.join(root, self.project_name + '-crawler-cache')}
+
+        if self.flush_cache:
+            self.delete_cache()
+
+        for paths in self.server.values():
+            os.makedirs(paths, exist_ok=True)
 
     def load_index(self):
         cache_data = {}
@@ -67,9 +81,13 @@ class FileCache(BareCache):
             self.load_page_from_cache(fn)
 
     def load_page_from_cache(self, fn):
-        with open(os.path.join(self.server['cache'], fn)) as f:
+        full_path = os.path.join(self.server['cache'], fn)
+        if not os.path.isfile(full_path):
+            return False
+
+        with open(full_path) as f:
             response_data = json.load(f)
-        return response_data['html']
+        return response_data
 
     def delete_cache(self):
         shutil.rmtree(self.server['cache'])
@@ -80,7 +98,7 @@ class FileCache(BareCache):
         return self.dict[x]
 
     def __setitem__(self, key, item):
-        with open(os.path.join(self.server['cache'], key)) as f:
+        with open(os.path.join(self.server['cache'], key), 'w') as f:
             json.dump(item, f)
         self.dict[key] = item
 

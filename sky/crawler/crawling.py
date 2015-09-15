@@ -1,5 +1,5 @@
-"""A simple web crawler -- class implementing crawling logic."""
 import io
+"""A simple web crawler -- class implementing crawling logic."""
 import traceback
 import asyncio
 import cgi
@@ -84,7 +84,8 @@ class Crawler:
     URLs seen, and 'done' is a list of FetchStatistics.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, cache=None):
+        self.cache = cache
         self.loop = None
         self.seed_urls = None
         self.collections_path = None
@@ -243,6 +244,17 @@ class Crawler:
                 LOGGER.info('Queue: %r, FOUND ~%r visitable urls from %r, ',
                             self.q.qsize(), num_allowed_urls, current_url)
 
+                if self.cache is not None:
+                    print('caching url', response.url)
+                    cache_resp = {}
+                    cache_resp['content'] = text
+                    cache_resp['url'] = str(response.url)
+                    cache_resp['headers'] = dict(response.headers)
+                    cache_resp['status'] = response.status
+                    cache_resp['content_type'] = content_type
+                    cache_resp['encoding'] = content_type
+                    self.cache[slugify(response.url)] = cache_resp
+
         stat = FetchStatistic(
             url=response.url,
             next_url=None,
@@ -257,10 +269,69 @@ class Crawler:
         return stat, links
 
     @asyncio.coroutine
+    def get_from_cache(self, url):
+        fut = asyncio.Future()
+        fut.set_result(self.cache[url])
+        response = yield from fut
+        return response
+
+    @asyncio.coroutine
     def fetch(self, prio, url, max_redirects_per_url):
         """Fetch one URL."""
         # Using max_workers since they are not being quit
         if self.num_saved_responses >= self.max_saved_responses:
+            return
+        if self.cache is not None and slugify(url) in self.cache:
+            LOGGER.info('%r from cache')
+            links = set()
+            num_allowed_urls = 0
+            response = yield from self.get_from_cache(slugify(url))
+            current_url = response['url']
+            if self.should_save(response['url']):
+                _ = yield from self.save_response(response['content'], response['url'],
+                                                  response['headers'])
+
+                # fck = yield from response.text(encoding="cp1252")
+                self.num_saved_responses += 1
+                LOGGER.info('results: %r, CONVERTED url %r, ',
+                            self.num_saved_responses, current_url)
+
+            # Replace href with (?:href|src) to follow image links.
+            urls = set(re.findall(r'''(?i)href=["']([^\s"'<>]+)''',
+                                  response['content']))
+
+            for url in urls:
+                normalized = urllib.parse.urljoin(current_url, url)
+                defragmented, _ = urllib.parse.urldefrag(normalized)
+                if self.url_allowed(defragmented) and self.should_crawl(normalized):
+                    if defragmented not in links and defragmented not in self.seen_urls:
+                        num_allowed_urls += 1
+                        links.add(defragmented)
+
+            # visitable means: "urls that may be visit according to config"
+            LOGGER.info('Queue: %r, FOUND ~%r visitable urls from %r, ',
+                        self.q.qsize(), num_allowed_urls, current_url)
+
+            stat = FetchStatistic(
+                url=response['url'],
+                next_url=None,
+                status=response['status'],
+                exception=None,
+                size=len(response['content']),
+                content_type=response['content_type'],
+                encoding=response['encoding'],
+                num_urls=len(links),
+                num_new_urls=len(links - self.seen_urls))
+
+            self.record_statistic(stat)
+            for link in links.difference(self.seen_urls):
+                good = sum([x in link for x in self.index_required_regexps])
+                bad = 10 * any([x in link for x in self.index_filter_regexps])
+                prio = bad - good  # lower is better
+                self.q.put_nowait((prio, link, self.max_redirects_per_url))
+
+            self.seen_urls.update(links)
+
             return
         tries = 0
         exception = None
@@ -394,8 +465,8 @@ class Crawler:
 
 class NewsCrawler(Crawler):
 
-    def __init__(self, config):
-        super(NewsCrawler, self).__init__(config)
+    def __init__(self, config, cache=None):
+        super(NewsCrawler, self).__init__(config, cache)
         self.scraper = Scraper(config)
         self.template_complete = False
         self.data = {}

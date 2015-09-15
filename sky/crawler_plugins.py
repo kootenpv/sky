@@ -42,8 +42,6 @@ class CrawlPlugin:
         if cache is not None:
             cache.plugin_name = self.plugin_name
             cache.project_name = self.project_name
-            if cache.server is None:
-                cache.server = self.server
             cache.setup()
         return cache
 
@@ -54,7 +52,7 @@ class CrawlPlugin:
         pass
 
     def start_crawl(self):
-        crawl.start(self.crawl_config)
+        crawl.start(self.crawl_config, cache=self.cache)
 
     def scrape_data(self):
         # Create boilerplate recognizer
@@ -72,12 +70,10 @@ class CrawlPlugin:
     def save_bulk_data(self, data):
         pass
 
-    def run(self, use_cache=False):
+    def run(self):
         # get default plugin
         self.crawl_config = self.get_default_plugin()
-
-        if not use_cache:
-            self.start_crawl()
+        self.start_crawl()
         self.data = self.scrape_data()
         self.save_bulk_data(self.data)
 
@@ -254,7 +250,7 @@ class CrawlPluginNews(CrawlPlugin):
     def get_seen_urls(self):
         raise NotImplementedError('seen_urls required')
 
-    def run(self, use_cache=False):
+    def run(self):
         # get default plugin
         print("getting crawl plugin info")
         self.crawl_config = self.get_default_plugin()
@@ -278,8 +274,9 @@ class CrawlPluginNews(CrawlPlugin):
             logging_level = int(self.crawl_config['logging_level'])
         else:
             logging_level = 3
-        templated_dict = crawl.start(self.crawl_config, NewsCrawler,
-                                     self.save_data, self.save_bulk_data, logging_level=logging_level)
+        templated_dict = crawl.start(
+            self.crawl_config, NewsCrawler, self.save_data, self.save_bulk_data,
+            logging_level=logging_level, cache=self.cache)
 
         print('saving template..')
         self.save_template_dict(templated_dict)

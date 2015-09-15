@@ -33,7 +33,7 @@ def get_config(config, loop):
 
 
 def start(config, crawler_class=Crawler, save_data_result_fn=None, save_bulk_data_fn=None,
-          logging_level=2):
+          logging_level=2, cache=None):
     """Main program.
 
     Parse arguments, set up event loop, run crawler, print report.
@@ -47,7 +47,7 @@ def start(config, crawler_class=Crawler, save_data_result_fn=None, save_bulk_dat
     asyncio.set_event_loop(loop)
     conf = get_config(config, loop)
 
-    crawler = crawler_class(conf)
+    crawler = crawler_class(conf, cache)
 
     if save_data_result_fn is not None:
         crawler.save_data = save_data_result_fn
