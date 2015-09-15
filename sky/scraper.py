@@ -181,8 +181,7 @@ class Scraper:
             sortedimgs = sorted(imginds, key=lambda x: abs(x[1] - titleind[1]))
         else:
             sortedimgs = []
-        hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates, non_fuzzy_anys, fuzzy_anys = get_dates(
-            tree, self.detected_language)
+
         images = []
         for x in sortedimgs:
             val = None
@@ -197,43 +196,23 @@ class Scraper:
             if val is not None and val not in images:
                 images.append(val)
 
-        date = ''
-        date_node_index = None
         author = ''
         author_node_index = None
+        date = "1970-01-01"
         if titleind:
+            date = get_dates(tree, titleind, self.detected_language)
             # excluding soft dates (meta, they wont work anyway)
-            for dt in [hardest_dates, fuzzy_hardest_dates, not_hardest_dates,
-                       non_fuzzy_anys, fuzzy_anys]:
-                if dt:
-                    date, date_node_index = sorted(dt, key=lambda x: abs(x[1] - titleind[1]))[0]
-                    break
+
             for at in [hardest_authors, not_hardest_authors, text_hard_authors, text_soft_authors]:
                 if at:
                     author, author_node_index = sorted(
                         at, key=lambda x: abs(x[1] - titleind[1]))[0]
                     break
-        if not date and soft_dates:
-            for sd in soft_dates:
-                date = sd
-                break
-
-        if not date:
-            date = "1970-01-01"
 
         if not author and meta_authors:
             for ma in meta_authors:
                 author = ma
                 break
-
-        if date_node_index is not None:
-            for num, node in enumerate(tree.iter()):
-                if num == date_node_index:
-                    break
-            # It goes wrong when some year is mentioned in the title, then it removes title
-            # print('removing date content', node.text)
-            node.text = ''
-            node.tail = ''
 
         if author_node_index is not None:
             for num, node in enumerate(tree.iter()):

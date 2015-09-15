@@ -52,7 +52,7 @@ def within_years(d):
     return re.search(r'\b(19[89][0-9]|20[0-4][0-9])\b', d)
 
 
-def get_dates(tree, lang='en'):
+def get_dates(tree, titleind=(None, 1), lang='en'):
     # make this faster, its friggin slow (stupid fuzzy matching)
     hard_dates = []
     soft_dates = []
@@ -128,4 +128,31 @@ def get_dates(tree, lang='en'):
                 if fuzzy_text:
                     fuzzy_any.append((fuzzy_text, num))
 
-    return hardest_dates, fuzzy_hardest_dates, not_hardest_dates, soft_dates, non_fuzzy_any, fuzzy_any
+    date = ''
+    date_node_index = None
+
+    for dt in [hardest_dates, fuzzy_hardest_dates, not_hardest_dates,
+               non_fuzzy_any, fuzzy_any]:
+        if dt:
+            date, date_node_index = sorted(dt, key=lambda x: abs(x[1] - titleind[1]))[0]
+            break
+
+    if not date and soft_dates:
+        for sd in soft_dates:
+            date = sd
+            break
+
+    all_dates = [hardest_dates, fuzzy_hardest_dates, not_hardest_dates, non_fuzzy_any, fuzzy_any]
+
+    if date_node_index is not None:
+        # It goes wrong when some year is mentioned in the title, then it removes title
+        # print('removing date content', node.text) ...... is dit nog gerecent?
+        date_node_indices = [[y[1] for y in x if y[0] == date] for x in all_dates]
+        date_node_indices = [item for sub in date_node_indices for item in sub]
+        for num, node in enumerate(tree.iter()):
+            if num in date_node_indices:
+                # maybe i now remove too little
+                if node.text and len(node.text) < 25:
+                    node.text = ''
+                    node.tail = ''
+    return date
