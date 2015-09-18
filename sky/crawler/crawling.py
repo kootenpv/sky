@@ -180,9 +180,10 @@ class Crawler:
         self.done.append(fetch_statistic)
 
     @asyncio.coroutine
-    def save_response(self, html_code, url, headers):
+    def save_response(self, html_code, url, headers, crawl_date):
         with open(os.path.join(self.file_storage_place, slugify(url)), 'w') as f:
-            json.dump({'url': url, 'html': html_code, 'headers': headers}, f)
+            json.dump({'url': url, 'html': html_code,
+                       'headers': headers, 'crawl_date': crawl_date}, f)
 
     def should_crawl(self, url):
         if all([not re.search(x, url) for x in self.crawl_filter_regexps]):
@@ -220,9 +221,11 @@ class Crawler:
             if content_type in ('text/html', 'application/xml'):
                 text = yield from response.text()
 
+                crawl_date = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(time.time()))
                 current_url = response.url
                 if self.should_save(current_url):
-                    _ = yield from self.save_response(text, response.url, dict(response.headers))
+                    _ = yield from self.save_response(text, response.url, dict(response.headers),
+                                                      crawl_date)
                     # fck = yield from response.text(encoding="cp1252")
                     self.num_saved_responses += 1
                     LOGGER.info('results: %r, CONVERTED url %r, ',
@@ -245,7 +248,7 @@ class Crawler:
                             self.q.qsize(), num_allowed_urls, current_url)
 
                 if self.cache is not None:
-                    print('caching url', response.url)
+                    LOGGER.info('caching url %r', response.url)
                     cache_resp = {}
                     cache_resp['content'] = text
                     cache_resp['url'] = str(response.url)
@@ -253,6 +256,7 @@ class Crawler:
                     cache_resp['status'] = response.status
                     cache_resp['content_type'] = content_type
                     cache_resp['encoding'] = content_type
+                    cache_resp['crawl_date'] = crawl_date
                     self.cache[slugify(response.url)] = cache_resp
 
         stat = FetchStatistic(
@@ -281,15 +285,16 @@ class Crawler:
         # Using max_workers since they are not being quit
         if self.num_saved_responses >= self.max_saved_responses:
             return
-        if self.cache is not None and slugify(url) in self.cache:
-            LOGGER.info('%r from cache')
+        if (self.cache is not None and slugify(url) in self.cache and
+                (not self.cache.only_save_index_pages or self.should_save(url))):
+            LOGGER.info('%r from cache', url)
             links = set()
             num_allowed_urls = 0
             response = yield from self.get_from_cache(slugify(url))
             current_url = response['url']
             if self.should_save(response['url']):
                 _ = yield from self.save_response(response['content'], response['url'],
-                                                  response['headers'])
+                                                  response['headers'], response['crawl_date'])
 
                 # fck = yield from response.text(encoding="cp1252")
                 self.num_saved_responses += 1
@@ -473,7 +478,7 @@ class NewsCrawler(Crawler):
         self.templates_done = 0
 
     @asyncio.coroutine
-    def save_response(self, html_code, url, headers):
+    def save_response(self, html_code, url, headers, crawl_date):
         # fucking mess
         try:
             # just let the indexer save the files as normal and also create a Template
@@ -484,11 +489,9 @@ class NewsCrawler(Crawler):
                 self.scraper.domain_nodes_dict.add_template_elements(tree)
                 self.scraper.url_to_headers_mapping[url] = headers
             self.data[url] = self.scraper.process(url, tree, False, ['cleaned'])
-            if 'date' in headers:
-                date = headers['date']
-            else:
-                date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-            self.data[url]['crawl_date'] = date
+            self.data[url]['crawl_date'] = crawl_date
+            scrape_date = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(time.time()))
+            self.data[url]['scrape_date'] = scrape_date
         except Exception as e:
             LOGGER.error("CRITICAL ERROR IN SCRAPER for url %r: %r, stack %r",
                          url, str(e), traceback.format_exc())

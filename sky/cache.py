@@ -6,8 +6,10 @@ from sky.helper import slugify
 
 class BareCache():
 
-    def __init__(self, storage_object=None, load_on_init=True, flush_cache=False):
+    def __init__(self, storage_object=None, load_on_init=True, flush_cache=False,
+                 only_save_index_pages=True):
         self.project_name = None
+        self.only_save_index_pages = only_save_index_pages
         self.plugin_name = None
         self.load_on_init = load_on_init
         self.flush_cache = flush_cache
@@ -104,3 +106,54 @@ class FileCache(BareCache):
 
     def __contains__(self, key):
         return key in self.dict
+
+
+# class CloudantCache(BareCache):
+
+#     def init_cache_storage(self):
+
+#         self.server = {'cache': self.storage_object.database(self.project_name + '-crawler-cache')}
+
+#         if self.flush_cache:
+#             self.delete_cache()
+
+#         # create db if it doesn't exist
+#         self.server['cache'].put()
+
+#     def load_index(self):
+#         cache_data = {}
+#         for fn in os.listdir(self.server['cache']):
+#             slugged_plugin = slugify(self.plugin_name)
+#             for fn in os.listdir(self.server['cache']):
+#                 if slugged_plugin in fn:
+#                     cache_data[fn] = False
+#         self.dict = cache_data
+
+#     def load_all(self):
+#         for fn in self.dict:
+#             self.load_page_from_cache(fn)
+
+#     def load_page_from_cache(self, fn):
+#         full_path = os.path.join(self.server['cache'], fn)
+#         if not os.path.isfile(full_path):
+#             return False
+
+#         with open(full_path) as f:
+#             response_data = json.load(f)
+#         return response_data
+
+#     def delete_cache(self):
+#         shutil.rmtree(self.server['cache'])
+
+#     def __getitem__(self, x):
+#         if not self.dict[x]:
+#             self.dict[x] = self.load_page_from_cache(x)
+#         return self.dict[x]
+
+#     def __setitem__(self, key, item):
+#         with open(os.path.join(self.server['cache'], key), 'w') as f:
+#             json.dump(item, f)
+#         self.dict[key] = item
+
+#     def __contains__(self, key):
+#         return key in self.dict
