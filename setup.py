@@ -11,7 +11,7 @@ setup(name='sky',
       url='https://github.com/kootenpv/sky',
       author='Pascal van Kooten',
       author_email='kootenpv@gmail.com',
-      license='MIT',
+      license='BSD',
       packages=['sky', 'sky/crawler', 'sky/view'],
       package_data={
           # If any package contains *.txt or *.rst files, include them:
