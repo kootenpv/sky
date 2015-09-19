@@ -70,7 +70,7 @@ class CrawlPlugin:
     def save_bulk_data(self, data):
         pass
 
-    def run(self):
+    def run(self, delete_existing_documents=False):
         # get default plugin
         self.crawl_config = self.get_default_plugin()
         self.start_crawl()
@@ -155,6 +155,9 @@ class CrawlCloudantPlugin(CrawlPlugin):
         return [x['doc'] for x in self.dbs['documents'].all_docs().get(params).result().json()['rows']
                 if 'url' in x['doc'] and self.plugin_name in x['doc']['url']]
 
+    def delete_existing_documents(self):
+        raise NotImplementedError('delete_existing_documents not yet implemented')
+
     def get_seen_urls(self):
         # params = '?query={}'.format(self.plugin_name) # werkt niet
         params = ''
@@ -226,6 +229,10 @@ class CrawlZODBPlugin(CrawlPlugin):
     def get_documents(self, maximum_number_of_documents=1000000):
         return self.server['documents']
 
+    def delete_existing_documents(self):
+        self.server['documents'] = OOBTree()
+        transaction.commit()
+
     def get_seen_urls(self):
         return set([self.server['documents'][s]['url'] for s in self.server['documents']
                     if self.plugin_name in self.server['documents'][s]['url']])
@@ -250,7 +257,10 @@ class CrawlPluginNews(CrawlPlugin):
     def get_seen_urls(self):
         raise NotImplementedError('seen_urls required')
 
-    def run(self):
+    def delete_existing_documents(self):
+        raise NotImplementedError('delete_existing_documents required')
+
+    def run(self, delete_existing_documents=False):
         # get default plugin
         print("getting crawl plugin info")
         self.crawl_config = self.get_default_plugin()
@@ -258,10 +268,15 @@ class CrawlPluginNews(CrawlPlugin):
         # apply this specific plugin
         self.crawl_config.update(self.get_specific_plugin())
 
+        # delete existing documents
+        if delete_existing_documents:
+            print("deleting documents before crawling")
+            self.delete_existing_documents()
+            seen_urls = []
         # add the already visited urls to the config
-        print("getting seen urls")
-        seen_urls = self.get_seen_urls()
-
+        else:
+            print("getting seen urls")
+            seen_urls = self.get_seen_urls()
         self.crawl_config['seen_urls'] = seen_urls
 
         print("getting template dict")

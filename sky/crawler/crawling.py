@@ -248,16 +248,17 @@ class Crawler:
                             self.q.qsize(), num_allowed_urls, current_url)
 
                 if self.cache is not None:
-                    LOGGER.info('caching url %r', response.url)
-                    cache_resp = {}
-                    cache_resp['content'] = text
-                    cache_resp['url'] = str(response.url)
-                    cache_resp['headers'] = dict(response.headers)
-                    cache_resp['status'] = response.status
-                    cache_resp['content_type'] = content_type
-                    cache_resp['encoding'] = content_type
-                    cache_resp['crawl_date'] = crawl_date
-                    self.cache[slugify(response.url)] = cache_resp
+                    if not self.cache.only_save_index_pages or self.should_save(current_url):
+                        LOGGER.info('caching url %r', response.url)
+                        cache_resp = {}
+                        cache_resp['content'] = text
+                        cache_resp['url'] = str(response.url)
+                        cache_resp['headers'] = dict(response.headers)
+                        cache_resp['status'] = response.status
+                        cache_resp['content_type'] = content_type
+                        cache_resp['encoding'] = content_type
+                        cache_resp['crawl_date'] = crawl_date
+                        self.cache[slugify(response.url)] = cache_resp
 
         stat = FetchStatistic(
             url=response.url,

@@ -26,9 +26,11 @@ class BareCache():
 
         self.init_cache_storage()
 
+        print("loading cache index")
         self.load_index()
 
         if not self.flush_cache and self.load_on_init:
+            print("loading whole cache")
             self.load_all()
 
     def delete_cache(self):

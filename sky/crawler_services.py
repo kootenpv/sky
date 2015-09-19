@@ -45,13 +45,13 @@ class CrawlService():
     def get_crawl_plugin(self, plugin_name):
         return self.crawl_plugin_class(self.project_name, self.server, plugin_name, self.cache)
 
-    def run(self, plugin_name):
+    def run(self, plugin_name, delete_existing_documents=False):
         cplug = self.get_crawl_plugin(plugin_name)
-        cplug.run()
+        cplug.run(delete_existing_documents)
 
-    def run_all(self):
+    def run_all(self, delete_existing_documents=False):
         for plugin in self.plugin_configs:
-            self.run(plugin)
+            self.run(plugin, delete_existing_documents)
 
 
 class CrawlFileService(CrawlService):
@@ -86,10 +86,14 @@ class CrawlCloudantService(CrawlService):
     def delete_doc_id(self, doc_id):
         doc = self.server[self.project_name + '-crawler-documents'].document(doc_id)
         rev = doc.get().result().json()['_rev']
-        doc.delete(rev)
+        return doc.delete(rev)
+
+    def delete_doc(self, doc_id, doc_rev):
+        doc = self.server[self.project_name + '-crawler-documents'].document(doc_id)
+        return doc.delete(doc_rev)
 
     def delete_doc_url(self, url=None):
-        self.delete_doc_id(slugify(url))
+        return self.delete_doc_id(slugify(url))
 
     def get_server(self):
         account = self.storage_object

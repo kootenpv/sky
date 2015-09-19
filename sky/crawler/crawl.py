@@ -64,7 +64,7 @@ def start(config, crawler_class=Crawler, save_data_result_fn=None, save_bulk_dat
         sys.stderr.flush()
         print('\nInterrupted\n')
     except Exception as e:
-        LOGGER.error('CRITICAL ERROR main loop exception: %r', e)
+        print('CRITICAL ERROR main loop exception: %r', e)
     finally:
         result = crawler.finish_leftovers()
         report(crawler)
