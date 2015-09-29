@@ -16,6 +16,7 @@ class BareCache():
         self.server = None
         self.storage_object = storage_object
         self.dict = {}
+        self.prefix = None
 
     def init_cache_storage(self):
         raise NotImplementedError('init_cache_storage is not implemented for Cache')
@@ -63,7 +64,10 @@ class FileCache(BareCache):
     def init_cache_storage(self):
         root = self.storage_object['path']
 
-        self.server = {'cache': os.path.join(root, self.project_name + '-crawler-cache')}
+        self.prefix = slugify(self.plugin_name)
+
+        self.server = {'cache':
+                       os.path.join(root, self.project_name + '-crawler-cache', self.prefix)}
 
         if self.flush_cache:
             self.delete_cache()
@@ -74,10 +78,8 @@ class FileCache(BareCache):
     def load_index(self):
         cache_data = {}
         for fn in os.listdir(self.server['cache']):
-            slugged_plugin = slugify(self.plugin_name)
-            for fn in os.listdir(self.server['cache']):
-                if slugged_plugin in fn:
-                    cache_data[fn] = False
+            for fn in os.listdir(os.path.join(self.server['cache'])):
+                cache_data[fn] = False
         self.dict = cache_data
 
     def load_all(self):

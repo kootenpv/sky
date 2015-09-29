@@ -1,12 +1,13 @@
 import re
 
-locale_US = {'symbol': r'\$',
-             'currency': r'dollar[s]*',
-             'units': [('million', 10**6),  ('m', 10**6), ('mn', 10**6), ('mil', 10**6),
-                       ('thousand', 10**3), ('k', 10**3),
-                       ('billion', 10**9), ('b', 10**9), ('bn', 10**9),
-                       ('cent', 0.01),
-                       ('\\b', 1), ('', 1)]}
+locale_US = {
+    'symbol': r'\$',
+    'currency': r'dollar[s]*',
+    'units': [('million', 10**6),  ('m', 10**6), ('mn', 10**6), ('mil', 10**6),
+              ('thousand', 10**3), ('k', 10**3),
+              ('billion', 10**9), ('b', 10**9), ('bn', 10**9),
+              ('cent', 0.01),
+              ('\\b', 1), ('', 1)]}
 
 
 class MoneyMatcher():

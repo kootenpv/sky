@@ -25,8 +25,9 @@
   </div>
 
   <div>
-  <button style="margin-left:20px" type="button" class="btn btn-info" onclick="toggle_src({{num_item}}, '{{item['url']}}')">Expand iframe</button>
+  <button style="margin-left:20px" type="button" class="btn btn-info" onclick="toggle_src({{num_item}}, '{{item['url']}}')">Show iframes</button>
   <button style="margin-left:20px" type="button" class="btn btn-info" onclick="toggle_body({{num_item}})">Expand content</button>
+  <button style="margin-left:20px" type="button" class="btn btn-info" onclick="toggle_json({{num_item}})">Show JSON</button>
   </div>
 
   <div style="float:right; margin-right: 30px">
@@ -35,7 +36,9 @@
       {% end %}
   </div>
 
-
+  <div class="card-body closed" id="json-body-{{num_item}}" style="display: none; height: auto;" >
+      <p><code style="word-break: normal; word-wrap: normal; white-space: pre;">{{ json.dumps({k: v for k,v in item.items() if k != 'cleaned'}, indent=4) }}</code></p>
+  </div>
 
   <iframe width="50%" height="800px" style="float:left; box-sizing:border-box; display: none" id="pre_iframe_{{num_item}}" class="closed"> </iframe>
   <iframe width="50%" height="800px" style="float:left; box-sizing:border-box; display: none" id="post_iframe_{{num_item}}" class="open" srcdoc="{{item['cleaned']}}"> </iframe>

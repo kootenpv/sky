@@ -11,7 +11,7 @@ function toggle_src(element_id, pre_src) {
         pre.className = "open"
         post.className = "open"
         pre.src = pre_src;
-        pre.style.display = 'inherit'; 
+        pre.style.display = 'inherit';
         post.style.display = 'inherit';
     }
 }
@@ -19,10 +19,22 @@ function toggle_src(element_id, pre_src) {
 function toggle_body(element_id) {
     body = document.getElementById('card-body-' + element_id);
     console.log(body.style);
-    if (body.style.height == '60px' | !body.style.height) { 
+    if (body.style.height == '60px' | !body.style.height) {
         body.style.height = '200px';
     } else {
         body.style.height = '60px';
     }
-    
+
+}
+
+function toggle_json(element_id) {
+    jsonbody = document.getElementById('json-body-' + element_id);
+    console.log(jsonbody);
+    if (jsonbody.className == "card-body open") {
+        jsonbody.className = "card-body closed"
+        jsonbody.style.display = 'none';
+    } else {
+        jsonbody.className = "card-body open"
+        jsonbody.style.display = 'inherit';
+    }
 }

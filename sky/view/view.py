@@ -14,6 +14,7 @@ from sky.configs import DEFAULT_CRAWL_CONFIG
 from sky.helper import extractDomain
 from sky.scraper import Scraper
 
+import json
 # from textblob import TextBlob
 
 
@@ -33,7 +34,7 @@ class MainHandler(tornado.web.RequestHandler):
     def post(self):
         CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG
         CRAWL_CONFIG.update({
-            'collections_path': os.path.join(os.path.expanduser('~'), 'sky_collections/'),
+            'collections_path': os.path.join(os.path.expanduser('~'), 'sky_view_collections/'),
             # 'max_workers': 10,
         })
         args = self.request.arguments

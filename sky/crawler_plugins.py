@@ -1,3 +1,6 @@
+# grote issue: crawler_plugin save_config does not remove old values
+
+
 # ccp.dbs['documents'].document(x['_id']).delete(x['_rev'])
 
 
@@ -156,7 +159,8 @@ class CrawlCloudantPlugin(CrawlPlugin):
                 if 'url' in x['doc'] and self.plugin_name in x['doc']['url']]
 
     def delete_existing_documents(self):
-        raise NotImplementedError('delete_existing_documents not yet implemented')
+        return [self.dbs['documents'].document(x['_id']).delete(x['_rev'])
+                for x in self.get_documents()]
 
     def get_seen_urls(self):
         # params = '?query={}'.format(self.plugin_name) # werkt niet
@@ -170,10 +174,10 @@ class CrawlCloudantPlugin(CrawlPlugin):
 
     def save_config(self, config):
         doc = self.dbs['plugins'].get(self.plugin_name).result().json()
-        if 'error' in doc:
-            doc = {}
-        doc.update(config)
-        self.dbs['plugins'][self.plugin_name] = doc
+        if 'error' not in doc:
+            config['_id'] = doc['_id']
+            config['_rev'] = doc['_rev']
+        self.dbs['plugins'][self.plugin_name] = config
 
 
 class CrawlElasticSearchPlugin(CrawlPlugin):
