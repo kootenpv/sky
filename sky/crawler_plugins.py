@@ -14,10 +14,12 @@
 
 import json
 import os
+
 from sky.scraper import Scraper
 from sky.crawler import crawl
 from sky.crawler.crawling import NewsCrawler
 from sky.helper import slugify
+from sky.helper import chunker
 
 import requests
 
@@ -149,7 +151,11 @@ class CrawlCloudantPlugin(CrawlPlugin):
     def save_bulk_data(self, data):
         for url_id in data:
             data[url_id]['_id'] = slugify(url_id)
-        return self.dbs['documents'].bulk_docs(*list(data.values())).result()
+        # save bulk per max 10k per time
+        for chunk in chunker(data.values(), 10000):
+            if not chunk:
+                return
+            self.dbs['documents'].bulk_docs(*[x for x in chunk if x is not None]).result()
 
     def get_documents(self, maximum_number_of_documents=1000000):
         # now just to add the host thing ??????????????

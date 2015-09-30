@@ -4,6 +4,7 @@ from bs4 import UnicodeDammit
 import tldextract
 import re
 import requests
+from itertools import zip_longest
 
 from lxml.html.clean import Cleaner
 
@@ -217,3 +218,7 @@ def get_last_text_non_a_node(tree):
                     if n == node:
                         return num
     return False
+
+
+def chunker(iterable, chunksize):
+    return zip_longest(*[iter(iterable)] * chunksize)
