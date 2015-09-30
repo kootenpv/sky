@@ -25,6 +25,10 @@ DEFAULT_CRAWL_CONFIG = {
 
     ],
 
+    'bad_xpaths': [
+
+    ],
+
     'max_redirects_per_url': 10,
 
     'max_tries_per_url': 3,

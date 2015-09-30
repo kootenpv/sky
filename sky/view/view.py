@@ -32,7 +32,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.render('page_template.html', items=[], cached=False)
 
     def post(self):
-        CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG
+        CRAWL_CONFIG = DEFAULT_CRAWL_CONFIG.copy()
         CRAWL_CONFIG.update({
             'collections_path': os.path.join(os.path.expanduser('~'), 'sky_view_collections/'),
             # 'max_workers': 10,
@@ -44,9 +44,9 @@ class MainHandler(tornado.web.RequestHandler):
             if value and arg != 'url' and arg != 'checkboxcache':
                 print('pre', arg, CRAWL_CONFIG[arg])
                 if isinstance(CRAWL_CONFIG[arg], list):
-                    CRAWL_CONFIG[arg] = [int(value)] if is_numeric(value) else [value]
+                    CRAWL_CONFIG[arg] = [int(value)] if is_numeric(value) else value.split(', ')
                 else:
-                    CRAWL_CONFIG[arg] = int(value) if is_numeric(value) else value
+                    CRAWL_CONFIG[arg] = int(value) if is_numeric(value) else value.split(', ')[0]
                 print('post', arg, CRAWL_CONFIG[arg])
 
         url = self.get_argument('url', '')
@@ -71,7 +71,7 @@ class MainHandler(tornado.web.RequestHandler):
 
         SCRAPE_CONFIG.update({
             'template_proportion': 0.4,
-            'max_templates': 100
+            'max_templates': 100,
         })
 
         skindex = Scraper(SCRAPE_CONFIG)
