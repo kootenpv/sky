@@ -65,7 +65,8 @@ def date_translation(txt, lang):
 
 def get_text_date(v, fuzzy=False):
     try:
-        for vv in v.split('|'):
+        for vv in v.replace('\xa0', ' ').split('|'):
+            print(vv)
             d = patched_dateutil_parse(vv, fuzzy)
             return d
     except (ValueError, OverflowError, TypeError, AttributeError):
@@ -175,8 +176,9 @@ def get_dates(tree, titleind=(None, 1), lang='en'):
         date_node_indices = [item for sub in date_node_indices for item in sub]
         for num, node in enumerate(tree.iter()):
             if num in date_node_indices:
-                # maybe i now remove too little
-                if node.text and len(node.text) < 25:
+                # maybe i now remove too littlet
+                tt = get_text_and_tail(node)
+                if tt and len(tt) < 25 or '|' in tt and len(tt) < 50:
                     node.text = ''
                     node.tail = ''
     return date
