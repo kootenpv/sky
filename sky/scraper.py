@@ -118,7 +118,6 @@ class Scraper:
 
     def process(self, url, tree, remove_visuals, exclude_data):
         self.remove_bad_xpaths_from_tree(tree)
-
         if self.detected_language is None:
             self.detected_language = get_language(
                 tree, self.url_to_headers_mapping[url], self.domain)
@@ -274,6 +273,11 @@ class Scraper:
                 'money': money_amounts,
                 'summary': '',
                 'related': get_sorted_links(links, url)[:5]}
+
+        if 'overwrite_values_by_xpath' in self.config:
+            for k, v in self.config['overwrite_values_by_xpath'].items():
+                new = tree.xpath(v)
+                data[k] = new[0] if isinstance(new, list) else new
 
         filtered_data = {k: v for k, v in data.items() if k not in exclude_data}
 

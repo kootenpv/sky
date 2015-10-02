@@ -29,6 +29,11 @@ DEFAULT_CRAWL_CONFIG = {
 
     ],
 
+    'overwrite_values_by_xpath': {
+        # e.g. 'source_name': '"bla"'
+        # e.g. 'publish_date': "substring(//time/@datetime, 1, 10)"
+    }
+
     'max_redirects_per_url': 10,
 
     'max_tries_per_url': 3,

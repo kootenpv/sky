@@ -1,3 +1,26 @@
+# issues
+
+# [{'author': 'Charles Gross',
+#   'related': ['http://www.benzinga.com/news/13/11/4070083/heartland-express-acquires-gordon-trucking-for-approximately-300m',
+#    'http://www.benzinga.com/news/13/11/4071005/allot-receives-3m-initial-phase-order-from-tier-one-apac-operator-for-service-gat',
+#    'http://www.benzinga.com/news/15/09/5868511/update-valeant-chair-ceo-pearson-issues-letter-to-employees-brings-up-recent-decl',
+#    'http://www.benzinga.com/news/15/09/5875765/us-stock-futures-jump-adp-report-in-focus',
+#    'http://www.benzinga.com/news/15/09/5875748/positive-data-presented-on-pieris-pharmaceuticals-inhaled-asthma-program-at-ers-a'],
+#   'url': 'http://www.benzinga.com/news/13/11/4070252/marriott-to-replace-rangold-resources-in-nasdaq-100-index-beginning-november-18-2',
+#   'images': [],
+#   '_rev': '1-f0d089dd66503c5b1a4350f6a01968ca',
+#   'body': ['Marriott International (NASDAQ: MAR) will become a component of the NASDAQ-100 Index and the NASDAQ-100 Equal Weighted Index prior to market open on Monday, November 18, 2013. Marriott International will replace Rangold Resources Limited (NASDAQ: GOLD).',
+#    'Marriott International is headquartered in Bethesda, Maryland, and has a market capitalization of approximately $14.6 billion. For more information about the company, go to www.marriott.com.'],
+#   'summary': '',
+#   'scrape_date': '2015-09-30T12:10:07',
+#   '_id': 'httpwwwbenzingacomnews13114070252marriott-to-replace-rangold-resources-in-nasdaq-100-index-beginning-november-18-2',
+#   'crawl_date': '2015-09-30T12:10:07',
+#   'language': 'en',
+#   'title': 'Marriott to Replace Rangold Resources in NASDAQ-100 Index Beginning November 18, 2013',
+#   'publish_date': '0100-11-18',
+#   'money': [['$14.6 billion', 14600000000.0, 366, 379]],
+#   'domain': 'http://www.benzinga.com'}]
+
 import re
 import json
 import dateutil.parser
@@ -42,8 +65,9 @@ def date_translation(txt, lang):
 
 def get_text_date(v, fuzzy=False):
     try:
-        d = patched_dateutil_parse(v, fuzzy)
-        return d
+        for vv in v.split('|'):
+            d = patched_dateutil_parse(vv, fuzzy)
+            return d
     except (ValueError, OverflowError, TypeError, AttributeError):
         return False
 
@@ -156,3 +180,7 @@ def get_dates(tree, titleind=(None, 1), lang='en'):
                     node.text = ''
                     node.tail = ''
     return date
+
+
+# testcases:
+# 'http://finextra.com/news/fullstory.aspx?newsitemid=5235'
