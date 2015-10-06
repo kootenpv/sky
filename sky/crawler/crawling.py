@@ -1,3 +1,5 @@
+# duplicate because of with and without www
+
 import io
 """A simple web crawler -- class implementing crawling logic."""
 import traceback

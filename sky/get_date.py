@@ -66,7 +66,6 @@ def date_translation(txt, lang):
 def get_text_date(v, fuzzy=False):
     try:
         for vv in v.replace('\xa0', ' ').split('|'):
-            print(vv)
             d = patched_dateutil_parse(vv, fuzzy)
             return d
     except (ValueError, OverflowError, TypeError, AttributeError):
