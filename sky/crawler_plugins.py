@@ -112,13 +112,13 @@ class CrawlFilePlugin(CrawlPlugin):
 
     def get_documents(self, maximum_number_of_documents=1000000):
         slugged_url = slugify(self.plugin_name)
-        results = []
+        results = {}
         for num, fn in enumerate(os.listdir(self.server['documents'])):
             if num == maximum_number_of_documents:
                 break
             if slugged_url in fn:
                 with open(os.path.join(self.server['documents'], fn)) as f:
-                    results.append(json.load(f))
+                    results[slugged_url] = json.load(f)
         return results
 
     def get_seen_urls(self):
@@ -161,8 +161,9 @@ class CrawlCloudantPlugin(CrawlPlugin):
         # now just to add the host thing ??????????????
         query = 'query={}'.format(self.plugin_name)
         params = '?include_docs=true&limit={}&{}'.format(maximum_number_of_documents, query)
-        return [x['doc'] for x in self.dbs['documents'].all_docs().get(params).result().json()['rows']
-                if 'url' in x['doc'] and self.plugin_name in x['doc']['url']]
+        return {x['doc']['_id']: x['doc'] for x in
+                self.dbs['documents'].all_docs().get(params).result().json()['rows']
+                if 'url' in x['doc'] and self.plugin_name in x['doc']['url']}
 
     def delete_existing_documents(self):
         return [self.dbs['documents'].document(x['_id']).delete(x['_rev'])

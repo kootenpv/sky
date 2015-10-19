@@ -30,7 +30,7 @@ except ImportError:
 from asyncio import PriorityQueue
 
 
-class JoinablePriorityQueue(Queue, PriorityQueue):
+class JoinablePriorityQueue(PriorityQueue, Queue):
     pass
 
 LOGGER = logging.getLogger(__name__)

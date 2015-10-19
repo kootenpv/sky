@@ -180,6 +180,15 @@ def get_dates(tree, titleind=(None, 1), lang='en'):
                 if tt and len(tt) < 25 or '|' in tt and len(tt) < 50:
                     node.text = ''
                     node.tail = ''
+    # fd.nl
+    if not date:
+        if tree.xpath('//time[contains(text(), "Vandaag")]'):
+            now = datetime.datetime.now()
+            date = now.strftime('%Y-%m-%d')
+        elif tree.xpath('//time[contains(text(), "Gisteren")]'):
+            yesterday = now - datetime.timedelta(1)
+            date = yesterday.strftime('%Y-%m-%d')
+
     return date
 
 
