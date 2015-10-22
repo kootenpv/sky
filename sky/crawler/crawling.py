@@ -22,15 +22,15 @@ from sky.helper import makeTree
 
 try:
     # Python 3.4.
-    from asyncio import JoinableQueue as Queue
+    from asyncio import JoinableQueue as QueueClass1
+    from asyncio import PriorityQueue as QueueClass2
 except ImportError:
     # Python 3.5.
-    from asyncio import Queue
+    from asyncio import PriorityQueue as QueueClass1
+    from asyncio import Queue as QueueClass2
 
-from asyncio import PriorityQueue
 
-
-class JoinablePriorityQueue(PriorityQueue, Queue):
+class JoinablePriorityQueue(QueueClass1, QueueClass2):
     pass
 
 LOGGER = logging.getLogger(__name__)

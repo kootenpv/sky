@@ -166,8 +166,10 @@ class CrawlCloudantPlugin(CrawlPlugin):
                 if 'url' in x['doc'] and self.plugin_name in x['doc']['url']}
 
     def delete_existing_documents(self):
-        return [self.dbs['documents'].document(x['_id']).delete(x['_rev'])
-                for x in self.get_documents()]
+        docs = self.get_documents()
+        for x in docs:
+            docs[x]['_deleted'] = True
+        self.dbs['documents'].bulk_docs(*[docs[x] for x in docs]).result()
 
     def get_seen_urls(self):
         # params = '?query={}'.format(self.plugin_name) # werkt niet
