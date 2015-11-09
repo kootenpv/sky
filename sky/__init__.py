@@ -1,2 +1,2 @@
 __project__ = 'sky'
-__version__ = "0.0.191"
+__version__ = "0.0.192"

@@ -48,7 +48,7 @@ class NoDefaultDate(object):
 
 
 def patched_dateutil_parse(v, fuzzy):
-    _actual = dateutil.parser.parse(v, default=NoDefaultDate(), fuzzy=fuzzy)
+    _actual = dateutil.parser.parse(v, default=NoDefaultDate(), fuzzy=fuzzy, dayfirst=True)
     if _actual is not None:
         # pylint: disable=E1101
         return _actual.date()
