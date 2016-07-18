@@ -10,7 +10,7 @@ def get_args_parser():
     subparsers = p.add_subparsers(dest="command")
     view_parser = subparsers.add_parser('view')
     view_parser.add_argument('-port', '-p', type=int, default=7900)
-    view_parser.add_argument('-host', default="localhost")
+    view_parser.add_argument('-host', default="127.0.0.1")
     return p
 
 
