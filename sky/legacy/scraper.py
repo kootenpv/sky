@@ -91,12 +91,12 @@ def buildNewSolution(tr):
 
     
 
-tr1 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
-# tr2 = Training("nieuwsdumper-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
-tr3 = Training("nieuwsdumper-testcase2", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
-# tr4 = Training("bouwmaterieel-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
-# tr5 = Training('betterdoctor-doctor-referalls', '/Users/pascal/GDrive/sky_package/sky/tests/').load()
-tr6 = Training("pypi-author", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+tr1 = Training("marktplaats-testcase1", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
+# tr2 = Training("nieuwsdumper-testcase1", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
+tr3 = Training("nieuwsdumper-testcase2", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
+# tr4 = Training("bouwmaterieel-testcase1", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
+# tr5 = Training('betterdoctor-doctor-referalls', '/Users/pascal/egoroot/sky_package/sky/tests/').load()
+tr6 = Training("pypi-author", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
 
 # Moet wel text_content zijn, anders ga je dingen mislopen!!!!!!!!!!!!!
 # plottwist misschien gewoon 2 methoden

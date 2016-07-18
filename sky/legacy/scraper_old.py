@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/pascal/GDrive/sky_package/sky/")
+sys.path.append("/Users/pascal/egoroot/sky_package/sky/")
 from utils import *
 from training import *
 from findLeaf import *
@@ -174,22 +174,22 @@ def buildNewSolution(tr):
 
     
 
-# tr1 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+# tr1 = Training("marktplaats-testcase1", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
 
-# tr2 = Training("nieuwsdumper-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+# tr2 = Training("nieuwsdumper-testcase1", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
 
-# tr3 = Training("nieuwsdumper-testcase2", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+# tr3 = Training("nieuwsdumper-testcase2", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
 
-# tr4 = Training("bouwmaterieel-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+# tr4 = Training("bouwmaterieel-testcase1", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
 
-# tr5 = Training("marktplaats-testcase2", "/Users/pascal/GDrive/sky/sky/tests/")
+# tr5 = Training("marktplaats-testcase2", "/Users/pascal/egoroot/sky/sky/tests/")
 
 # tr5.addLinks(["http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-samsung/m861980349-hdc-galaxy-s5-nieuw-in-doos.html?c=a2384ef0ece270f44503df9f8598c624&previousPage=lr",
 #               "http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-samsung/m862001039-samsung-galaxy-s3-neo.html?c=a2384ef0ece270f44503df9f8598c624&previousPage=lr", "http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-toebehoren-en-onderdelen/m862001036-iphone-3-4-4s-usb-oplaad-snoer.html?c=a2384ef0ece270f44503df9f8598c624&previousPage=lr"])
 
 # tr5.viewAll()
 
-# tr6 = Training("pypi-author", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+# tr6 = Training("pypi-author", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
 
 
 # links = ["http://www.forbes.com/sites/rogerkay/2014/11/10/sparkcognition-meets-ibms-watson-starts-conversation/"]
@@ -225,7 +225,7 @@ def buildNewSolution(tr):
 
 
 
-tr1 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/sky_package/sky/tests/").load()
+tr1 = Training("marktplaats-testcase1", "/Users/pascal/egoroot/sky_package/sky/tests/").load()
 
 
 from collections import Counter        
@@ -275,5 +275,5 @@ no_comments=[element for element in tree if not isinstance(element, HtmlComment)
 
 
 
-tr = Training('betterdoctor-doctor-referalls', '/Users/pascal/GDrive/sky_package/sky/tests/').load()
+tr = Training('betterdoctor-doctor-referalls', '/Users/pascal/egoroot/sky_package/sky/tests/').load()
 

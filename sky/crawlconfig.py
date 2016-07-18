@@ -9,7 +9,7 @@ CRAWL_CONFIG.update({
         'http://www.techcrunch.com/'
     ],
 
-    'collections_path': '/Users/pascal/GDrive/sky_collections',
+    'collections_path': '/Users/pascal/egoroot/sky_collections',
 
     'collection_name': 'techie',
 

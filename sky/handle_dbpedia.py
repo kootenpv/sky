@@ -58,7 +58,7 @@ with open(fname, 'w') as f:
 # import transaction
 # from BTrees.OOBTree import OOBTree
         
-# storage = FileStorage('/Users/pascal/GDrive/appear/Data.fs')
+# storage = FileStorage('/Users/pascal/egoroot/appear/Data.fs')
 # db = DB(storage)
 # connection = db.open()
 # root = connection.root()

@@ -107,7 +107,7 @@ settings = {
 }
 
 
-def main(host='localhost', port=7900):
+def main(host='127.0.0.1', port=7900):
     # to run the server, type-in $ python view.py
 
     application = tornado.web.Application([

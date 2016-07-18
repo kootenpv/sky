@@ -38,7 +38,7 @@ ps = ["/news", "/shop", "/social", "/read", "/music", "/travel", "/video", "/spo
 
     
 
-# tr = Training('titles', '/Users/pascal/GDrive/virtual-python/sky/sky/theneeds-test/').load()
+# tr = Training('titles', '/Users/pascal/egoroot/virtual-python/sky/sky/theneeds-test/').load()
 # tr.addLinks(links[20:], False, len(tr.targets))
 # tr.classify()
 # tr.save()

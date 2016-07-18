@@ -42,9 +42,9 @@ def getBody(tree, returnBest = True):
     return body['text']
 
 
-# tr = Training("nieuwsdumper-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
-# tr2 = Training("marktplaats-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
-# tr3 = Training("betterdoctor-doctor-referalls", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/").load()
+# tr = Training("nieuwsdumper-testcase1", "/Users/pascal/egoroot/virtual-python/sky/sky/tests/").load()
+# tr2 = Training("marktplaats-testcase1", "/Users/pascal/egoroot/virtual-python/sky/sky/tests/").load()
+# tr3 = Training("betterdoctor-doctor-referalls", "/Users/pascal/egoroot/virtual-python/sky/sky/tests/").load()
 
     
 # train = [tr, tr2, tr3]            

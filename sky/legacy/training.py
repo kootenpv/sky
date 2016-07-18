@@ -100,32 +100,32 @@ class Training():
                 
         return obj        
 
-# tr = Training("marktplaats-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/")
+# tr = Training("marktplaats-testcase1", "/Users/pascal/egoroot/virtual-python/sky/sky/tests/")
 # tr.addLinks(["http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-samsung/a1012265931-samsung-galaxy-s3-mini-16gb.html?c=17f70af2bde4a155c6d568ce3cad9ab7", "http://www.marktplaats.nl/a/telecommunicatie/mobiele-telefoons-apple-iphone/m859429930-apple-iphone-5s.html?c=178bad54c6700be11ff2d898a4d529b1&previousPage=lr"])
 
-# tr = Training("nieuwsdumper-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/")
+# tr = Training("nieuwsdumper-testcase1", "/Users/pascal/egoroot/virtual-python/sky/sky/tests/")
 # links = ["http://www.nieuwsdumper.nl/nieuws/1454/eerste-volvo-fmx-410-8x4-tridem-betonmixer-voor-bck.html", 
 #          "http://www.nieuwsdumper.nl/nieuws/1453/ihi-30vx-verbree-boogzinkers.html",
 #          "http://www.nieuwsdumper.nl/nieuws/1448/volvo-fm-420-8x4-widespread-c-ride-voor-heitink-transport.html"]
 # tr.addLinks(links)
 
-# tr = Training("nieuwsdumper-testcase2", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/")
+# tr = Training("nieuwsdumper-testcase2", "/Users/pascal/egoroot/virtual-python/sky/sky/tests/")
 # links = ["http://www.nieuwsdumper.nl/nieuws/1454/eerste-volvo-fmx-410-8x4-tridem-betonmixer-voor-bck.html", 
 #          "http://www.nieuwsdumper.nl/nieuws/1453/ihi-30vx-verbree-boogzinkers.html",
 #          "http://www.nieuwsdumper.nl/nieuws/1448/volvo-fm-420-8x4-widespread-c-ride-voor-heitink-transport.html"]
 # tr.addLinks(links)
 
-# tr = Training("bouwmaterieel-testcase1", "/Users/pascal/GDrive/virtual-python/sky/sky/tests/")
+# tr = Training("bouwmaterieel-testcase1", "/Users/pascal/egoroot/virtual-python/sky/sky/tests/")
 # links = ["http://www.bouwmaterieel-benelux.nl/matgidsweb/artikelserver/id/4308154815752565759/Franki-Construct-kiest-weer-voor-Sennebogen?site=null&language=nl2&style=bmb", "http://www.bouwmaterieel-benelux.nl/matgidsweb/artikelserver/id/-125635014634651648/Paccar-MX-11-motor-wint-Innovation-Award?site=null&language=nl2&style=bmb"]
 # tr2.addLinks(links)
 # tr2.classify()
 
-# tr6 = Training("pypi-author", "/Users/pascal/GDrive/sky_package/sky/tests/")
+# tr6 = Training("pypi-author", "/Users/pascal/egoroot/sky_package/sky/tests/")
 # tr6.addLinks(["https://pypi.python.org/pypi/sky/", "https://pypi.python.org/pypi/scrapely/"])
 # tr6.classify()
 # tr6.save()
 
-# tr = Training('betterdoctor-doctor-referalls', '/Users/pascal/GDrive/sky_package/sky/tests/')
+# tr = Training('betterdoctor-doctor-referalls', '/Users/pascal/egoroot/sky_package/sky/tests/')
 # tr.addLinks(['https://betterdoctor.com/igor-grosman', 'https://betterdoctor.com/gary-gwertzman'])
 # tr.classify()
 # tr.save()

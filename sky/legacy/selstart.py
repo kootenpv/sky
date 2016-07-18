@@ -125,7 +125,7 @@ while True:
         if current_url in done_urls:
             continue
         done_urls.add(current_url)
-        with open('/Users/pascal/GDrive/selenium_cache/' + current_url, 'w') as f: 
+        with open('/Users/pascal/egoroot/selenium_cache/' + current_url, 'w') as f: 
             f.write(driver.page_source)
         time.sleep(3)    
     except :
