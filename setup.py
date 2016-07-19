@@ -2,7 +2,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '194'
+MICRO_VERSION = '195'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name='sky',
@@ -20,7 +20,7 @@ setup(name='sky',
                        'templates/*.html']
       },
       install_requires=[
-          'distribute', 'lxml', 'tldextract', 'requests', 'justext', 'langdetect',
+          'lxml', 'tldextract', 'requests', 'justext', 'langdetect',
           'python-dateutil', 'beautifulsoup4', 'aiohttp', 'tornado'
       ],
       entry_points={
