@@ -55,7 +55,10 @@ class MainHandler(tornado.web.RequestHandler):
 
         domain = extractDomain(url)
         CRAWL_CONFIG['seed_urls'] = [url]
-        CRAWL_CONFIG['collection_name'] = domain[7:]
+        if domain.startswith("http"):
+            CRAWL_CONFIG['collection_name'] = domain.split("/")[2]
+        else:
+            CRAWL_CONFIG['collection_name'] = domain.split("/")[0]
 
         if use_cache != 'on':
 

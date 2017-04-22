@@ -1,8 +1,9 @@
-from setuptools import setup
+from setuptools import find_packages, setup
+
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '0'
-MICRO_VERSION = '195'
+MICRO_VERSION = '196'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name='sky',
@@ -12,7 +13,7 @@ setup(name='sky',
       author='Pascal van Kooten',
       author_email='kootenpv@gmail.com',
       license='BSD',
-      packages=['sky', 'sky/crawler', 'sky/view'],
+      packages=find_packages(),
       package_data={
           # If any package contains *.txt or *.rst files, include them:
           # '': ['*.txt', '*.rst'],
