@@ -182,8 +182,8 @@ def get_dates(tree, titleind=(None, 1), lang='en'):
                     node.tail = ''
     # fd.nl
     if not date:
+        now = datetime.datetime.now()
         if tree.xpath('//time[contains(text(), "Vandaag")]'):
-            now = datetime.datetime.now()
             date = now.strftime('%Y-%m-%d')
         elif tree.xpath('//time[contains(text(), "Gisteren")]'):
             yesterday = now - datetime.timedelta(1)
