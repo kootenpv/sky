@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/kootenpv/sky/master/resources/skylogo.png" />
 
-sky is a web scraping framework, implemented with the latest python versions in mind (3.4+). It uses the asynchronous `asyncio` framework, as well as many popular modules and extensions.
+sky is a web scraping framework, implemented with the latest python versions in mind (3.5+). It uses the asynchronous `asyncio` framework, as well as many popular modules and extensions.
 
 Most importantly, it aims for **next generation** web crawling where machine intelligence is used to speed up the development/maintainance/reliability of crawling.
 
@@ -39,7 +39,7 @@ Similar data (title, body, publish_date, images etc) will be very easy to use in
 
 These are the features/goals of `sky`. Checkmarks have been accomplished:
 
-- ✓ **Really fast**, due to Python 3.4+ new asyncio/aiohttp libraries, based on [500lines/crawler](https://github.com/aosabook/500lines/tree/master/crawler)
+- ✓ **Really fast**, due to Python 3.5+ new asyncio/aiohttp libraries, based on [500lines/crawler](https://github.com/aosabook/500lines/tree/master/crawler)
 - ✓ **Smart**, due to considering crawling of *websites* instead of single *pages*
 - ✓ **Boilerplate FREE**, removes crappy content (images, text, etc) that does not belong on pages
 - ✓ **Nice API**, carefully crafted, easily extendible
