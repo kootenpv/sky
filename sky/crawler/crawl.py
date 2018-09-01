@@ -37,7 +37,7 @@ def start(
     logging_levels = [logging.ERROR, logging.WARN, logging.INFO, logging.DEBUG]
     logging.basicConfig(level=logging_levels[min(logging_level, len(logging_levels) - 1)])
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
 
     asyncio.set_event_loop(loop)
     conf = get_config(config, loop)
@@ -61,9 +61,5 @@ def start(
     except Exception as e:
         print("CRITICAL ERROR main loop exception: %r", e)
     finally:
-        result = crawler.finish_leftovers()
+        loop.run_until_complete(crawler.finish_leftovers())
         report(crawler)
-        loop.stop()
-        loop.run_forever()
-        loop.close()
-    return result

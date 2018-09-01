@@ -20,7 +20,6 @@ def capture_logging():
     logger.addHandler(handler)
 
     class Messages:
-
         def __contains__(self, item):
             return item in handler.stream.getvalue()
 
@@ -57,12 +56,10 @@ class TestCrawler(unittest.TestCase):
     def _create_server(self):
         app = web.Application(loop=self.loop)
         handler_factory = app.make_handler(debug=True)
-        srv = yield from self.loop.create_server(
-            handler_factory, '127.0.0.1', self.port)
+        srv = yield from self.loop.create_server(handler_factory, '127.0.0.1', self.port)
 
         # Prevent "Task destroyed but it is pending" warnings.
-        self.addCleanup(lambda: self.loop.run_until_complete(
-            handler_factory.finish_connections()))
+        self.addCleanup(lambda: self.loop.run_until_complete(handler_factory.finish_connections()))
 
         self.addCleanup(srv.close)
         return app
@@ -72,8 +69,7 @@ class TestCrawler(unittest.TestCase):
 
     def add_page(self, url='/', links=None, body=None, content_type=None):
         if not body:
-            text = ''.join('<a href="{}"></a>'.format(link)
-                           for link in links or [])
+            text = ''.join('<a href="{}"></a>'.format(link) for link in links or [])
             body = text.encode('utf-8')
 
         if content_type is None:
@@ -82,8 +78,7 @@ class TestCrawler(unittest.TestCase):
         @asyncio.coroutine
         def handler(req):
             yield from req.read()
-            return web.Response(body=body, headers=[
-                ('CONTENT-TYPE', content_type)])
+            return web.Response(body=body, headers=[('CONTENT-TYPE', content_type)])
 
         self.add_handler(url, handler)
         return self.app_url + url
@@ -97,9 +92,11 @@ class TestCrawler(unittest.TestCase):
         return self.app_url + url
 
     def assertDoneCount(self, n):
-        self.assertEqual(n, len(self.crawler.done),
-                         "Expected {} URLs done, got {}".format(
-                             n, len(self.crawler.done)))
+        self.assertEqual(
+            n,
+            len(self.crawler.done),
+            "Expected {} URLs done, got {}".format(n, len(self.crawler.done)),
+        )
 
     def assertStat(self, stat_index=0, **kwargs):
         stat = self.crawler.done[stat_index]
@@ -121,9 +118,7 @@ class TestCrawler(unittest.TestCase):
         self.add_page('/', ['/fooo'])
         self.crawl()
         self.assertDoneCount(2)
-        self.assertStat(url=self.app_url,
-                        num_urls=1,
-                        num_new_urls=1)
+        self.assertStat(url=self.app_url, num_urls=1, num_new_urls=1)
 
         self.assertStat(1, url=self.app_url + '/fooo', status=404)
 
@@ -133,14 +128,9 @@ class TestCrawler(unittest.TestCase):
         self.add_page('/barz', ['/fooo'])
         self.crawl([url])
         self.assertDoneCount(2)
-        self.assertStat(url=self.app_url + '/fooo',
-                        num_urls=1,
-                        num_new_urls=1)
+        self.assertStat(url=self.app_url + '/fooo', num_urls=1, num_new_urls=1)
 
-        self.assertStat(1,
-                        url=self.app_url + '/barz',
-                        num_urls=1,
-                        num_new_urls=0)
+        self.assertStat(1, url=self.app_url + '/barz', num_urls=1, num_new_urls=0)
 
     def test_prohibited_host(self):
         # Link to example.com.
@@ -154,20 +144,17 @@ class TestCrawler(unittest.TestCase):
         self.assertFalse(crawler.url_allowed("http://fooo.example.com"))
 
     def test_lenient_host_checking(self):
-        crawler = crawling.Crawler(['http://example.com'], strict=False,
-                                   loop=self.loop)
+        crawler = crawling.Crawler(['http://example.com'], strict=False, loop=self.loop)
         self.assertTrue(crawler.url_allowed("http://www.example.com"))
         self.assertTrue(crawler.url_allowed("http://fooo.example.com"))
 
     def test_exclude(self):
-        crawler = crawling.Crawler(['http://example.com'],
-                                   exclude=r'.*pattern', loop=self.loop)
+        crawler = crawling.Crawler(['http://example.com'], exclude=r'.*pattern', loop=self.loop)
         self.assertTrue(crawler.url_allowed("http://example.com"))
         self.assertFalse(crawler.url_allowed("http://example.com/pattern"))
 
     def test_roots(self):
-        crawler = crawling.Crawler(['http://a', 'http://b', 'not-a-host'],
-                                   loop=self.loop)
+        crawler = crawling.Crawler(['http://a', 'http://b', 'not-a-host'], loop=self.loop)
         self.assertTrue(crawler.url_allowed("http://a/a"))
         self.assertTrue(crawler.url_allowed("http://b/b"))
         self.assertFalse(crawler.url_allowed("http://c/c"))
@@ -225,6 +212,7 @@ class TestCrawler(unittest.TestCase):
         # not barz -> baz, since by then baz is already seen.
         self.crawl([fooo, barz])
         import pprint
+
         pprint.pprint(self.crawler.done)
         self.assertStat(0, url=fooo, status=302, next_url=baz)
 

@@ -137,7 +137,6 @@ class Crawler:
             shutil.rmtree(self.file_storage_place)
         if self.file_storage_place and not os.path.isdir(self.file_storage_place):
             os.makedirs(self.file_storage_place)
-
         self.session = aiohttp.ClientSession(headers=self.headers)
 
     async def login(self):
@@ -485,8 +484,11 @@ class Crawler:
         for w in workers:
             w.cancel()
 
-    def finish_leftovers(self):
-        return False
+    async def finish_leftovers(self):
+        try:
+            await self.session.close()
+        except:
+            pass
 
 
 class NewsCrawler(Crawler):
