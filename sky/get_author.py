@@ -1,24 +1,15 @@
 # https://developer.ibm.com/bluemix/2015/09/09/bluemix-interactive-in-bangalore-abouthive/
 
 import re
-import json
-import os
-from pkg_resources import resource_filename
 
 from sky.helper import get_text_and_tail
-
-fname = os.path.abspath(resource_filename('sky.data', 'author_translation_table.json'))
-
-with open(fname, encoding="utf-8") as f:
-    author_translation_table = json.load(f)
-    uppered = {x.title(): author_translation_table[x] for x in author_translation_table}
-    author_translation_table.update(uppered)
+from sky.data import AUTHOR_TRANSLATION_TABLE
 
 
 def author_translation(txt, lang):
-    if lang in author_translation_table:
-        for month in author_translation_table[lang]:
-            txt = txt.replace(month, author_translation_table[lang][month])
+    if lang in AUTHOR_TRANSLATION_TABLE:
+        for month in AUTHOR_TRANSLATION_TABLE[lang]:
+            txt = txt.replace(month, AUTHOR_TRANSLATION_TABLE[lang][month])
     return txt
 
 

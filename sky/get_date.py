@@ -22,20 +22,11 @@
 #   'domain': 'http://www.benzinga.com'}]
 
 import re
-import json
 import dateutil.parser
 import datetime
-import os
 
 from sky.helper import get_text_and_tail
-
-from pkg_resources import resource_filename
-fname = os.path.abspath(resource_filename('sky.data', 'date_translation_table.json'))
-
-with open(fname, encoding="utf-8") as f:
-    date_translation_table = json.load(f)
-    uppered = {x.title(): date_translation_table[x] for x in date_translation_table}
-    date_translation_table.update(uppered)
+from sky.data import DATE_TRANSLATION_TABLE
 
 
 class NoDefaultDate(object):
@@ -57,9 +48,9 @@ def patched_dateutil_parse(v, fuzzy):
 
 
 def date_translation(txt, lang):
-    if lang in date_translation_table:
-        for month in date_translation_table[lang]:
-            txt = txt.replace(month, date_translation_table[lang][month])
+    if lang in DATE_TRANSLATION_TABLE:
+        for month in DATE_TRANSLATION_TABLE[lang]:
+            txt = txt.replace(month, DATE_TRANSLATION_TABLE[lang][month])
     return txt
 
 
@@ -155,8 +146,7 @@ def get_dates(tree, titleind=(None, 1), lang='en'):
     date = ''
     date_node_index = None
 
-    for dt in [hardest_dates, fuzzy_hardest_dates, not_hardest_dates,
-               non_fuzzy_any, fuzzy_any]:
+    for dt in [hardest_dates, fuzzy_hardest_dates, not_hardest_dates, non_fuzzy_any, fuzzy_any]:
         if dt:
             date, date_node_index = sorted(dt, key=lambda x: abs(x[1] - titleind[1]))[0]
             break

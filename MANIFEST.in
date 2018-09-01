@@ -1,0 +1,4 @@
+include sky/view/static/js/*.js
+include sky/view/static/css/*.css
+include sky/view/static/images/*.png
+include sky/view/templates/*.html
