@@ -34,7 +34,7 @@ setup(
         "python-dateutil",
         "beautifulsoup4",
         "aiohttp",
-        "tornado==4.5.3",
+        "tornado==6.3.2",
     ],
     entry_points={"console_scripts": ["sky = sky.sky:main"]},
     # optional: ZODB, zodbpickle, cloudant, elasticsearch, selenium, asciitree, nltk
